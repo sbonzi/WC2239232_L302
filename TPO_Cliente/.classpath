@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TPO_Repositorio"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/jtds-1.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Downloads/Parcial_Restaurante/Recuparatorio_9999999/lib/slf4j-simple-1.5.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
