@@ -10,6 +10,11 @@ import interfaz.ISistemaEnvios;
 import rmi.SistemaEnviosRMI;
 import util.Constantes;
 
+/**
+ * Disponibiliza un objeto remoto
+ * @author Daniel PC
+ *
+ */
 public class Server {
 
 	public static void main(String[] args) {
