@@ -24,6 +24,7 @@ public class EmpleadoDAO {
 		return instancia;
 	}
 
+	/*PRUEBA*/
 	public Empleado crearEmpleado(EmpleadoDTO e){
 		Session session = sf.openSession();
 		session.beginTransaction();
