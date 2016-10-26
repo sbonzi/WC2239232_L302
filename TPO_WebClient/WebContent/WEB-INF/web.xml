@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" 
+xmlns="http://java.sun.com/xml/ns/j2ee" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>TPO_WebClient</display-name>
+	<servlet>
+		<description>
+		</description>
+		<display-name>Login</display-name>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>login.Login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/Login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>
+		</description>
+		<display-name>AbmSucursal</display-name>
+		<servlet-name>AbmSucursal</servlet-name>
+		<servlet-class>abm.AbmSucursal</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AbmSucursal</servlet-name>
+		<url-pattern>/AbmSucursal</url-pattern>
+	</servlet-mapping>
+	
+</web-app>
