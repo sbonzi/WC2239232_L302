@@ -17,6 +17,7 @@ import hbt.HibernateUtil;
  * 
  * @author lvommaro
  *
+ *
  */
 public class RemitoDAO {
 	public static RemitoDAO instancia = null;
