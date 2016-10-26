@@ -13,7 +13,11 @@ import entities.Carga;
 import entities.ItemRemito;
 import entities.Remito;
 import hbt.HibernateUtil;
-
+/**
+ * 
+ * @author lvommaro
+ *
+ */
 public class RemitoDAO {
 	public static RemitoDAO instancia = null;
 	private static SessionFactory sf = null;
