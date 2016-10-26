@@ -31,6 +31,11 @@ public class RemitoDAO {
 		return instancia;
 	}
 	
+	/**
+	 * Genera el remito para un envio particular
+	 * @param envio
+	 * @return
+	 */
 	public Remito generarRemito(EnvioDTO envio){
 		Session session = sf.openSession();
 		session.beginTransaction();
