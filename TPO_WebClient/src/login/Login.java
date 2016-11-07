@@ -33,8 +33,7 @@ public class Login extends HttpServlet{
             //si coincide usuario y password y además no hay sesión iniciada
             sesion.setAttribute("usuario", usu);
             //redirijo a página con información de login exitoso
-            //response.sendRedirect("loginExito.jsp");
-            System.out.println("El usuario y password son correctos");
+            response.sendRedirect("Home.hmtl");
         }else{
             //lógica para login inválido
         	System.out.println("El usuario y password son incorrectos");
@@ -50,7 +49,7 @@ public class Login extends HttpServlet{
         HttpSession sesion = request.getSession();
         if(action.equals("/out")){
             sesion.invalidate();
-            response.sendRedirect("/home.jsp");
+            response.sendRedirect("Exit.hmtl");
         }else{
  
         }
