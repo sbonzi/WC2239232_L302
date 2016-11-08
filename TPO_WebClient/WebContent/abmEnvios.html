@@ -2,55 +2,72 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Sistema de gestión de envios</title>
+<title>Sistema de gestión de envios | ENVIOS</title>
     <script type="text/javascript">
         function mostrarDivParticular() {
-            divParticular.style.visibility = "visible";
-            divSeleccionCliente.style.visibility = "hidden";
+            divParticular.style.display = "";
+            divSeleccionCliente.style.display = "none";
         }
     </script>
+	<link rel="stylesheet" type="text/css" href="pages.css">
+	<link rel="stylesheet" type="text/css" href="menu.css">
+</head>
 </head>
 <body>
-    <div  id="divSeleccionCliente">
-        <table style="width:600px" id>
-            <tr>
-                <td colspan="2" style="vertical-align: baseline; text-align: center;"><h1>Tipo de Cliente</h1></td>
-            </tr>
-            <tr>
-                <td style="vertical-align: baseline; text-align: center;"><input id="btnEmpresa" type="button" value="Empresa" /></td>
-                <td style="vertical-align: baseline; text-align: center;"><input id="btnParticular" type="button" value="Particular" onclick="mostrarDivParticular();"/></td>
-            </tr>
-        </table>
+	<ul>
+	  <li><a href="home.html">Home</a></li>
+	  <li><a class="active" href="abmEnvios.html">ABM Envio</a></li>
+	  <li><a href="abmCliente.html">ABM Cliente</a></li>
+	  <li><a href="abmVehiculo.html">ABM Vehìculo</a></li>
+	  <li><a href="abmSucursal.html">ABM Sucursal</a></li>
+	  <li style="float:right"><a class="active" href="exit.html">Exit</a></li>
+	</ul>
+	<div class="control-page" id="divSeleccionCliente">
+	    <div class="control-form">
+	    	<form class="login-form" id="formSeleccionCliente">
+	    		<p class="boxTitle">Tipo de Cliente</p>
+	     		<input id="btnEmpresa" type="button" style="cursor: pointer" value="Empresa" />
+	            <input id="btnParticular" type="button" style="cursor: pointer" value="Particular" onclick="mostrarDivParticular();"/>
+	        </form>
+	    </div>
     </div>
-    <div id="divParticular" style="visibility:hidden">
-        <table style="width:600px">
-            <tr>
-                <td style="vertical-align: baseline; text-align: center;"><h1>Solicitud de envío para un cliente particular</h1></td>
-                <td style="vertical-align: baseline; text-align: center;">
-                    <input id="btnNuevoClienteParticular" type="button" value="Nuevo Cliente" />
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align: baseline; text-align: center;">
-                    <input id="txtDNI" name="cliente" type="text" />
-                </td>
-                <td style="vertical-align: baseline; text-align: center;">
-                    <input id="btnBuscarClienteParticular" type="button" value="Buscar" onclick="AbmEnvio?action=displayClienteParticular&clienteDni=<%=cliente.text%>"/>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id="div1" style="visibility:hidden">
-        <table style="width:600px">
-            <%
-	        Cliente c = (Cliente)request.getAttribute("cliente");
-	        %>
-            <tr>
-     	        <td><%=c.getDNI()%></td>
-                <td><%=c.getNombre()%></td>
-		        <td><%=c.getApellido()%></td>
-            </tr>
-        </table>
-    </div>
+    <div class="normal-page">
+	    <div id="divParticular" style="display:none">
+	    	<form class="normal-form">
+	    		<table style="width: 100%">
+	    			<tr>
+	    				<td colspan="2">
+	    					<p class="boxTitle">Solicitud de envío para un cliente particular</p>
+	    				</td>
+	    				<td style="float:right">
+	    					<input id="btnNuevoClienteParticular" style="cursor: pointer" type="button" value="Nuevo Cliente" />
+	   					</td>
+	    			</tr>
+	    			<tr>
+	    				<td>
+	    					<input id="txtDNI" name="cliente" type="text" />
+	    					
+	   					</td>
+	    				<td>
+	    					<input id="btnBuscarClienteParticular" style="cursor: pointer" type="button" value="Buscar" onclick="AbmEnvio?action=displayClienteParticular&clienteDni=<%=cliente.text%>"/>
+	   					</td>
+	   					<td>&nbsp;</td>
+	    			</tr>
+	    		</table>
+	    	</form>
+	    </div>
+	    <div id="div1" style="display:none">
+	        <table style="width:600px">
+	            <%
+		        Cliente c = (Cliente)request.getAttribute("cliente");
+		        %>
+	            <tr>
+	     	        <td><%=c.getDNI()%></td>
+	                <td><%=c.getNombre()%></td>
+			        <td><%=c.getApellido()%></td>
+	            </tr>
+	        </table>
+	    </div>
+	</div>
 </body>
 </html>

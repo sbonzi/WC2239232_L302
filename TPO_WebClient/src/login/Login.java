@@ -9,16 +9,11 @@ import javax.servlet.http.HttpSession;
 
 public class Login extends HttpServlet{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6682978410902534081L;
-	
 	
 	public Login(){
 		super();
 	}
-	
 	
 	 //metodo encargado de la gestión del método POST
     protected void doPOST(HttpServletRequest request, HttpServletResponse response)
