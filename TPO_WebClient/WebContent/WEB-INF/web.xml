@@ -4,28 +4,29 @@ xmlns="http://java.sun.com/xml/ns/j2ee"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>TPO_WebClient</display-name>
-	<servlet>
-		<description>
-		</description>
-		<display-name>Login</display-name>
-		<servlet-name>Login</servlet-name>
-		<servlet-class>login.Login</servlet-class>
-	</servlet>
+	<welcome-file-list>
+    <welcome-file>home.jsp</welcome-file>
+  	</welcome-file-list>
+  	<servlet>
+	    <description></description>
+	    <display-name>home</display-name>
+	    <servlet-name>home</servlet-name>
+	    <servlet-class>login.home</servlet-class>
+  	</servlet>
 	<servlet-mapping>
-		<servlet-name>Login</servlet-name>
-		<url-pattern>/Login</url-pattern>
+		<servlet-name>home</servlet-name>
+		<url-pattern>/home</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
-		<description>
-		</description>
-		<display-name>AbmSucursal</display-name>
-		<servlet-name>AbmSucursal</servlet-name>
-		<servlet-class>abm.AbmSucursal</servlet-class>
-	</servlet>
+	    <description></description>
+	    <display-name>login</display-name>
+	    <servlet-name>login</servlet-name>
+	    <servlet-class>login.login</servlet-class>
+  	</servlet>
 	<servlet-mapping>
-		<servlet-name>AbmSucursal</servlet-name>
-		<url-pattern>/AbmSucursal</url-pattern>
-	</servlet-mapping>
-	
+		<servlet-name>login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>	
 </web-app>
+	

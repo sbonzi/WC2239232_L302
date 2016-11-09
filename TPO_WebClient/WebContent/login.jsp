@@ -13,10 +13,10 @@
 <body>
 <div class="login-page">
   <div class="form">
-    <form class="login-form">
+    <form class="login-form" action="login" method=POST>
       <input type="text" placeholder="name" name="user" value="usuario"/>
       <input type="password" placeholder="password" name="password" value="contraseña"/>
-      <button>login</button>
+      <button type="submit">login</button>
     </form>
   </div>
 </div>

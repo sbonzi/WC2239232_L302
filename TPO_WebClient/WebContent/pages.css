@@ -12,11 +12,12 @@
   margin: auto;
 }
 
-.normal-page {
-  width: 100%;
-  padding: 0 0 0;
-  margin: auto;
+ .message {
+  margin: 5px 0 0;
+  color: #333;
+  font-size: 14px;
 }
+
 
 .control-form {
   position: relative;
