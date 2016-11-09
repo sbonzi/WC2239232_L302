@@ -11,6 +11,7 @@
     </script>
 	<link rel="stylesheet" type="text/css" href="pages.css">
 	<link rel="stylesheet" type="text/css" href="menu.css">
+	<link rel="stylesheet" type="text/css" href="grids.css">
 </head>
 </head>
 <body>
@@ -56,6 +57,61 @@
 	    		</table>
 	    	</form>
 	    </div>
+	    <div id="divGrillaParticulares" style="display:none">
+	    	<form class="normal-form">
+	    		<table style="width: 100%">
+	    			<tr>
+	    				<td colspan="2">
+	    					<p class="boxTitle">Solicitud de envío para un cliente particular</p>
+	    				</td>
+	    				<td style="float:right">
+	    					<input id="btnNuevoClienteParticular" style="cursor: pointer" type="button" value="Nuevo Cliente" />
+	   					</td>
+	    			</tr>
+	    			<tr>
+	    				<td>
+	    					<input id="txtDNI" name="cliente" type="text" />
+	    					
+	   					</td>
+	    				<td>
+	    					<input id="btnBuscarClienteParticular" style="cursor: pointer" type="button" value="Buscar" onclick="AbmEnvio?action=displayClienteParticular&clienteDni=<%=cliente.text%>"/>
+	   					</td>
+	   					<td>&nbsp;</td>
+	    			</tr>
+	    		</table>
+	    	</form>
+	    </div>
+	    <div>
+	    <table class="grid-table">
+	    	<caption>Clientes Particulares</caption>
+	    	<thead>
+		    	<tr>
+		    		<th scope="col">DOCUMENTO</th>
+		    		<th scope="col">NOMBRE</th>
+		    		<th scope="col">DOMICILIO</th>
+	    		</tr>
+    		</thead>
+    		<tfoot>
+    			<tr>
+    				<th scope="row">Total</th>
+    				<td colspan="4">XX Clientes</td>
+   				</tr>
+ 			</tfoot>
+ 			<tbody>
+ 				<tr >
+ 					<th scope="row"><a>33688562</a></th>
+ 					<td><a>SEBASTIAN BONZI</a></td>
+ 					<td>SAN MARTIN 492</td>
+ 				</tr>
+ 				<tr class="odd">
+ 					<th scope="row"><a>33611562</a></th>
+ 					<td><a>SEBASTIAN BONZI</a></td>
+ 					<td>SAN MARTIN 492</td>
+ 				</tr>
+			</tbody>
+		</table>
+	    </div>
+	    
 	    <div id="div1" style="display:none">
 	        <table style="width:600px">
 	            <%
