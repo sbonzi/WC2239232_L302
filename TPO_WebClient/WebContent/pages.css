@@ -100,7 +100,6 @@
   font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;
-  width: 100%;
   border: 0;
   margin: 0 0 15px;
   padding: 15px;
@@ -148,6 +147,19 @@
   color: #FFFFFF;
   font-size: 14px;
   box-sizing: border-box;
+}
+
+.normal-form .formLabel {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  color: #FFFFFF;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
 .container {
