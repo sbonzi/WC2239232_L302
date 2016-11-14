@@ -3,7 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Sistema de gestión de envios | LOGIN</title>
-	<link rel="stylesheet" type="text/css" href="login.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
     <script type="text/javascript">
     	$('.message a').click(function(){
    		$('form').animate({height: "toggle", opacity: "toggle"}, "slow");

@@ -5,13 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Sistema de gestión de envios | HOME</title>
-	<link rel="stylesheet" type="text/css" href="pages.css">
-	<link rel="stylesheet" type="text/css" href="menu.css">
+	<link rel="stylesheet" type="text/css" href="css/pages.css">
+	<link rel="stylesheet" type="text/css" href="css/menu.css">
 </head>
 <body>
 	<ul>
 	  <li><a class="active" href="home.jsp">Home</a></li>
-	  <li><a href="abmEnvios.html">ABM Envio</a></li>
+	  <li><a href="abmEnvios.jsp">ABM Envio</a></li>
 	  <li><a href="abmCliente.html">ABM Cliente</a></li>
 	  <li><a href="abmVehiculo.html">ABM Vehìculo</a></li>
 	  <li><a href="abmSucursal.html">ABM Sucursal</a></li>
