@@ -46,6 +46,12 @@ public interface IABM extends Remote{
 
 	EmpleadoDTO crearEmpleado(EmpleadoDTO empleado)throws RemoteException,EmpleadoException;
 	
+	boolean existeEmpleado(String cuit) throws RemoteException,EmpleadoException;
+	
+	EmpleadoDTO obtenerEmpleado(String cuit) throws RemoteException,EmpleadoException;
+	
+	EmpleadoDTO actualizarEmpleado(EmpleadoDTO empleado)throws RemoteException,EmpleadoException;
+	
 	//ABM Clientes Particulares
 	
 	//ABM Clientes Empresa

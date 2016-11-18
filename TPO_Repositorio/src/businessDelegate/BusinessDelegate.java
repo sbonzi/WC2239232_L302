@@ -180,5 +180,20 @@ public class BusinessDelegate implements ISistemaEnvios{
 		return businessService.crearEmpleado(empleado);
 	}
 
+	@Override
+	public boolean existeEmpleado(String cuit) throws RemoteException, EmpleadoException {
+		return businessService.existeEmpleado(cuit);
+	}
+
+	@Override
+	public EmpleadoDTO obtenerEmpleado(String cuit) throws RemoteException, EmpleadoException {
+		return businessService.obtenerEmpleado(cuit);
+	}
+
+	@Override
+	public EmpleadoDTO actualizarEmpleado(EmpleadoDTO empleado) throws RemoteException, EmpleadoException {
+		return businessService.actualizarEmpleado(empleado);
+	}
+
 
 }
