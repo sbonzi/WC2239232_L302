@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 
@@ -45,6 +46,7 @@ public class EmpleadoDAO {
 		return empleado;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Empleado> getEmpleados() {
 		Session session = sf.openSession();
 		List<Empleado> list = session.createQuery("SELECT e FROM Empleado e").list();
@@ -52,6 +54,7 @@ public class EmpleadoDAO {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Empleado> getChoferesDisponibles() {
 		Session session = sf.openSession();
 		List<Empleado> list = session.createQuery("SELECT e "
@@ -60,5 +63,54 @@ public class EmpleadoDAO {
 												+ "WHERE r.descripcion = 'chofer'").list();
 		session.close();
 		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean existeEmpleado(String cuit) {
+		boolean existeEmpleado 	= false;
+		List<Empleado> empleado	= null;
+		Session session = sf.openSession();
+		empleado = session.createQuery("SELECT 1 "
+						   			+ "FROM Empleado e "
+						   			+ "WHERE e.cuit = :cuit").setParameter("cuit",cuit).list();
+		session.close();
+
+		if(empleado.size() > 0){
+			existeEmpleado = true;
+		}
+		
+		return existeEmpleado;
+	}
+
+	public Empleado obtenerEmpleado(String cuit) {
+		Session session = sf.openSession();
+		Empleado empleado = null;
+		Query query = session.createQuery("SELECT e "
+								  	    + "FROM Empleado e "
+								  	    + "WHERE e.cuit = :cuit ").setString("cuit",cuit);
+		empleado = (Empleado) query.uniqueResult();
+		return empleado;
+	}
+
+	public Empleado actualizarEmpleado(EmpleadoDTO e) {
+		Session session = sf.openSession();
+	
+		Empleado empleado = new Empleado(e.getCuit(),
+										e.getNombre());
+				 empleado.setId(e.getNumero());
+		
+		empleado.setRolEmpleado(RolEmpleadoConverter.rolEmpleadoToEntity(e.getRolEmpleado()));
+		
+		empleado.setSucursal(SucursalConverter.sucursalToEntity(e.getSucursal()));
+
+		session.beginTransaction();
+		
+		session.merge(empleado);
+		
+		session.getTransaction().commit();
+
+		session.close();
+		
+		return empleado;
 	}
 }

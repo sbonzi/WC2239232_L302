@@ -31,4 +31,26 @@ public class EmpleadoSRV {
 		List<EmpleadoDTO> choferesDTO 	= EmpleadoConverter.empleadosToDTO(choferes);
 		return choferesDTO;
 	}
+	
+	public static boolean existeEmpleado(String cuit) {
+		return dao.existeEmpleado(cuit);
+	}
+
+	public static EmpleadoDTO obtenerEmpleado(String cuit) {
+		Empleado empleado = dao.obtenerEmpleado(cuit);		
+		EmpleadoDTO empleadoDTO = null;
+		if(empleado != null){			
+			empleadoDTO = EmpleadoConverter.empleadoToDTO(empleado);
+		}
+		return empleadoDTO;
+	}
+	
+	public static EmpleadoDTO actualizarEmpleado(EmpleadoDTO e) {
+		Empleado empleado = dao.actualizarEmpleado(e);
+		EmpleadoDTO empleadoDTO = null;
+		if(empleado !=null){
+			empleadoDTO 	= EmpleadoConverter.empleadoToDTO(empleado);
+		}
+		return empleadoDTO;
+	}
 }
