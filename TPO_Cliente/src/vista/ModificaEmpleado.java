@@ -20,6 +20,8 @@ import java.util.Map.Entry;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JList;
@@ -43,6 +45,23 @@ import java.awt.Font;
 
 public class ModificaEmpleado extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4770879800019694174L;
+	private EmpleadoDTO empleado;
+	private JTextField txtCuitEmpleado_dni;
+	private JTextField txtNombreYApellido;
+	private JTextField txtCuitEmpleado_digInic;
+	private JTextField txtCuitEmpleado_digVerif;
+	private JList listadoRoles;
+	private JList listadoSucursales;
+	private JButton btnGuardar;
+	private JLabel lblMensaje;
+	private Integer nroRolSeleccionado;
+	private Integer nroSucursalSeleccionada;
+	private JLabel lblMensajeEmpleadoExiste;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,6 +79,7 @@ public class ModificaEmpleado extends JFrame {
 	}
 	
 	public ModificaEmpleado() {
+		getContentPane().setBackground(new Color(118,184,82));
 		setTitle("Modifica empleados");
 		getContentPane().setLayout(null);
 		
@@ -345,23 +365,6 @@ public class ModificaEmpleado extends JFrame {
 			}
 		});	
 	}
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4770879800019694174L;
-	private EmpleadoDTO empleado;
-	private JTextField txtCuitEmpleado_dni;
-	private JTextField txtNombreYApellido;
-	private JTextField txtCuitEmpleado_digInic;
-	private JTextField txtCuitEmpleado_digVerif;
-	private JList listadoRoles;
-	private JList listadoSucursales;
-	private JButton btnGuardar;
-	private JLabel lblMensaje;
-	private Integer nroRolSeleccionado;
-	private Integer nroSucursalSeleccionada;
-	private JLabel lblMensajeEmpleadoExiste;
 	
 	public void habilitarCampos(){
 		txtNombreYApellido.setEnabled(true);

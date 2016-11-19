@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -33,6 +32,17 @@ import java.awt.event.ActionEvent;
 
 public class PanelAdministracion extends JFrame {
 	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3327786882089806661L;
+	private JTable mantenimientosVehiculo;
+	private JTextField txtPrecioServicioEmpSeg;
+	private JTable table;
+	private JTable tblListadoCarries;
+	private JTextField txtPrecioCarrier;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -40,7 +50,7 @@ public class PanelAdministracion extends JFrame {
 					PanelAdministracion frame = new PanelAdministracion();
 					frame.setVisible(true);
 					Dimension d = new Dimension();
-					d.setSize(700,600);
+					d.setSize(700,500);
 					frame.setSize(d); 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,13 +61,76 @@ public class PanelAdministracion extends JFrame {
 	
 	
 	public PanelAdministracion() {
-		setBackground(new Color(102, 255, 153));
+		getContentPane().setBackground(new Color(118,184,82)); //RGB de hexa: #76b852
 		setTitle("Panel de administraci\u00F3n");
 		getContentPane().setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(new Color(141,194,111)); //RGB de hexa: #8DC26F
 		tabbedPane.setBounds(21, 21, 622, 385);
 		getContentPane().add(tabbedPane);
+		
+		JPanel ABMEmpleados = new JPanel();
+		tabbedPane.addTab("ABM Empleados", null, ABMEmpleados, null);
+		ABMEmpleados.setLayout(null);
+		
+		JButton btnAltaEmpleado = new JButton("Alta empleado");
+		btnAltaEmpleado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AltaEmpleado altaEmpleado = new AltaEmpleado();
+				altaEmpleado.setVisible(true);
+				altaEmpleado.setLocation(50, 50);
+				Dimension d = new Dimension();
+				d.setSize(700,600);
+				altaEmpleado.setSize(d); 
+			}
+		});
+		btnAltaEmpleado.setBounds(240, 35, 167, 35);
+		ABMEmpleados.add(btnAltaEmpleado);
+		
+		JButton btnModificacionEmpleado = new JButton("Modificaci\u00F3n empleado");
+		btnModificacionEmpleado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ModificaEmpleado modificaEmpleado = new ModificaEmpleado();
+				modificaEmpleado.setVisible(true);
+				modificaEmpleado.setLocation(50, 50);
+				Dimension d = new Dimension();
+				d.setSize(700,600);
+				modificaEmpleado.setSize(d);
+			}
+		});
+		btnModificacionEmpleado.setBounds(186, 105, 274, 35);
+		ABMEmpleados.add(btnModificacionEmpleado);
+		
+		JButton btnBajaEmpleado = new JButton("Baja empleado");
+		btnBajaEmpleado.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EliminaEmpleado eliminaEmpleado = new EliminaEmpleado();
+				eliminaEmpleado.setVisible(true);
+				eliminaEmpleado.setLocation(50, 50);
+				Dimension d = new Dimension();
+				d.setSize(700,600);
+				eliminaEmpleado.setSize(d);	
+			}
+		});
+		btnBajaEmpleado.setBounds(229, 175, 189, 35);
+		ABMEmpleados.add(btnBajaEmpleado);
+		
+		JButton btnListadoEmpleados = new JButton("Listado empleados");
+		btnListadoEmpleados.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ListadoEmpleados listadoEmpleados = new ListadoEmpleados();
+				listadoEmpleados.setVisible(true);
+				listadoEmpleados.setLocation(50, 50);
+				Dimension d = new Dimension();
+				d.setSize(700,400);
+				listadoEmpleados.setSize(d);		
+			}
+		});
+		btnListadoEmpleados.setBounds(215, 245, 216, 35);
+		ABMEmpleados.add(btnListadoEmpleados);
 		
 		JPanel EmpresasSeguros = new JPanel();
 		tabbedPane.addTab("Empresas Seguros", null, EmpresasSeguros, null);
@@ -156,53 +229,7 @@ public class PanelAdministracion extends JFrame {
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.setBounds(215, 171, 141, 35);
 		EmpresasSeguridad.add(btnGuardar);
-		
-		JPanel ABMEmpleados = new JPanel();
-		tabbedPane.addTab("ABM Empleados", null, ABMEmpleados, null);
-		ABMEmpleados.setLayout(null);
-		
-		JButton btnAltaEmpleado = new JButton("Alta empleado");
-		btnAltaEmpleado.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AltaEmpleado altaEmpleado = new AltaEmpleado();
-				altaEmpleado.setVisible(true);
-				Dimension d = new Dimension();
-				d.setSize(700,600);
-				altaEmpleado.setSize(d); 
-			}
-		});
-		btnAltaEmpleado.setBounds(240, 35, 167, 35);
-		ABMEmpleados.add(btnAltaEmpleado);
-		
-		JButton btnModificacinEmpleado = new JButton("Modificaci\u00F3n empleado");
-		btnModificacinEmpleado.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ModificaEmpleado modificaEmpleado = new ModificaEmpleado();
-				modificaEmpleado.setVisible(true);
-				Dimension d = new Dimension();
-				d.setSize(700,600);
-				modificaEmpleado.setSize(d);
-			}
-		});
-		btnModificacinEmpleado.setBounds(186, 105, 274, 35);
-		ABMEmpleados.add(btnModificacinEmpleado);
-		
-		JButton btnBajaEmpleado = new JButton("Baja empleado");
-		btnBajaEmpleado.setBounds(229, 175, 189, 35);
-		ABMEmpleados.add(btnBajaEmpleado);
-		
-		JButton btnListadoEmpleados = new JButton("Listado empleados");
-		btnListadoEmpleados.setBounds(215, 245, 216, 35);
-		ABMEmpleados.add(btnListadoEmpleados);
+
 	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3327786882089806661L;
-	private JTable mantenimientosVehiculo;
-	private JTextField txtPrecioServicioEmpSeg;
-	private JTable table;
-	private JTable tblListadoCarries;
-	private JTextField txtPrecioCarrier;
 }
