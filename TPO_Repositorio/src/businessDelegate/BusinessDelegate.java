@@ -195,5 +195,10 @@ public class BusinessDelegate implements ISistemaEnvios{
 		return businessService.actualizarEmpleado(empleado);
 	}
 
+	@Override
+	public boolean eliminarEmpleado(EmpleadoDTO empleado) throws RemoteException, EmpleadoException {
+		return businessService.eliminarEmpleado(empleado);
+	}
+
 
 }

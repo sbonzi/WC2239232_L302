@@ -52,6 +52,8 @@ public interface IABM extends Remote{
 	
 	EmpleadoDTO actualizarEmpleado(EmpleadoDTO empleado)throws RemoteException,EmpleadoException;
 	
+	boolean eliminarEmpleado(EmpleadoDTO empleado)throws RemoteException,EmpleadoException;
+	
 	//ABM Clientes Particulares
 	
 	//ABM Clientes Empresa
