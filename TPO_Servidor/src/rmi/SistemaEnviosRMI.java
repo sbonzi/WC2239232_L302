@@ -7,6 +7,7 @@ import java.util.List;
 import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
 import dto.RemitoDTO;
@@ -18,6 +19,7 @@ import dto.ViajeDTO;
 import exceptions.CargaException;
 import exceptions.ClienteException;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
 import exceptions.RemitoException;
@@ -28,6 +30,7 @@ import exceptions.VehiculoException;
 import exceptions.ViajeException;
 import interfaz.ISistemaEnvios;
 import srv.EmpleadoSRV;
+import srv.EmpresaSeguroSRV;
 import srv.EnvioSRV;
 import srv.FacturaSRV;
 import srv.RemitoSRV;
@@ -205,5 +208,10 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	@Override
 	public boolean eliminarEmpleado(EmpleadoDTO empleado) throws RemoteException, EmpleadoException {
 		return EmpleadoSRV.eliminarEmpleado(empleado);
+	}
+
+	@Override
+	public List<EmpresaSeguroDTO> getListadoAseguradoras() throws RemoteException, EmpresaSeguroException {
+		return EmpresaSeguroSRV.getListadoAseguradoras();
 	}
 }

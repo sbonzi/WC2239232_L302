@@ -3,6 +3,7 @@ package hbt;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
+import converters.MercaderiaAseguradaConverter;
 import entities.Camino;
 import entities.Carga;
 import entities.CategoriaFragilidad;
@@ -11,6 +12,7 @@ import entities.ClienteEmpresa;
 import entities.ClienteParticular;
 import entities.CuentaCorrienteEmpresa;
 import entities.Empleado;
+import entities.EmpresaSeguro;
 import entities.Envio;
 import entities.EstadoEnvio;
 import entities.EstadoViaje;
@@ -19,6 +21,7 @@ import entities.ItemFactura;
 import entities.ItemRemito;
 import entities.Manifiesto;
 import entities.Mantenimiento;
+import entities.MercaderiaAsegurada;
 import entities.MovimientoEmpresa;
 import entities.ProductoEmpresa;
 import entities.Remito;
@@ -58,6 +61,8 @@ public class HibernateUtil {
        	 	config.addAnnotatedClass(Camino.class);
        	 	config.addAnnotatedClass(CuentaCorrienteEmpresa.class);
        	 	config.addAnnotatedClass(MovimientoEmpresa.class);
+       	 	config.addAnnotatedClass(EmpresaSeguro.class);
+       	 	config.addAnnotatedClass(MercaderiaAsegurada.class);
        	 	sessionFactory = config.buildSessionFactory();
        	 	
 		}catch(Throwable ex){
