@@ -5,10 +5,12 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguroDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
 import dto.SucursalDTO;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguroException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.SucursalException;
@@ -61,4 +63,7 @@ public interface IABM extends Remote{
 	//ABM Vehiculos
 	
 	//ABM Proveedores
+	
+	//Empresas aseguradoras
+	List<EmpresaSeguroDTO> getListadoAseguradoras() throws RemoteException,EmpresaSeguroException;
 }
