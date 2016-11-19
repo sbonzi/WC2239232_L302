@@ -41,13 +41,13 @@ import util.Formato;
 import javax.swing.JSeparator;
 import java.awt.Font;
 
-public class ModificaEmpleado extends JFrame {
+public class EliminaEmpleado extends JFrame {
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ModificaEmpleado frame = new ModificaEmpleado();
+					EliminaEmpleado frame = new EliminaEmpleado();
 					frame.setVisible(true);
 					Dimension d = new Dimension();
 					d.setSize(700,600);
@@ -59,8 +59,8 @@ public class ModificaEmpleado extends JFrame {
 		});
 	}
 	
-	public ModificaEmpleado() {
-		setTitle("Modifica empleados");
+	public EliminaEmpleado() {
+		setTitle("Elimina empleados");
 		getContentPane().setLayout(null);
 		
 		JLabel lblCuit = new JLabel("Cuit:");
@@ -129,10 +129,11 @@ public class ModificaEmpleado extends JFrame {
 						empleado = new BusinessDelegate().getBusinessService().obtenerEmpleado(cuit);
 
 						if(empleado != null){
-							habilitarCampos();
+							deshabilitarCampos();
+							btnEliminar.setEnabled(true);
 							cargarCampos(empleado);
-							lblMensajeEmpleadoExiste.setVisible(false);
-							lblMensajeEmpleadoExiste.setText("");
+							lblMensajeEmpleadoExiste.setVisible(true);
+							lblMensajeEmpleadoExiste.setText("Empleado encontrado");
 						}else{
 							limpiarCampos();
 							deshabilitarCampos();
@@ -150,7 +151,6 @@ public class ModificaEmpleado extends JFrame {
 			private void cargarCampos(EmpleadoDTO empleado) {
 				txtNombreYApellido.setText(empleado.getNombre());
 				
-				
 				//Marcamos el rol y sucursal en los listados correspondientes
 				ListModel listRoles = listadoRoles.getModel();
 				for(int i=0;i < listRoles.getSize();i++){
@@ -164,7 +164,7 @@ public class ModificaEmpleado extends JFrame {
 						}	
 			    	}
 				}
-			
+				
 				ListModel listSucursales = listadoSucursales.getModel();
 				for(int i=0;i < listSucursales.getSize();i++){
 					HashMap<Integer,String> sucSel = (HashMap<Integer, String>)listSucursales.getElementAt(i);
@@ -176,7 +176,7 @@ public class ModificaEmpleado extends JFrame {
 							listadoSucursales.setSelectedIndex(i);
 						}	
 			    	}
-				}	
+				}
 			}
 			
 			private void limpiarCampos() {
@@ -202,55 +202,60 @@ public class ModificaEmpleado extends JFrame {
 		lblSucursalAsignada.setBounds(21, 337, 186, 26);
 		getContentPane().add(lblSucursalAsignada);
 		
-		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(208, 455, 141, 35);
-		btnGuardar.setEnabled(false);
-		getContentPane().add(btnGuardar);
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(208, 455, 141, 35);
+		btnEliminar.setEnabled(false);
+		getContentPane().add(btnEliminar);
 		
-		btnGuardar.addActionListener(new ActionListener() {
+		btnEliminar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				EmpleadoDTO empleadoActualizar = empleado;
 				
-				empleadoActualizar.setNombre(txtNombreYApellido.getText());
-				
-				//Asigna sucursal
-				SucursalDTO sucursal;
-				sucursal = getSucursalByNro(nroSucursalSeleccionada);
-				empleadoActualizar.setSucursal(sucursal);
-				
-				//Asigna rol
-				RolEmpleadoDTO rolEmpleado = getRolEmpleadoByNro(nroRolSeleccionado); 
-				empleadoActualizar.setRolEmpleado(rolEmpleado);
-				
-				//Crea empleado
-				try {
-					EmpleadoDTO empleadoActualizado = new BusinessDelegate().getBusinessService().actualizarEmpleado(empleadoActualizar);
-					if(empleadoActualizado != null){
-						lblMensaje.setVisible(true);
-						lblMensaje.setText("Empleado actualizado!");	
-
-						new Timer(1500, new ActionListener() {
-				            @Override
-				            public void actionPerformed(ActionEvent e) {
-				            	lblMensaje.setText("");
-				            }
-				        }).start();
-
-					}else{
-						lblMensaje.setVisible(true);
-						lblMensaje.setText("Ocurrió un error.");
-						
-						new Timer(1500, new ActionListener() {
-				            @Override
-				            public void actionPerformed(ActionEvent e) {
-				            	lblMensaje.setText("");
-				            }
-				        }).start();
+				if(empleado != null){
+					EmpleadoDTO empleadoEliminar = empleado;
+					
+					empleadoEliminar.setNombre(txtNombreYApellido.getText());
+					
+					//Asigna sucursal
+					SucursalDTO sucursal;
+					sucursal = getSucursalByNro(nroSucursalSeleccionada);
+					empleadoEliminar.setSucursal(sucursal);
+					
+					//Asigna rol
+					RolEmpleadoDTO rolEmpleado = getRolEmpleadoByNro(nroRolSeleccionado); 
+					empleadoEliminar.setRolEmpleado(rolEmpleado);
+					
+					//Elimina empleado
+					try {
+						boolean empleadoEliminado = new BusinessDelegate().getBusinessService().eliminarEmpleado(empleadoEliminar);
+						if(empleadoEliminado){
+							lblMensaje.setVisible(true);
+							lblMensaje.setText("Empleado eliminado!");	
+	
+							new Timer(1500, new ActionListener() {
+					            @Override
+					            public void actionPerformed(ActionEvent e) {
+					            	lblMensaje.setText("");
+					            }
+					        }).start();
+							
+							empleado = null;
+	
+						}else{
+							lblMensaje.setVisible(true);
+							lblMensaje.setText("Ocurrió un error.");
+							
+							new Timer(1500, new ActionListener() {
+					            @Override
+					            public void actionPerformed(ActionEvent e) {
+					            	lblMensaje.setText("");
+					            }
+					        }).start();
+						}
+					} catch (RemoteException | EmpleadoException e) {
+						e.printStackTrace();
 					}
-				} catch (RemoteException | EmpleadoException e) {
-					e.printStackTrace();
-				}
+			   }
 			}
 		});
 		
@@ -326,7 +331,6 @@ public class ModificaEmpleado extends JFrame {
 		
 		lblMensajeEmpleadoExiste = new JLabel("");
 		lblMensajeEmpleadoExiste.setFont(new Font("Tahoma", Font.PLAIN, 21));
-		//lblMensaje.setVisible(false);
 		lblMensajeEmpleadoExiste.setBounds(21, 92, 583, 35);
 		getContentPane().add(lblMensajeEmpleadoExiste);
 		
@@ -357,7 +361,7 @@ public class ModificaEmpleado extends JFrame {
 	private JTextField txtCuitEmpleado_digVerif;
 	private JList listadoRoles;
 	private JList listadoSucursales;
-	private JButton btnGuardar;
+	private JButton btnEliminar;
 	private JLabel lblMensaje;
 	private Integer nroRolSeleccionado;
 	private Integer nroSucursalSeleccionada;
@@ -367,14 +371,13 @@ public class ModificaEmpleado extends JFrame {
 		txtNombreYApellido.setEnabled(true);
 		listadoRoles.setEnabled(true);
 		listadoSucursales.setEnabled(true);
-		btnGuardar.setEnabled(true);
+		btnEliminar.setEnabled(true);
 	}
 	
 	public void deshabilitarCampos(){
 		txtNombreYApellido.setEnabled(false);
 		listadoRoles.setEnabled(false);
 		listadoSucursales.setEnabled(false);
-		btnGuardar.setEnabled(false);
 	}
 	
 	public RolEmpleadoDTO getRolEmpleadoByNro(int nroRolEmpleado) {
