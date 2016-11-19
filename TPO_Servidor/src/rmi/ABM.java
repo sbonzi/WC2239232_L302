@@ -103,4 +103,9 @@ public class ABM extends UnicastRemoteObject implements IABM{
 		return EmpleadoSRV.actualizarEmpleado(empleado);
 	}
 
+	@Override
+	public boolean eliminarEmpleado(EmpleadoDTO empleado) throws RemoteException, EmpleadoException {
+		return true;
+	}
+
 }

@@ -53,4 +53,8 @@ public class EmpleadoSRV {
 		}
 		return empleadoDTO;
 	}
+
+	public static boolean eliminarEmpleado(EmpleadoDTO empleado) {
+		return dao.eliminarEmpleado(empleado);
+	}
 }

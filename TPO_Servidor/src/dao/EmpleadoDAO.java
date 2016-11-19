@@ -113,4 +113,26 @@ public class EmpleadoDAO {
 		
 		return empleado;
 	}
+
+	public boolean eliminarEmpleado(EmpleadoDTO e) {
+		Session session = sf.openSession();
+		
+		Empleado empleado = new Empleado(e.getCuit(),
+										e.getNombre());
+				 empleado.setId(e.getNumero());
+		
+		empleado.setRolEmpleado(RolEmpleadoConverter.rolEmpleadoToEntity(e.getRolEmpleado()));
+		
+		empleado.setSucursal(SucursalConverter.sucursalToEntity(e.getSucursal()));
+
+		session.beginTransaction();
+		
+		session.delete(empleado);
+		
+		session.getTransaction().commit();
+
+		session.close();
+		
+		return true;
+	}
 }
