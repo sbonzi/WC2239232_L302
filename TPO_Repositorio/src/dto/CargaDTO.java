@@ -34,7 +34,7 @@ public class CargaDTO implements Serializable{
 	public CargaDTO(Float alto, Float ancho, boolean apilable, CategoriaFragilidadDTO categFragilidad,
 			CategoriaTratamientoDTO categTratemiento, boolean esInflamable, boolean esQuimicoToxico,
 			ManifiestoDTO manifiesto, int maximoApilable, String notasManipulacion, Float peso, Float profundidad,
-			boolean refrigerado, int tempRefrigerado, String tipo, Float volumen) {
+			boolean refrigerado, int tempRefrigerado, String tipo, Float volumen, boolean cargaAGranel) {
 		super();
 		this.alto = alto;
 		this.ancho = ancho;
@@ -52,6 +52,7 @@ public class CargaDTO implements Serializable{
 		this.tempRefrigerado = tempRefrigerado;
 		this.tipo = tipo;
 		this.volumen = volumen;
+		this.cargaAGranel = cargaAGranel;
 	}
 
 	public int getId() {

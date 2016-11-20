@@ -31,7 +31,8 @@ public class CargaConverter implements Serializable{
 								  carga.isRefrigerado(),
 								  carga.getTempRefrigerado(),
 								  carga.getTipo(),
-								  carga.getVolumen());
+								  carga.getVolumen(),
+								  carga.isCargaAGranel());
 		
 		cDTO.setId(carga.getId());
 		
@@ -59,7 +60,8 @@ public class CargaConverter implements Serializable{
 									c.isRefrigerado(),
 									c.getTempRefrigerado(),
 									c.getTipo(),
-									c.getVolumen());
+									c.getVolumen(),
+									c.isCargaAGranel());
 			cargaDTO.setId(c.getId());
 			lista.add(cargaDTO);
 		}

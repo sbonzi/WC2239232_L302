@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import= "dto.ParticularDTO"%>
+<%@ page import= "dto.CargaDTO"%>
+<%@ page import= "java.util.List"%>
+<%@ page import= "java.util.ArrayList"%>
 <%@ page import= "config.viewStateAbmEnvios"%>
+<%@ page import= "java.util.Iterator"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,6 +156,7 @@
 											if (c == null)
 												c = new ParticularDTO();	
 											
+											request.setAttribute("clienteById", c);
 											%>
 						    				<td>
 						    					<p class="formLabel">DNI</p>
@@ -198,7 +204,7 @@
 	    	<form class="normal-form">
 	    		<table style="width: 100%">
 	    			<tr>
-	    				<td colspan="2">
+	    				<td>
 	    					<p class="boxTitle">CARGAS</p>
 	    					<input name="action" type="hidden" width="400px" value="addCargaParticular"/>
 	    				</td>
@@ -243,15 +249,23 @@
 	    							<td><input name="txtNewPeso" type="number" width="70px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">TEMP. REFRIGERADO (°C)</p></td>
 	    							<td><input name="txtNewTempRefrigerado" type="number" width="100px"/></td>
-	    							<td>&nbsp;</td>
-	    							<td>&nbsp;</td>
+	    							<td colspan="2"  style="vertical-align: bottom;" align="right">
+	    								<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Agregar Carga">
+	    							</td>
 	    						</tr>
 	  						</table>
 	   					</td>
-	    				<td style="vertical-align: bottom;" align="right">
-	    					<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Agregar Carga">
-	   					</td>
 	    			</tr>
+	    			<tr><td style="width:100% "><label id="msgErrorCtlAddCarga" class="message" style="display:<%=viewState.getErrorDisplay()%>"><%=viewState.getError()%></label></td></tr>
+	    			<%
+	    			List<CargaDTO> cargasAgregadas = (List<CargaDTO>)request.getAttribute("cargasAgregadas");
+	    								
+					if (cargasAgregadas == null)
+						cargasAgregadas = new ArrayList<CargaDTO>();
+					
+					request. setAttribute("cargasAgregadas",cargasAgregadas);
+					
+					%>
 	    			<tr id="ctlCargas" style="display:<%=viewState.getCtlCargasDisplay()%>">
 	    				<td colspan="2">
 	    					<table class="grid-table">
@@ -276,42 +290,33 @@
 					    		<tfoot>
 					    			<tr>
 					    				<th scope="row">Total</th>
-					    				<td colspan="4">XX Cargas</td>
+					    				<td colspan="4"><%=cargasAgregadas.size() + " Cargas"%></td>
 					   				</tr>
 					 			</tfoot>
 					 			<tbody>
+					 				<%
+					 				CargaDTO aux;
+					 				for(Iterator<CargaDTO> i = cargasAgregadas.iterator(); i.hasNext();)
+					 				{
+					 					aux = i.next();
+									%>
 					 				<tr>
-					 					<th scope="row">20</th>
-							    		<td>13</td>
-							    		<td>24</td>
-							    		<td>245</td>
-							    		<td>500</td>
-							    		<td>SI</td>
-							    		<td>150</td>
-							    		<td>NO</td>
-							    		<td>SI</td>
-							    		<td>60</td>
-							    		<td>NO</td>
-							    		<td>NO</td>
-							    		<td>TIPO CARGA FRAGIL</td>
-							    		<td>NADA</td>
+					 					<td><%=aux.getAlto().toString()%></td>
+					 					<td><%=aux.getAncho().toString()%></td>
+					 					<td><%=aux.getProfundidad().toString()%></td>
+					 					<td><%=aux.getVolumen().toString()%></td>
+							    		<td><%=aux.getPeso().toString()%></td>
+							    		<td><%=aux.isApilable()%></td>
+							    		<td><%=aux.getMaximoApilable()%></td>
+							    		<td><%=aux.isCargaAGranel()%></td>
+							    		<td><%=aux.isRefrigerado()%></td>
+							    		<td><%=aux.getTempRefrigerado()%></td>
+							    		<td><%=aux.isEsQuimicoToxico()%></td>
+							    		<td><%=aux.isEsInflamable()%></td>
+							    		<td><%=aux.getTipo().toString()%></td>
+							    		<td><%=aux.getNotasManipulacion().toString()%></td>
 					 				</tr>
-					 				<tr class="odd">
-					 					<th scope="row">20</th>
-							    		<td>13</td>
-							    		<td>24</td>
-							    		<td>245</td>
-							    		<td>500</td>
-							    		<td>SI</td>
-							    		<td>150</td>
-							    		<td>NO</td>
-							    		<td>SI</td>
-							    		<td>60</td>
-							    		<td>NO</td>
-							    		<td>NO</td>
-							    		<td>TIPO CARGA FRAGIL</td>
-							    		<td>NADA</td>
-					 				</tr>
+					 				<% } %>
 								</tbody>
 	    					</table>
 	    				</td>
@@ -319,50 +324,52 @@
 	    		</table>
 	    	</form>
 	    </div>
-	    <div id="divDestinatario" style="display:<%=viewState.getDivCargasParticularDisplay()%>">
+	    <div id="divDestinatario" style="display:<%=viewState.getDivDestinatarioDisplay()%>">
 	    	<form class="normal-form">
 	    		<table style="width: 100%">
 	    			<tr>
-	    				<td colspan="7">
+	    				<td>
 	    					<p class="boxTitle">DESTINATARIO</p>
+	    					<input name="action" type="hidden" width="400px" value="addDestinatarioParticular"/>
 	    				</td>
 	    			</tr>
 	    			<tr id="ctlNewCarga">
-	    				<td colspan="6">
+	    				<td>
 	    					<table>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">NOMBRE</p></td>
-	    							<td><input id="txtNewNombreDestinatario" type="text" width="100px"/></td>
+	    							<td><input name="txtNewNombreDestinatario" type="text" width="100px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">DOMICILIO</p></td>
-	    							<td><input id="txtNewDomicilioDestinatario" type="text" width="100px"/></td>
+	    							<td><input name="txtNewDomicilioDestinatario" type="text" width="100px"/></td>
 	    							<td><p class="formLabel">COD. POSTAL</p></td>
-	    							<td><input id="txtNewCodPostalDestinatario" type="number" width="70px"/></td>
+	    							<td><input name="txtNewCodPostalDestinatario" type="number" width="70px"/></td>
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">PAIS</p></td>
-	    							<td><input id="txtNewPaisDestinatario" type="number" width="100px"/></td>
+	    							<td><input name="txtNewPaisDestinatario" type="number" width="100px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">PROVINCIA</p></td>
-	    							<td><input id="txtNewProvinciaDestinatario" type="number" width="100px"/></td>
+	    							<td><input name="txtNewProvinciaDestinatario" type="number" width="100px"/></td>
 	    							<td><p class="formLabel">PISO</p></td>
-	    							<td><input id="txtNewPisoDestinatario" type="number" width="70px"/></td>
+	    							<td><input name="txtNewPisoDestinatario" type="number" width="70px"/></td>
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">DEPARTAMENTO</p></td>
-	    							<td><input id="txtNewProfundidad" type="number" width="100px"/></td>
+	    							<td><input name="txtNewDtoDestinatario" type="number" width="100px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">NRO. DOCUMENTO</p></td>
-	    							<td><input id="txtNewAgranel" type="number" width="100px"/></td>
+	    							<td><input name="txtNewNumDocDestinatario" type="number" width="100px"/></td>
 	    							<td><p class="formLabel">AUTORIZANTES</p></td>
-	    							<td><input id="txtNewNotaManip" type="text" width="400px"/></td>
+	    							<td><input name="txtNewAutorizantesDestinatario" type="text" width="400px"/></td>
+	    						</tr>
+	    						<tr>
+	    							<td colspan="6"  style="vertical-align: bottom;" align="right">
+	    								<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Agregar Destinatario">
+	    							</td>
 	    						</tr>
 	  						</table>
 	   					</td>
-	    				<td style="vertical-align: bottom;" align="right">
-	    					<!-- <input id="btnGuardarClienteParticular" style="cursor: pointer" type="button" value="Guardar" onclick="AbmEnvio?action=saveClienteParticular" method="POST"/> -->
-	    					<input id="btnGuardarDestintario" style="cursor: pointer" type="button" value="+ Destinatario" onclick="setDestinatario();"/>
-	   					</td>
 	    			</tr>
 	    			<tr id="ctlDestinatarioEnvio" style="display:<%=viewState.getCtlDestinatarioEnvioDisplay()%>; width:100%">
-	    				<td colspan="7">
+	    				<td>
 	    					<table class="grid-table">
 		    					<thead>
 							    	<tr>
