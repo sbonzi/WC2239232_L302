@@ -58,7 +58,6 @@ public class ListadoEmpleados extends JFrame {
 		
 		final DefaultTableModel dtm = new DefaultTableModel(0, 0);
 		dtm.setColumnIdentifiers(header);
-		dtm.addRow(header);
 		tblEmpleados.setModel(dtm);
 		
 		JScrollPane scrollPane = new JScrollPane(tblEmpleados);

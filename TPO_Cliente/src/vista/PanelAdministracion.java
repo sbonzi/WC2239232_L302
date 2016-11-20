@@ -3,6 +3,7 @@ package vista;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -12,7 +13,18 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import businessDelegate.BusinessDelegate;
+import dto.EmpleadoDTO;
+import dto.EmpresaSeguroDTO;
+import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguroException;
+
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 /**
@@ -42,6 +54,11 @@ public class PanelAdministracion extends JFrame {
 	private JTable table;
 	private JTable tblListadoCarries;
 	private JTextField txtPrecioCarrier;
+	private JTable tblEmpresasAseguradoras;
+	private String headerEmpresasAseg[] = new String[] {"Id",
+														"Nombre",
+														"Tipo de seguro",
+														"Mercaderias aseguradas"};
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -136,22 +153,33 @@ public class PanelAdministracion extends JFrame {
 		tabbedPane.addTab("Empresas Seguros", null, EmpresasSeguros, null);
 		EmpresasSeguros.setLayout(null);
 		
-		JLabel lblEmpresasDisponibles = new JLabel("Empresas:");
-		lblEmpresasDisponibles.setBounds(112, 41, 97, 26);
-		EmpresasSeguros.add(lblEmpresasDisponibles);
+		tblEmpresasAseguradoras = new JTable();
+		tblEmpresasAseguradoras.setBounds(31, 88, 565, 208);
+		EmpresasSeguros.add(tblEmpresasAseguradoras);
 		
-		JComboBox listadoEmpresasSeguros = new JComboBox();
-		listadoEmpresasSeguros.setBounds(234, 38, 339, 32);
-		EmpresasSeguros.add(listadoEmpresasSeguros);
+		final DefaultTableModel dtmEmpresasAseguradoras = new DefaultTableModel(0, 0);
+		dtmEmpresasAseguradoras.setColumnIdentifiers(headerEmpresasAseg);
+		tblEmpresasAseguradoras.setModel(dtmEmpresasAseguradoras);
 		
-		JLabel lblDatos = new JLabel("Datos:");
-		lblDatos.setBounds(21, 93, 92, 26);
-		EmpresasSeguros.add(lblDatos);
+		JScrollPane scrollPane = new JScrollPane(tblEmpresasAseguradoras);
+		scrollPane.setBounds(20, 36, 576, 215);
+		scrollPane.setVisible(true);
+		EmpresasSeguros.add(scrollPane);
 		
-		table = new JTable();
-		table.setBounds(46, 194, 550, -53);
-		EmpresasSeguros.add(table);
-		
+		List<EmpresaSeguroDTO> empresasAseguradoras = new ArrayList<EmpresaSeguroDTO>();
+		try {
+			empresasAseguradoras = new BusinessDelegate().getBusinessService().getListadoAseguradoras();
+		} catch (RemoteException | EmpresaSeguroException e) {
+			e.printStackTrace();
+		}
+
+		for(EmpresaSeguroDTO e : empresasAseguradoras){
+			dtmEmpresasAseguradoras.addRow(new Object[] {e.getId(),
+														 e.getNombre(),
+														 e.getTipoSeguro(),
+														 e.getMercaderiasAseguradas()});
+		}
+
 		JPanel Carries = new JPanel();
 		tabbedPane.addTab("Carries", null, Carries, null);
 		Carries.setLayout(null);
@@ -231,5 +259,4 @@ public class PanelAdministracion extends JFrame {
 		EmpresasSeguridad.add(btnGuardar);
 
 	}
-
 }

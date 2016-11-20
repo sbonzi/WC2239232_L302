@@ -200,7 +200,7 @@
 	    			<tr>
 	    				<td colspan="2">
 	    					<p class="boxTitle">CARGAS</p>
-	    					<input name="action" type="hidden" width="400px" value="searchClienteParticularById"/>
+	    					<input name="action" type="hidden" width="400px" value="addCargaParticular"/>
 	    				</td>
 	    			</tr>
 	    			<tr id="ctlNewCarga">
@@ -208,49 +208,47 @@
 	    					<table>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">ALTO(Cm)</p></td>
-	    							<td><input id="txtNewAlto" type="number" width="70px"/></td>
+	    							<td><input name="txtNewAlto" type="number" width="70px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">APILABLE</p></td>
-	    							<td><input id="txtNewApilable" type="checkbox"/></td>
+	    							<td><input name="txtNewApilable" type="checkbox"/></td>
 	    							<td><p class="formLabel">QUIMICO TOXICO</p></td>
-	    							<td><input id="txtNewQuimicoToxico" type="checkbox" width="400px"/></td>
+	    							<td><input name="txtNewQuimicoToxico" type="checkbox" width="400px"/></td>
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">ANCHO (Cm)</p></td>
-	    							<td><input id="txtNewAncho" type="number" width="70px"/></td>
+	    							<td><input name="txtNewAncho" type="number" width="70px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">MAX APILABLE (Kg)</p></td>
-	    							<td><input id="txtNewMaxApilable" type="number" width="100px"/></td>
+	    							<td><input name="txtNewMaxApilable" type="number" width="100px"/></td>
 	    							<td><p class="formLabel">INFLAMABLE</p></td>
-	    							<td><input id="txtNewInflamable" type="checkbox" width="400px"/></td>
+	    							<td><input name="txtNewInflamable" type="checkbox" width="400px"/></td>
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">PROFUNDIDAD (Cm)</p></td>
-	    							<td><input id="txtNewProfundidad" type="number" width="70px"/></td>
+	    							<td><input name="txtNewProfundidad" type="number" width="70px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">A GRANEL</p></td>
-	    							<td><input id="txtNewAgranel" type="checkbox"/></td>
+	    							<td><input name="txtNewAgranel" type="checkbox"/></td>
 	    							<td><p class="formLabel">NOTA MANIP</p></td>
-	    							<td><input id="txtNewNotaManip" type="text" width="400px"/></td>
+	    							<td><input name="txtNewNotaManip" type="text" width="400px"/></td>
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">VOLUMEN (mL)</p></td>
-	    							<td><input id="txtNewVolumen" type="number" width="70px"/></td>
+	    							<td><input name="txtNewVolumen" type="number" width="70px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">REFRIGERADO</p></td>
-	    							<td><input id="txtNewRefrigerado" type="checkbox"/></td>
+	    							<td><input name="txtNewRefrigerado" type="checkbox"/></td>
 	    							<td><p class="formLabel">TIPO</p></td>
-	    							<td><input id="txtNewTipo" type="text" width="400px"/></td>
+	    							<td><input name="txtNewTipo" type="text" width="400px"/></td>
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">PESO (Kg)</p></td>
-	    							<td><input id="txtNewPeso" type="number" width="70px"/></td>
+	    							<td><input name="txtNewPeso" type="number" width="70px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">TEMP. REFRIGERADO (°C)</p></td>
-	    							<td><input id="txtNewTempRefrigerado" type="number" width="100px"/></td>
+	    							<td><input name="txtNewTempRefrigerado" type="number" width="100px"/></td>
 	    							<td>&nbsp;</td>
 	    							<td>&nbsp;</td>
 	    						</tr>
 	  						</table>
 	   					</td>
 	    				<td style="vertical-align: bottom;" align="right">
-	    					<!-- <input id="btnGuardarClienteParticular" style="cursor: pointer" type="button" value="Guardar" onclick="AbmEnvio?action=saveClienteParticular" method="POST"/> -->
-	    					<input id="btnGuardarCarga" style="cursor: pointer" type="button" value="Agregar Carga" onclick="setCarga();"/>
 	    					<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Agregar Carga">
 	   					</td>
 	    			</tr>

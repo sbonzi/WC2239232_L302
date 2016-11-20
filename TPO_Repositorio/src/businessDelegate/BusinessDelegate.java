@@ -7,6 +7,7 @@ import java.util.List;
 import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
 import dto.ParticularDTO;
@@ -19,6 +20,7 @@ import dto.ViajeDTO;
 import exceptions.CargaException;
 import exceptions.ClienteException;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
 import exceptions.ParticularException;
@@ -203,6 +205,7 @@ public class BusinessDelegate implements ISistemaEnvios{
 	}
 
 	@Override
+
 	public ParticularDTO getClienteParticular(int dniCliente, char tipoDoc) throws RemoteException, ParticularException {
 		return businessService.getClienteParticular(dniCliente, tipoDoc);
 	}
@@ -210,6 +213,11 @@ public class BusinessDelegate implements ISistemaEnvios{
 	@Override
 	public ParticularDTO crearClienteParticular(ParticularDTO clienteParticular) throws RemoteException, ParticularException {
 		return businessService.crearClienteParticular(clienteParticular);
+	}
+
+	@Override
+	public List<EmpresaSeguroDTO> getListadoAseguradoras() throws RemoteException, EmpresaSeguroException {
+		return businessService.getListadoAseguradoras();
 	}
 
 }

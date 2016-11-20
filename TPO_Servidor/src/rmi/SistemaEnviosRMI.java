@@ -7,6 +7,7 @@ import java.util.List;
 import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
 import dto.ParticularDTO;
@@ -19,6 +20,7 @@ import dto.ViajeDTO;
 import exceptions.CargaException;
 import exceptions.ClienteException;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
 import exceptions.ParticularException;
@@ -30,6 +32,7 @@ import exceptions.VehiculoException;
 import exceptions.ViajeException;
 import interfaz.ISistemaEnvios;
 import srv.EmpleadoSRV;
+import srv.EmpresaSeguroSRV;
 import srv.EnvioSRV;
 import srv.FacturaSRV;
 import srv.ParticularSRV;
@@ -219,5 +222,10 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	public ParticularDTO crearClienteParticular(ParticularDTO clienteParticular)
 			throws RemoteException, ParticularException {
 		return ParticularSRV.crearParticular(clienteParticular);
+	}
+
+	@Override
+	public List<EmpresaSeguroDTO> getListadoAseguradoras() throws RemoteException, EmpresaSeguroException {
+		return EmpresaSeguroSRV.getListadoAseguradoras();
 	}
 }

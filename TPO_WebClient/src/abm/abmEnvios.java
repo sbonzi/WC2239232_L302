@@ -247,6 +247,30 @@ public class abmEnvios extends HttpServlet {
         	 String error = "";
         	 String displayError = "none";
         	 viewStateAbmEnvios viewState;
+        	 
+        	 if (request.getParameter("newDomicilio")==null || request.getParameter("newDomicilio").length() < 1)
+        	 {
+        		 error = "DEBE INDICAR EL DOMICILIO DEL CLIENTE";
+        		 displayError = "";
+        	 }
+        	         	 
+        	 if (request.getParameter("newApellido")==null || request.getParameter("newApellido").length() < 1)
+        	 {
+        		 error = "DEBE INDICAR EL APELLIDO DEL CLIENTE";
+        		 displayError = "";
+        	 }
+        	 
+        	 if (request.getParameter("newNombre")==null || request.getParameter("newNombre").length() < 1)
+        	 {
+        		 error = "DEBE INDICAR EL NOMBRE DEL CLIENTE";
+        		 displayError = "";
+        	 }
+        	 
+        	 if (request.getParameter("newDNI")==null || request.getParameter("newDNI").length() < 1)
+        	 {
+        		 error = "DEBE INDICAR EL TIPO Y NRO DE DOCUMENTO DEL CLIENTE";
+        		 displayError = "";
+        	 }
          }
 	
 	}
