@@ -1,8 +1,12 @@
 package converters;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import dto.EmpresaSeguroDTO;
 import dto.PaisDTO;
+import entities.EmpresaSeguro;
 import entities.Pais;
 
 public class PaisConverter implements Serializable{
@@ -23,4 +27,13 @@ public class PaisConverter implements Serializable{
 		pais.setId(p.getId());
 		return pais;
 	}
+	
+	public static List<PaisDTO> paisesToDTO(List<Pais> paises){
+		List<PaisDTO> paisesDTO = new ArrayList<PaisDTO>();
+		for(Pais p:paises){
+			paisesDTO.add(paisToDTO(p));
+		}
+		return paisesDTO;
+	}
+
 }

@@ -48,7 +48,7 @@ public class ClienteParticularDAO {
 	@SuppressWarnings("unchecked")
 	public ClienteParticular getClienteParticular(int numDoc, char tipoDoc) {
 		Session session = sf.openSession();
-		List<ClienteParticular> list = session.createQuery("SELECT c FROM Cliente c WHERE esParticular = 1 AND c.numDoc = :numDoc").setParameter("numDoc",numDoc).list();
+		List<ClienteParticular> list = session.createQuery("SELECT c FROM Cliente c WHERE c.esParticular = 1 AND c.numDoc = :numDoc").setParameter("numDoc",numDoc).list();
 		session.close();
 		
 		if (list.isEmpty())

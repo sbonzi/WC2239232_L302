@@ -1,8 +1,12 @@
 package converters;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import dto.PaisDTO;
 import dto.ProvinciaDTO;
+import entities.Pais;
 import entities.Provincia;
 
 public class ProvinciaConverter implements Serializable{
@@ -22,5 +26,13 @@ public class ProvinciaConverter implements Serializable{
 		Provincia provincia = new Provincia(p.getDescripcion(),p.isHabilitado(), PaisConverter.paisToEntity(p.getPais()));
 		provincia.setId(p.getId());
 		return provincia;
+	}
+	
+	public static List<ProvinciaDTO> provinciasToDTO(List<Provincia> provincias){
+		List<ProvinciaDTO> provinciasDTO = new ArrayList<ProvinciaDTO>();
+		for(Provincia p:provincias){
+			provinciasDTO.add(provinciaToDTO(p));
+		}
+		return provinciasDTO;
 	}
 }

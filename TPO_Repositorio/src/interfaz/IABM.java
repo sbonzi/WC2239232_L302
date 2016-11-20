@@ -7,13 +7,17 @@ import java.util.List;
 import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
 import dto.ParticularDTO;
+import dto.ProvinciaDTO;
 import dto.EmpresaSeguroDTO;
+import dto.PaisDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
 import dto.SucursalDTO;
 import exceptions.EmpleadoException;
 import exceptions.ParticularException;
+import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
+import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.SucursalException;
@@ -76,4 +80,12 @@ public interface IABM extends Remote{
 	List<EmpresaSeguroDTO> getListadoAseguradoras() throws RemoteException,EmpresaSeguroException;
 
 	DestinatarioDTO crearDestinatario(DestinatarioDTO destinatario) throws RemoteException, DestinatarioException;
+	
+	List<PaisDTO> getPaises()throws RemoteException,PaisException;
+	
+	List<ProvinciaDTO> getProvincias(PaisDTO pais)throws RemoteException,ProvinciaException;
+	
+	PaisDTO getPais(int id)throws RemoteException,PaisException;
+	
+	ProvinciaDTO getProvincia(int id)throws RemoteException,ProvinciaException;
 }

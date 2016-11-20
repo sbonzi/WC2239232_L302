@@ -11,7 +11,9 @@ import dto.EmpleadoDTO;
 import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
+import dto.PaisDTO;
 import dto.ParticularDTO;
+import dto.ProvinciaDTO;
 import dto.RemitoDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
@@ -25,7 +27,9 @@ import exceptions.EmpleadoException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
+import exceptions.PaisException;
 import exceptions.ParticularException;
+import exceptions.ProvinciaException;
 import exceptions.RemitoException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
@@ -38,7 +42,9 @@ import srv.EmpleadoSRV;
 import srv.EmpresaSeguroSRV;
 import srv.EnvioSRV;
 import srv.FacturaSRV;
+import srv.PaisSRV;
 import srv.ParticularSRV;
+import srv.ProvinciaSRV;
 import srv.RemitoSRV;
 import srv.RolEmpleadoSRV;
 import srv.RutaSRV;
@@ -236,5 +242,29 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	public DestinatarioDTO crearDestinatario(DestinatarioDTO destinatario)
 			throws RemoteException, DestinatarioException {
 		return DestinatarioSRV.crearDestinatario(destinatario);
+	}
+
+	@Override
+	public List<PaisDTO> getPaises() throws RemoteException, PaisException {
+		// TODO Auto-generated method stub
+		return PaisSRV.getPaises();
+	}
+
+	@Override
+	public List<ProvinciaDTO> getProvincias(PaisDTO pais) throws RemoteException, ProvinciaException {
+		// TODO Auto-generated method stub
+		return ProvinciaSRV.getProvincias(pais);
+	}
+
+	@Override
+	public PaisDTO getPais(int id) throws RemoteException, PaisException {
+		// TODO Auto-generated method stub
+		return PaisSRV.getPais(id);
+	}
+
+	@Override
+	public ProvinciaDTO getProvincia(int id) throws RemoteException, ProvinciaException {
+		// TODO Auto-generated method stub
+		return ProvinciaSRV.getProvincia(id);
 	}
 }

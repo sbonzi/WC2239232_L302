@@ -16,13 +16,19 @@ import com.sun.xml.internal.txw2.Document;
 import businessDelegate.BusinessDelegate;
 import config.viewStateAbmEnvios;
 import dto.ParticularDTO;
+import dto.ProvinciaDTO;
 import dto.CargaDTO;
 import dto.CategoriaFragilidadDTO;
 import dto.CategoriaTratamientoDTO;
+import dto.ClienteDTO;
 import dto.DestinatarioDTO;
 import dto.ManifiestoDTO;
+import dto.PaisDTO;
+import exceptions.DestinatarioException;
+import exceptions.PaisException;
 import exceptions.ParticularException;
 //import negocio.Particular;
+import exceptions.ProvinciaException;
 
 public class abmEnvios extends HttpServlet {
 
@@ -384,7 +390,7 @@ public class abmEnvios extends HttpServlet {
 							"",  //ctlClienteEnvio
 							"",  //divCargasParticular
 							"",  //ctlCargas
-							"none",  //divDestinatario
+							"",  //divDestinatario
 							"none",  //ctlDestinatarioEnvio
 							"none", //divGuardar
 							"none", //errorDisplay
@@ -475,93 +481,113 @@ public class abmEnvios extends HttpServlet {
         		 displayError = "";
         	 }
         	 
+        	 PaisDTO pais = null;
+			 try 
+			 {
+			 	pais = new BusinessDelegate().getBusinessService().getPais(Integer.parseInt(request.getParameter("txtNewPaisDestinatario")));
+			 } 
+			 catch (PaisException e) 
+			 {
+				 error = "DEBE INDICAR LOS AUTORIZANTES DEL DESTINATARIO";
+        		 displayError = "";
+			 }
+			
+     		 ProvinciaDTO provincia = null;
+     		 try 
+			 {
+     			provincia = new BusinessDelegate().getBusinessService().getProvincia(Integer.parseInt(request.getParameter("txtNewProvinciaDestinatario")));
+			 } 
+			 catch (ProvinciaException e) 
+			 {
+				 error = "DEBE INDICAR LOS AUTORIZANTES DEL DESTINATARIO";
+				 displayError = "";
+			 }
+     		
+     		 ClienteDTO cliente = (ParticularDTO)misession.getAttribute("clienteById");
+     		
+     		 if(misession.getAttribute("clienteById") == null)
+     		 {
+				 error = "SE HA PERDIDO LA SESION, Y LOS DATOS GUARDADOS. POR FAVOR VUELVA A INICIAR EL PROCESO DE CARGA DEL ENVIO.";
+				 displayError = "";
+			 }
         	 
         	 if (displayError.equals("none"))
         	 {
-        		 
-        		 ParticularDTO nParticular = null;
-/*	        	 DestinatarioDTO nDetinatario = new DestinatarioDTO(ciudad,
-	        			 											codigoPostal,
-	        			 											departamento,
-	        			 											descripcionAdicional,
-	        			 											Integer.parseInt(request.getParameter("txtNewNumDocDestinatario").toString()),
-	        			 											request.getParameter("txtNewNombreDestinatario"),
-	        			 											numeroDomicilio,
-	        			 											pais,
-	        			 											request.getParameter("txtNewAutorizantesDestinatario").toString(),
-	        			 											piso,
-	        			 											provincia);
-	        			 
-	        			 
-	        			 
-	        			 request.getParameter("newDomicilio").toString(),
-	        			 								request.getParameter("newNombre").toString() + " " + request.getParameter("newApellido").toString());
-	        	 nParticular.setTipoDoc('D');
-	        	 nParticular.setNumDoc(Integer.parseInt(request.getParameter("newDNI").toString()));
-	        	 */
+	        	 DestinatarioDTO nDetinatario = new DestinatarioDTO(request.getParameter("txtNewNombreDestinatario"),
+	        			 											request.getParameter("txtNewDomicilioDestinatario"),
+													    			request.getParameter("txtNewCodPostalDestinatario"),
+													    			pais,
+													    			provincia,
+													    			Integer.parseInt(request.getParameter("txtNewPisoDestinatario")),
+													    			request.getParameter("txtNewDtoDestinatario"),
+													    			Integer.parseInt(request.getParameter("txtNewNumDocDestinatario")),
+													    			request.getParameter("txtNewAutorizantesDestinatario"),
+													    			cliente);
 	        	 try 
 	        	 {
-	        		 nParticular = new BusinessDelegate().getBusinessService().crearClienteParticular(nParticular);
+	        		 nDetinatario = new BusinessDelegate().getBusinessService().crearDestinatario(nDetinatario);
 	        		 
 	        		 viewState = new viewStateAbmEnvios("",	 //divParticular
-								"none",  //divSeleccionCliente
+	        				    "none",  //divSeleccionCliente
 								"none",  //ctlSearchCliente
 								"none",  //ctlNewCliente
 								"none",  //divBuscarClienteParticular
 								"none",  //divNuevoClienteParticular
 								"",  //ctlClienteEnvio
 								"",  //divCargasParticular
-								"none",  //ctlCargas
+								"",  //ctlCargas
 								"none",  //divDestinatario
-								"none",  //ctlDestinatarioEnvio
+								"",  //ctlDestinatarioEnvio
 								"none", //divGuardar
-								displayError, //errorDisplay
-								error); //error
+								"none", //errorDisplay
+								""); //error
 	        	 } 
-	        	 catch (ParticularException e) 
+	        	 catch (DestinatarioException e) 
 	        	 {
-	        		 nParticular = null;
+	        		 nDetinatario = null;
 	        		 viewState = new viewStateAbmEnvios("",	 //divParticular
-								"none",  //divSeleccionCliente
+	        				    "none",  //divSeleccionCliente
 								"none",  //ctlSearchCliente
-								"",  //ctlNewCliente
-								"",  //divBuscarClienteParticular
+								"none",  //ctlNewCliente
+								"none",  //divBuscarClienteParticular
 								"none",  //divNuevoClienteParticular
-								"none",  //ctlClienteEnvio
-								"none",  //divCargasParticular
-								"none",  //ctlCargas
-								"none",  //divDestinatario
+								"",  //ctlClienteEnvio
+								"",  //divCargasParticular
+								"",  //ctlCargas
+								"",  //divDestinatario
 								"none",  //ctlDestinatarioEnvio
 								"none", //divGuardar
 								"OCURRIÒ UN ERROR AL TRATAR DE GRABAR EL CLIENTE", //errorDisplay
 								""); //error
 	        	 }
 	        	 
-	        	 request.setAttribute("clienteById", nParticular);
-	        	 misession.setAttribute("clienteById",nParticular);
+	        	 request.setAttribute("destinatario", nDetinatario);
+	        	 misession.setAttribute("destinatario",nDetinatario);
 	        	 
         	 }
         	 else
         	 {
         		 viewState = new viewStateAbmEnvios("",	 //divParticular
-							"none",  //divSeleccionCliente
+        				    "none",  //divSeleccionCliente
 							"none",  //ctlSearchCliente
-							"",  //ctlNewCliente
-							"",  //divBuscarClienteParticular
+							"none",  //ctlNewCliente
+							"none",  //divBuscarClienteParticular
 							"none",  //divNuevoClienteParticular
-							"none",  //ctlClienteEnvio
-							"none",  //divCargasParticular
-							"none",  //ctlCargas
-							"none",  //divDestinatario
+							"",  //ctlClienteEnvio
+							"",  //divCargasParticular
+							"",  //ctlCargas
+							"",  //divDestinatario
 							"none",  //ctlDestinatarioEnvio
 							"none", //divGuardar
 							displayError, //errorDisplay
 							error); //error
         	 }
         	 
-    		request.setAttribute("viewState", viewState);
-            jspPage = "/abmEnvios.jsp";
-            dispatch(jspPage, request, response); 
+        	 request.setAttribute("cargasAgregadas",misession.getAttribute("cargasAgregadas"));
+        	 request.setAttribute("clienteById", misession.getAttribute("clienteById"));
+        	 request.setAttribute("viewState", viewState);
+             jspPage = "/abmEnvios.jsp";
+             dispatch(jspPage, request, response); 
          }  
         	 
 	}

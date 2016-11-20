@@ -11,7 +11,9 @@ import dto.EmpleadoDTO;
 import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
+import dto.PaisDTO;
 import dto.ParticularDTO;
+import dto.ProvinciaDTO;
 import dto.RemitoDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
@@ -25,7 +27,9 @@ import exceptions.EmpleadoException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
+import exceptions.PaisException;
 import exceptions.ParticularException;
+import exceptions.ProvinciaException;
 import exceptions.RemitoException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
@@ -226,6 +230,26 @@ public class BusinessDelegate implements ISistemaEnvios{
 	public DestinatarioDTO crearDestinatario(DestinatarioDTO destinatario)
 			throws RemoteException, DestinatarioException {
 		return businessService.crearDestinatario(destinatario);
+	}
+
+	@Override
+	public List<PaisDTO> getPaises() throws RemoteException, PaisException {
+		return businessService.getPaises();
+	}
+
+	@Override
+	public List<ProvinciaDTO> getProvincias(PaisDTO pais) throws RemoteException, ProvinciaException {
+		return businessService.getProvincias(pais);
+	}
+
+	@Override
+	public PaisDTO getPais(int id) throws RemoteException, PaisException {
+		return businessService.getPais(id);
+	}
+
+	@Override
+	public ProvinciaDTO getProvincia(int id) throws RemoteException, ProvinciaException {
+		return businessService.getProvincia(id);
 	}
 
 }

@@ -7,21 +7,27 @@ import java.util.List;
 import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
 import dto.ParticularDTO;
+import dto.ProvinciaDTO;
 import dto.EmpresaSeguroDTO;
+import dto.PaisDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
 import dto.SucursalDTO;
 import exceptions.DestinatarioException;
 import exceptions.EmpleadoException;
 import exceptions.ParticularException;
+import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
+import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.SucursalException;
 import interfaz.IABM;
 import srv.DestinatarioSRV;
 import srv.EmpleadoSRV;
+import srv.PaisSRV;
 import srv.ParticularSRV;
+import srv.ProvinciaSRV;
 import srv.RolEmpleadoSRV;
 import srv.RutaSRV;
 import srv.SucursalSRV;
@@ -138,6 +144,26 @@ public class ABM extends UnicastRemoteObject implements IABM{
 	public DestinatarioDTO crearDestinatario(DestinatarioDTO destinatario)
 			throws RemoteException, DestinatarioException {
 		return DestinatarioSRV.crearDestinatario(destinatario);
+	}
+
+	@Override
+	public List<PaisDTO> getPaises() throws RemoteException, PaisException {
+		return PaisSRV.getPaises();
+	}
+
+	@Override
+	public List<ProvinciaDTO> getProvincias(PaisDTO pais) throws RemoteException, ProvinciaException {
+		return ProvinciaSRV.getProvincias(pais);
+	}
+
+	@Override
+	public PaisDTO getPais(int id) throws RemoteException, PaisException {
+		return PaisSRV.getPais(id);
+	}
+
+	@Override
+	public ProvinciaDTO getProvincia(int id) throws RemoteException, ProvinciaException {
+		return ProvinciaSRV.getProvincia(id);
 	}
 
 }
