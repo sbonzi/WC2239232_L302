@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sun.xml.internal.txw2.Document;
 
+import businessDelegate.BusinessDelegate;
 import config.viewStateAbmEnvios;
-//import dto.ParticularDTO;
-import negocio.Particular;
+import dto.ParticularDTO;
+import exceptions.ParticularException;
+//import negocio.Particular;
 
 public class abmEnvios extends HttpServlet {
 
@@ -53,33 +55,90 @@ public class abmEnvios extends HttpServlet {
          }
          else if ("searchClienteParticularById".equals(action))
          {
-             //Cliente cliente = AdminCliente.getInstancia().getClientes();
-        	// ParticularDTO client = new ParticularDTO();
-        	// client.setNombre("JORGe2");
-        	// client.setDomicilio("SAN MARTIN 492");
-        	// client.setNumDoc(33688562);
-        	// client.setTipoDoc('1');
-        	 //Particular nParticular = new Particular(client.getTipoDoc(),client.getNumDoc(),client.getDomicilio(),client.getNombre());
+        	ParticularDTO nParticular;
+        	viewStateAbmEnvios viewState;
+        	
+        	if (request.getParameter("txtDNI")==null || request.getParameter("txtDNI").length() < 1)
+        	{
+        		 request.setAttribute("clienteById", null);
+		        	viewState = new viewStateAbmEnvios("",	 //divParticular
+		        			 											"none",  //divSeleccionCliente
+		        			 											"",  //ctlSearchCliente
+		        			 											"none",  //ctlNewCliente
+		        			 											"none",  //divBuscarClienteParticular
+		        			 											"",  //divNuevoClienteParticular
+		        			 											"none",  //ctlClienteEnvio
+		        			 											"none",  //divCargasParticular
+		        			 											"none",  //ctlCargas
+		        			 											"none",  //divDestinatario
+		        			 											"none",  //ctlDestinatarioEnvio
+		        			 											"none", //divGuardar
+		        			 											"", //errorDisplay
+		 					"DEBE INDICAR EL NUMERO DE DOCUMENTO A BUSCAR."); //error
+        	}
+        	else
+        	{
+        		try {
+					nParticular = new BusinessDelegate().getBusinessService().getClienteParticular(Integer.parseInt(request.getParameter("txtDNI").toString()),'D');
+					if(nParticular != null)
+					{
+					request.setAttribute("clienteById", nParticular);
+		        	viewState = new viewStateAbmEnvios("",	 //divParticular
+		        			 											"none",  //divSeleccionCliente
+		        			 											"none",  //ctlSearchCliente
+		        			 											"none",  //ctlNewCliente
+		        			 											"none",  //divBuscarClienteParticular
+		        			 											"none",  //divNuevoClienteParticular
+		        			 											"",  //ctlClienteEnvio
+		        			 											"",  //divCargasParticular
+		        			 											"none",  //ctlCargas
+		        			 											"none",  //divDestinatario
+		        			 											"none",  //ctlDestinatarioEnvio
+		        			 											"none", //divGuardar
+		        			 											"none", //errorDisplay
+		 					""); //error
+					}
+					else
+					{
+						request.setAttribute("clienteById", null);
+			        	viewState = new viewStateAbmEnvios("",	 //divParticular
+			        			 											"none",  //divSeleccionCliente
+			        			 											"",  //ctlSearchCliente
+			        			 											"none",  //ctlNewCliente
+			        			 											"none",  //divBuscarClienteParticular
+			        			 											"",  //divNuevoClienteParticular
+			        			 											"none",  //ctlClienteEnvio
+			        			 											"none",  //divCargasParticular
+			        			 											"none",  //ctlCargas
+			        			 											"none",  //divDestinatario
+			        			 											"none",  //ctlDestinatarioEnvio
+			        			 											"none", //divGuardar
+			        			 											"", //errorDisplay
+			 					"NO SE HA ENCONTRADO NINGUN CLIENTE CON EL TIPO y NRO DOCUMENTO INDICADO"); //error
+					}	
+				} 
+				catch (ParticularException e) {
+					viewState = new viewStateAbmEnvios("",	 //divParticular
+								"none",  //divSeleccionCliente
+								"",  //ctlSearchCliente
+								"none",  //ctlNewCliente
+								"none",  //divBuscarClienteParticular
+								"",  //divNuevoClienteParticular
+								"none",  //ctlClienteEnvio
+								"none",  //divCargasParticular
+								"none",  //ctlCargas
+								"none",  //divDestinatario
+								"none",  //ctlDestinatarioEnvio
+								"none", //divGuardar
+								"", //errorDisplay
+							"ERROR AL BUSCAR EL CLIENTE"); //error
+				}
+        	}
+        	
+        	request.setAttribute("viewState", viewState);
+			jspPage = "/abmEnvios.jsp";
+			dispatch(jspPage, request, response);
         	 
-        	Particular nParticular = new Particular('1',34678902,"URQUIZA 1034","MONICA BUSCADA");
-        	 request.setAttribute("clienteById", nParticular);
-        	 viewStateAbmEnvios viewState = new viewStateAbmEnvios("",	 //divParticular
-        			 											"none",  //divSeleccionCliente
-        			 											"none",  //ctlSearchCliente
-        			 											"none",  //ctlNewCliente
-        			 											"none",  //divBuscarClienteParticular
-        			 											"none",  //divNuevoClienteParticular
-        			 											"",  //ctlClienteEnvio
-        			 											"",  //divCargasParticular
-        			 											"none",  //ctlCargas
-        			 											"none",  //divDestinatario
-        			 											"none",  //ctlDestinatarioEnvio
-        			 											"none", //divGuardar
-        			 											"none", //errorDisplay
- 					""); //error
-    		request.setAttribute("viewState", viewState);
-             jspPage = "/abmEnvios.jsp";
-             dispatch(jspPage, request, response);
          }
          else if ("saveClienteParticular".equals(action))
          {
@@ -90,50 +149,76 @@ public class abmEnvios extends HttpServlet {
         	 
         	 if (request.getParameter("newDomicilio")==null || request.getParameter("newDomicilio").length() < 1)
         	 {
-        		 error = "Debe indicar el Domicilio del Cliente";
+        		 error = "DEBE INDICAR EL DOMICILIO DEL CLIENTE";
         		 displayError = "";
         	 }
         	         	 
         	 if (request.getParameter("newApellido")==null || request.getParameter("newApellido").length() < 1)
         	 {
-        		 error = "Debe indicar el Apellido del Cliente";
+        		 error = "DEBE INDICAR EL APELLIDO DEL CLIENTE";
         		 displayError = "";
         	 }
         	 
         	 if (request.getParameter("newNombre")==null || request.getParameter("newNombre").length() < 1)
         	 {
-        		 error = "Debe indicar el Nombre del Cliente";
+        		 error = "DEBE INDICAR EL NOMBRE DEL CLIENTE";
         		 displayError = "";
         	 }
         	 
         	 if (request.getParameter("newDNI")==null || request.getParameter("newDNI").length() < 1)
         	 {
-        		 error = "Debe indicar el DNI del Cliente";
+        		 error = "DEBE INDICAR EL TIPO Y NRO DE DOCUMENTO DEL CLIENTE";
         		 displayError = "";
         	 }
              	 
         	 
         	 if (displayError.equals("none"))
         	 {
-	        	 Particular nParticular = new Particular('1',
-	        			 								Integer.parseInt(request.getParameter("newDNI").toString()),
-	        			 								request.getParameter("newDomicilio").toString(),
+	        	 ParticularDTO nParticular = new ParticularDTO(request.getParameter("newDomicilio").toString(),
 	        			 								request.getParameter("newNombre").toString() + " " + request.getParameter("newApellido").toString());
+	        	 nParticular.setTipoDoc('D');
+	        	 nParticular.setNumDoc(Integer.parseInt(request.getParameter("newDNI").toString()));
+	        	 
+	        	 try 
+	        	 {
+	        		 nParticular = new BusinessDelegate().getBusinessService().crearClienteParticular(nParticular);
+	        		 
+	        		 viewState = new viewStateAbmEnvios("",	 //divParticular
+								"none",  //divSeleccionCliente
+								"none",  //ctlSearchCliente
+								"none",  //ctlNewCliente
+								"none",  //divBuscarClienteParticular
+								"none",  //divNuevoClienteParticular
+								"",  //ctlClienteEnvio
+								"",  //divCargasParticular
+								"none",  //ctlCargas
+								"none",  //divDestinatario
+								"none",  //ctlDestinatarioEnvio
+								"none", //divGuardar
+								displayError, //errorDisplay
+								error); //error
+	        	 } 
+	        	 catch (ParticularException e) 
+	        	 {
+	        		 nParticular = null;
+	        		 viewState = new viewStateAbmEnvios("",	 //divParticular
+								"none",  //divSeleccionCliente
+								"none",  //ctlSearchCliente
+								"",  //ctlNewCliente
+								"",  //divBuscarClienteParticular
+								"none",  //divNuevoClienteParticular
+								"none",  //ctlClienteEnvio
+								"none",  //divCargasParticular
+								"none",  //ctlCargas
+								"none",  //divDestinatario
+								"none",  //ctlDestinatarioEnvio
+								"none", //divGuardar
+								"OCURRIÒ UN ERROR AL TRATAR DE GRABAR EL CLIENTE", //errorDisplay
+								""); //error
+	        	 }
+	        	 
 	        	 request.setAttribute("clienteById", nParticular);
-	        	 viewState = new viewStateAbmEnvios("",	 //divParticular
-	        			 											"none",  //divSeleccionCliente
-	        			 											"none",  //ctlSearchCliente
-	        			 											"none",  //ctlNewCliente
-	        			 											"none",  //divBuscarClienteParticular
-	        			 											"none",  //divNuevoClienteParticular
-	        			 											"",  //ctlClienteEnvio
-	        			 											"",  //divCargasParticular
-	        			 											"none",  //ctlCargas
-	        			 											"none",  //divDestinatario
-	        			 											"none",  //ctlDestinatarioEnvio
-	        			 											"none", //divGuardar
-	        			 											displayError, //errorDisplay
-	 					error); //error
+	        	 
         	 }
         	 else
         	 {
@@ -156,7 +241,13 @@ public class abmEnvios extends HttpServlet {
     		request.setAttribute("viewState", viewState);
             jspPage = "/abmEnvios.jsp";
             dispatch(jspPage, request, response); 
-         }        	 
+         }      
+         else if ("addCargaParticular".equals(action))
+         {
+        	 String error = "";
+        	 String displayError = "none";
+        	 viewStateAbmEnvios viewState;
+         }
 	
 	}
 	

@@ -9,6 +9,7 @@ import dto.ClienteDTO;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
+import dto.ParticularDTO;
 import dto.RemitoDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
@@ -20,6 +21,7 @@ import exceptions.ClienteException;
 import exceptions.EmpleadoException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
+import exceptions.ParticularException;
 import exceptions.RemitoException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
@@ -30,6 +32,7 @@ import interfaz.ISistemaEnvios;
 import srv.EmpleadoSRV;
 import srv.EnvioSRV;
 import srv.FacturaSRV;
+import srv.ParticularSRV;
 import srv.RemitoSRV;
 import srv.RolEmpleadoSRV;
 import srv.RutaSRV;
@@ -205,5 +208,16 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	@Override
 	public boolean eliminarEmpleado(EmpleadoDTO empleado) throws RemoteException, EmpleadoException {
 		return EmpleadoSRV.eliminarEmpleado(empleado);
+	}
+	
+	@Override
+	public ParticularDTO getClienteParticular(int dniParticular, char tipoDoc) throws RemoteException, ParticularException {
+		return ParticularSRV.getClienteParticular(dniParticular, tipoDoc);
+	}
+
+	@Override
+	public ParticularDTO crearClienteParticular(ParticularDTO clienteParticular)
+			throws RemoteException, ParticularException {
+		return ParticularSRV.crearParticular(clienteParticular);
 	}
 }

@@ -5,10 +5,12 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import dto.EmpleadoDTO;
+import dto.ParticularDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
 import dto.SucursalDTO;
 import exceptions.EmpleadoException;
+import exceptions.ParticularException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.SucursalException;
@@ -55,6 +57,10 @@ public interface IABM extends Remote{
 	boolean eliminarEmpleado(EmpleadoDTO empleado)throws RemoteException,EmpleadoException;
 	
 	//ABM Clientes Particulares
+	
+	ParticularDTO getClienteParticular(int dniCliente, char tipoDoc)throws RemoteException,ParticularException;
+	
+	ParticularDTO crearClienteParticular(ParticularDTO clienteParticular) throws RemoteException,ParticularException;
 	
 	//ABM Clientes Empresa
 	

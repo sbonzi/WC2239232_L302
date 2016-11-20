@@ -5,15 +5,18 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import dto.EmpleadoDTO;
+import dto.ParticularDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
 import dto.SucursalDTO;
 import exceptions.EmpleadoException;
+import exceptions.ParticularException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.SucursalException;
 import interfaz.IABM;
 import srv.EmpleadoSRV;
+import srv.ParticularSRV;
 import srv.RolEmpleadoSRV;
 import srv.RutaSRV;
 import srv.SucursalSRV;
@@ -106,6 +109,17 @@ public class ABM extends UnicastRemoteObject implements IABM{
 	@Override
 	public boolean eliminarEmpleado(EmpleadoDTO empleado) throws RemoteException, EmpleadoException {
 		return true;
+	}
+
+	@Override
+	public ParticularDTO getClienteParticular(int dniCliente, char tipoDoc) throws RemoteException, ParticularException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ParticularDTO crearClienteParticular(ParticularDTO clienteParticular) throws RemoteException, ParticularException {
+		return ParticularSRV.crearParticular(clienteParticular);
 	}
 
 }

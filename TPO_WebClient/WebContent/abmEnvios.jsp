@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import= "negocio.Particular"%>
+<%@ page import= "dto.ParticularDTO"%>
 <%@ page import= "config.viewStateAbmEnvios"%>
 <!DOCTYPE html>
 <html>
@@ -16,6 +16,8 @@
             ctlNewCliente.style.display = "";
             divBuscarClienteParticular.style.display = "";
             divNuevoClienteParticular.style.display = "none";
+            msgErrorCtlClienteParticular.innerHtml="";
+            msgErrorCtlClienteParticular.style.display = "none";
             
         }
         function buscarCliente() {
@@ -23,6 +25,8 @@
             ctlNewCliente.style.display = "none";
             divBuscarClienteParticular.style.display = "none";
             divNuevoClienteParticular.style.display = "";
+            msgErrorCtlClienteParticular.innerHtml="";
+            msgErrorCtlClienteParticular.style.display = "none";
         }
          function setCliente() {
         	ctlClienteEnvio.style.display = "";
@@ -89,68 +93,94 @@
     </div>
     <div class="normal-page">
 	    <div id="divParticular" style="display:<%=viewState.getDivParticularDisplay()%>">
-	    	<form class="normal-form">
 	    		<table style="width: 100%">
 	    			<tr>
-	    				<td colspan="3">
-	    					<p class="boxTitle">Solicitud de envío para un cliente particular</p>
-	    				</td>
-	    				<td style="float:right">
-	    					<div id="divNuevoClienteParticular" style="display:<%=viewState.getDivNuevoClienteParticularDisplay()%>">
-	    						<input id="btnNuevoClienteParticular" style="cursor: pointer" type="button" value="Nuevo Cliente" onclick='nuevoCliente();' />
-	    					</div>
-	    					<div id="divBuscarClienteParticular" style="display:<%=viewState.getDivBuscarClienteParticularDisplay()%>">
-	    						<input id="btnBuscarClienteParticular" style="cursor: pointer" type="button" value="Buscar Cliente" onclick='buscarCliente();' />
-	    					</div>
-	   					</td>
+		    			<td>
+		    				<div>
+				    			<form class="normal-form">
+				    				<table style="width:100%">
+						    			<tr>
+						    				<td colspan="3">
+						    					<p class="boxTitle">Solicitud de envío para un cliente particular</p>
+						    				</td>
+						    				<td style="float:right">
+						    					<div id="divNuevoClienteParticular" style="display:<%=viewState.getDivNuevoClienteParticularDisplay()%>">
+						    						<input id="btnNuevoClienteParticular" style="cursor: pointer" type="button" value="Nuevo Cliente" onclick='nuevoCliente();' />
+						    					</div>
+						    					<div id="divBuscarClienteParticular" style="display:<%=viewState.getDivBuscarClienteParticularDisplay()%>">
+						    						<input id="btnBuscarClienteParticular" style="cursor: pointer" type="button" value="Buscar Cliente" onclick='buscarCliente();' />
+						    					</div>
+						   					</td>
+						   				</tr>
+					   				</table>
+				   				</form>
+			   				</div>
+		   				</td>
 	    			</tr>
 	    			<tr id="ctlSearchCliente" style="display:<%=viewState.getCtlSearchClienteDisplay()%>">
 	    				<td>
-	    					<p class="formLabel">DNI</p>
-	    				</td>
-	    				<td>
-	    					<input id="txtDNI" type="text" width="400px"/>
+	    					<div>
+			    				<form class="normal-form">
+				    				<table style="width:100%">
+					    				<tr>
+						    				<td>
+						    					<p class="formLabel">DNI</p>
+						    				</td>
+						    				<td>
+						    					<input name="action" type="hidden" width="400px" value="searchClienteParticularById"/>
+						    					<input name="txtDNI" type="number" width="400px"/>
+						   					</td>
+						    				<td align="right">
+						    					<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Buscar">
+						   					</td>
+						   					<td>&nbsp;</td>
+					   					</tr>
+				   					</table>
+			   					</form>
+		   					</div>
 	   					</td>
-	    				<td align="right">
-	    						<!-- <input id="btnGetClienteParticular" style="cursor: pointer" type="button" value="Buscar" onclick="abmEnvio?action=searchClientParticularById" method="POST"/>-->
-	    						<input id="btnGetClienteParticular" style="cursor: pointer" type="button" value="Buscar"  onclick="reponse.redirect('abmEnvios?action=searchClientParticularById');"/>
-	    						<a href="abmEnvios?action=searchClienteParticularById">Buscar</a>
-	   					</td>
-	   					<td>&nbsp;</td>
 	    			</tr>
 	    			<tr id="ctlNewCliente" style="display:<%=viewState.getCtlNewClienteDisplay()%>">
-	    			<%
-						Particular c = (Particular)request.getAttribute("clienteById");
-						if (c == null)
-							c = new Particular();	
-						
-					%>
 	    				<td>
-	    					<p class="formLabel">DNI</p>
-	    					<p class="formLabel">NOMBRE</p>
-	    					<p class="formLabel">APELLIDO</p>
-	    					<p class="formLabel">DOMICILIO</p>
-	    				</td>
-	    				<td>
-	    					<input name="action" type="hidden" width="400px" value="saveClienteParticular"/>
-	    				
-	    					<input name="newDNI" maxlength="8" type="number" width="400px"/>
-	    					<br>
-	    					<input name="newNombre" type="text" width="400px"/>
-	    					<br>
-	    					<input name="newApellido" type="text" width="400px"/>
-	    					<br>
-	    					<input name="newDomicilio" type="text" width="400px"/>
-	    					<br/>
-	    					<label class="message" style="display:<%=viewState.getErrorDisplay()%>"><%=viewState.getError()%></label>
+	    					<div>
+			    				<form class="normal-form">
+				    				<table style="width:100%">
+					    				<tr>
+						    				<%
+											ParticularDTO c = (ParticularDTO)request.getAttribute("clienteById");
+											if (c == null)
+												c = new ParticularDTO();	
+											
+											%>
+						    				<td>
+						    					<p class="formLabel">DNI</p>
+						    					<p class="formLabel">NOMBRE</p>
+						    					<p class="formLabel">APELLIDO</p>
+						    					<p class="formLabel">DOMICILIO</p>
+						    				</td>
+						    				<td>
+						    					<input name="action" type="hidden" width="400px" value="saveClienteParticular"/>
+						    					<input name="newDNI" maxlength="8" type="number" width="400px"/>
+						    					<br>
+						    					<input name="newNombre" type="text" width="400px"/>
+						    					<br>
+						    					<input name="newApellido" type="text" width="400px"/>
+						    					<br>
+						    					<input name="newDomicilio" type="text" width="400px"/>
+						   					</td>
+						    				<td style="vertical-align: bottom;" align="right">
+						    					<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Guardar" onclick="validateNewCliente();">
+						   					</td>
+						   					<td>&nbsp;</td>
+	   									</tr>
+				   					</table>
+			   					</form>
+		   					</div>
 	   					</td>
-	    				<td style="vertical-align: bottom;" align="right">
-	    					<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Guardar" onclick="validateNewCliente();">
-	   					</td>
-	   					<td>&nbsp;</td>
 	    			</tr>
+	    			<tr><td style="width:100% "><label id="msgErrorCtlClienteParticular" class="message" style="display:<%=viewState.getErrorDisplay()%>"><%=viewState.getError()%></label></td></tr>
 	    			<tr id="ctlClienteEnvio" style="display:<%=viewState.getCtlClienteEnvioDisplay()%>">
-	    				<td colspan="4">
+	    				<td>
 	    					<table class="grid-table">
 		    					<thead>
 							    	<tr>
@@ -162,19 +192,19 @@
 	    					</table>
 	    				</td>
 	    			</tr>
-	    		</table>
-	    	</form>
+	    	</table>
 	    </div>
 	    <div id="divCargasParticular" style="display:<%=viewState.getDivCargasParticularDisplay()%>">
 	    	<form class="normal-form">
 	    		<table style="width: 100%">
 	    			<tr>
-	    				<td colspan="7">
+	    				<td colspan="2">
 	    					<p class="boxTitle">CARGAS</p>
+	    					<input name="action" type="hidden" width="400px" value="searchClienteParticularById"/>
 	    				</td>
 	    			</tr>
 	    			<tr id="ctlNewCarga">
-	    				<td colspan="6">
+	    				<td>
 	    					<table>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">ALTO(Cm)</p></td>
@@ -221,10 +251,11 @@
 	    				<td style="vertical-align: bottom;" align="right">
 	    					<!-- <input id="btnGuardarClienteParticular" style="cursor: pointer" type="button" value="Guardar" onclick="AbmEnvio?action=saveClienteParticular" method="POST"/> -->
 	    					<input id="btnGuardarCarga" style="cursor: pointer" type="button" value="Agregar Carga" onclick="setCarga();"/>
+	    					<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Agregar Carga">
 	   					</td>
 	    			</tr>
 	    			<tr id="ctlCargas" style="display:<%=viewState.getCtlCargasDisplay()%>">
-	    				<td colspan="7">
+	    				<td colspan="2">
 	    					<table class="grid-table">
 		    					<thead>
 							    	<tr>
@@ -288,7 +319,11 @@
 	    				</td>
 	    			</tr>
 	    		</table>
-	    		<table id="divDestinatario" style="width: 100%; display:<%=viewState.getDivDestinatarioDisplay()%>">
+	    	</form>
+	    </div>
+	    <div id="divDestinatario" style="display:<%=viewState.getDivCargasParticularDisplay()%>">
+	    	<form class="normal-form">
+	    		<table style="width: 100%">
 	    			<tr>
 	    				<td colspan="7">
 	    					<p class="boxTitle">DESTINATARIO</p>

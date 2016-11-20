@@ -9,6 +9,7 @@ import dto.ClienteDTO;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
+import dto.ParticularDTO;
 import dto.RemitoDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
@@ -20,6 +21,7 @@ import exceptions.ClienteException;
 import exceptions.EmpleadoException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
+import exceptions.ParticularException;
 import exceptions.RemitoException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
@@ -200,5 +202,14 @@ public class BusinessDelegate implements ISistemaEnvios{
 		return businessService.eliminarEmpleado(empleado);
 	}
 
+	@Override
+	public ParticularDTO getClienteParticular(int dniCliente, char tipoDoc) throws RemoteException, ParticularException {
+		return businessService.getClienteParticular(dniCliente, tipoDoc);
+	}
+
+	@Override
+	public ParticularDTO crearClienteParticular(ParticularDTO clienteParticular) throws RemoteException, ParticularException {
+		return businessService.crearClienteParticular(clienteParticular);
+	}
 
 }
