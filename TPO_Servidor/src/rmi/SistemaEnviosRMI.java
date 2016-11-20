@@ -246,25 +246,21 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 
 	@Override
 	public List<PaisDTO> getPaises() throws RemoteException, PaisException {
-		// TODO Auto-generated method stub
 		return PaisSRV.getPaises();
 	}
 
 	@Override
 	public List<ProvinciaDTO> getProvincias(PaisDTO pais) throws RemoteException, ProvinciaException {
-		// TODO Auto-generated method stub
 		return ProvinciaSRV.getProvincias(pais);
 	}
 
 	@Override
 	public PaisDTO getPais(int id) throws RemoteException, PaisException {
-		// TODO Auto-generated method stub
 		return PaisSRV.getPais(id);
 	}
 
 	@Override
 	public ProvinciaDTO getProvincia(int id) throws RemoteException, ProvinciaException {
-		// TODO Auto-generated method stub
 		return ProvinciaSRV.getProvincia(id);
 	}
 }

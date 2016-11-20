@@ -12,10 +12,12 @@ import dto.ClienteDTO;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.ManifiestoDTO;
+import dto.PaisDTO;
 import dto.ParticularDTO;
 import dto.SucursalDTO;
 import exceptions.CargaException;
 import exceptions.ClienteException;
+import exceptions.PaisException;
 import interfaz.INegocioEnvio;
 
 public class AdministracionEnvios {
@@ -25,8 +27,9 @@ public class AdministracionEnvios {
 		new AdministracionEnvios();
 	}
 	
-	public AdministracionEnvios(){
+	public AdministracionEnvios() {
 		try{
+			
 			//En la BD cargar a mano(Despues hay que hacer el AMB)
 			//Valores cargados en BD
 			//De la BD, tomamos el cliente que está gestionando el envio de cargas
@@ -108,6 +111,6 @@ public class AdministracionEnvios {
 			
 		}catch(RemoteException | ClienteException | CargaException e){
 			e.printStackTrace();
-		}
+		} 
 	}
 }

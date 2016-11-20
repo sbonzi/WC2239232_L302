@@ -11,6 +11,7 @@ import entities.CategoriaTratamiento;
 import entities.ClienteEmpresa;
 import entities.ClienteParticular;
 import entities.CuentaCorrienteEmpresa;
+import entities.Destinatario;
 import entities.Empleado;
 import entities.EmpresaSeguro;
 import entities.Envio;
@@ -23,7 +24,9 @@ import entities.Manifiesto;
 import entities.Mantenimiento;
 import entities.MercaderiaAsegurada;
 import entities.MovimientoEmpresa;
+import entities.Pais;
 import entities.ProductoEmpresa;
+import entities.Provincia;
 import entities.Remito;
 import entities.RolEmpleado;
 import entities.Ruta;
@@ -63,6 +66,9 @@ public class HibernateUtil {
        	 	config.addAnnotatedClass(MovimientoEmpresa.class);
        	 	config.addAnnotatedClass(EmpresaSeguro.class);
        	 	config.addAnnotatedClass(MercaderiaAsegurada.class);
+       	    config.addAnnotatedClass(Pais.class);
+       	    config.addAnnotatedClass(Provincia.class);
+       	    config.addAnnotatedClass(Destinatario.class);
        	 	sessionFactory = config.buildSessionFactory();
        	 	
 		}catch(Throwable ex){

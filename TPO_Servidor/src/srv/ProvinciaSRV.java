@@ -3,6 +3,7 @@ package srv;
 import java.util.List;
 
 import converters.ProvinciaConverter;
+import dao.PaisDAO;
 import dao.ProvinciaDAO;
 import dto.PaisDTO;
 import dto.ProvinciaDTO;
@@ -11,6 +12,9 @@ import entities.Provincia;
 public class ProvinciaSRV {
 	private static ProvinciaDAO dao;
 	
+	static{
+		dao = ProvinciaDAO.getInstancia();
+	}
 
 	public static List<ProvinciaDTO> getProvincias(PaisDTO pais) {
 		List<Provincia> provincias 		= dao.getProvincias(pais);

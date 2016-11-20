@@ -11,28 +11,28 @@ import entities.Provincia;
 import hbt.HibernateUtil;
 
 public class ProvinciaDAO {
-	public static PaisDAO instancia;
+	public static ProvinciaDAO instancia;
 	
 	private static SessionFactory sf = null;
 
-	public static PaisDAO getInstancia(){
+	public static ProvinciaDAO getInstancia(){
 		if(instancia == null){
 			sf = HibernateUtil.getSessionFactory();
-			instancia = new PaisDAO();
+			instancia = new ProvinciaDAO();
 		} 
 		return instancia;
 	}
 
 	public List<Provincia> getProvincias(PaisDTO pais) {
 		Session session = sf.openSession();
-		List<Provincia> list = session.createQuery("SELECT p FROM Provincia p WHERE p.habilitado = 1 AND p.id_Pais = :idPais").setParameter("id", pais.getId()).list();
+		List<Provincia> list = session.createQuery("SELECT p FROM Provincia p WHERE p.habilitado = 'True' AND p.id_Pais = :idPais").setParameter("id", pais.getId()).list();
 		session.close();
 		return list;
 	}
 	
 	public Provincia getProvincia(int id) {
 		Session session = sf.openSession();
-		List<Provincia> list = session.createQuery("SELECT p FROM Provincia p WHERE p.habilitado = 1 AND p.id = :id").setParameter("id", id).list();
+		List<Provincia> list = session.createQuery("SELECT p FROM Provincia p WHERE p.habilitado = 'True' AND p.id = :id").setParameter("id", id).list();
 		session.close();
 
 		if (list.isEmpty())

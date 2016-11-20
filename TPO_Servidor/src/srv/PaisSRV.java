@@ -3,6 +3,7 @@ package srv;
 import java.util.List;
 
 import converters.PaisConverter;
+import dao.ClienteParticularDAO;
 import dao.PaisDAO;
 import dto.PaisDTO;
 import entities.Pais;
@@ -10,6 +11,9 @@ import entities.Pais;
 public class PaisSRV {
 	private static PaisDAO dao;
 	
+	static{
+		dao = PaisDAO.getInstancia();
+	}
 
 	public static List<PaisDTO> getPaises() {
 		List<Pais> paises 		= dao.getPaises();

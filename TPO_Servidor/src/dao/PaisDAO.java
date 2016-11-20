@@ -25,14 +25,14 @@ public class PaisDAO {
 	
 	public List<Pais> getPaises() {
 		Session session = sf.openSession();
-		List<Pais> list = session.createQuery("SELECT p FROM Pais p WHERE p.habilitado = 1").list();
+		List<Pais> list = session.createQuery("SELECT p FROM Pais p WHERE p.habilitado = 'True'").list();
 		session.close();
 		return list;
 	}
 	
 	public Pais getPais(int id) {
 		Session session = sf.openSession();
-		List<Pais> list = session.createQuery("SELECT p FROM Pais p WHERE p.habilitado = 1 AND p.id = :id").setParameter("id", id).list();
+		List<Pais> list = session.createQuery("SELECT p FROM Pais p WHERE p.habilitado = 'True' AND p.id = :id").setParameter("id", id).list();
 		session.close();
 
 		if (list.isEmpty())
