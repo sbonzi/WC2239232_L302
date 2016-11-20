@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
 import dto.ParticularDTO;
 import dto.EmpresaSeguroDTO;
@@ -16,6 +17,7 @@ import exceptions.EmpresaSeguroException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.SucursalException;
+import exceptions.DestinatarioException;
 
 /**
  * Gestiona todas las operacines de ABM del sistema
@@ -72,4 +74,6 @@ public interface IABM extends Remote{
 	
 	//Empresas aseguradoras
 	List<EmpresaSeguroDTO> getListadoAseguradoras() throws RemoteException,EmpresaSeguroException;
+
+	DestinatarioDTO crearDestinatario(DestinatarioDTO destinatario) throws RemoteException, DestinatarioException;
 }

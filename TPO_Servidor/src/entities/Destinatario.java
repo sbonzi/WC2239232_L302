@@ -48,7 +48,7 @@ public class Destinatario implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Destinatario(int id, String nombre, String domicilio, String codigoPostal, Pais pais, Provincia provincia,
+	public Destinatario(String nombre, String domicilio, String codigoPostal, Pais pais, Provincia provincia,
 			int piso, String departamento, int nroDocumento, String personasAutorizadas, Cliente clienteRemitente) {
 		super();
 		this.id = id;

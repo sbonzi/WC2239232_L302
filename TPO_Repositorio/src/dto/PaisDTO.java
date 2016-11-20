@@ -1,7 +1,6 @@
 package dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class PaisDTO implements Serializable{
 
@@ -10,20 +9,20 @@ public class PaisDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 4101834234552549735L;
 	
+	private int id;
 	private String descripcion;
 	private boolean habilitado;
-	private List<ProvinciaDTO> provincias;
 	
 	public PaisDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public PaisDTO(String descripcion, boolean habilitado, List<ProvinciaDTO> provincias) {
+	public PaisDTO(String descripcion, boolean habilitado) {
 		super();
+		
 		this.descripcion = descripcion;
 		this.habilitado = habilitado;
-		this.provincias = provincias;
 	}
 
 	public String getDescripcion() {
@@ -42,12 +41,11 @@ public class PaisDTO implements Serializable{
 		this.habilitado = habilitado;
 	}
 
-	public List<ProvinciaDTO> getProvincias() {
-		return provincias;
+	public int getId() {
+		return this.id;
 	}
 
-	public void setProvincias(List<ProvinciaDTO> provincias) {
-		this.provincias = provincias;
+	public void setId(int id) {
+		this.id = id;
 	}
-
 }
