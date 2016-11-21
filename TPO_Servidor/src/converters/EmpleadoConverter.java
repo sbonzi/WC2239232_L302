@@ -19,6 +19,7 @@ public class EmpleadoConverter implements Serializable{
 					empleadoDTO.setNumero(e.getId());
 					empleadoDTO.setRolEmpleado(RolEmpleadoConverter.rolEmpleadoToDTO(e.getRolEmpleado()));
 					empleadoDTO.setSucursal(SucursalConverter.sucursalToDTO(e.getSucursal()));
+					empleadoDTO.setPassword(e.getPassword());
 		return empleadoDTO;
 	}
 	

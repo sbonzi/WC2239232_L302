@@ -30,9 +30,11 @@ public class Empleado implements Serializable{
 	@JoinColumn(name="id_RolEmpleado")
 	private RolEmpleado rolEmpleado;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="id_Sucursal")
 	private Sucursal sucursal;
+	
+	private String password;
 	
 	public Empleado() {
 		super();
@@ -84,4 +86,13 @@ public class Empleado implements Serializable{
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 }

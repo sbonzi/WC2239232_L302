@@ -33,6 +33,8 @@ public class EmpleadoDAO {
 		Empleado empleado = new Empleado(e.getCuit(),
 										e.getNombre());
 		
+		empleado.setPassword(e.getPassword());
+		
 		empleado.setRolEmpleado(RolEmpleadoConverter.rolEmpleadoToEntity(e.getRolEmpleado()));
 				 
 		empleado.setSucursal(SucursalConverter.sucursalToEntity(e.getSucursal()));
@@ -102,6 +104,8 @@ public class EmpleadoDAO {
 		empleado.setRolEmpleado(RolEmpleadoConverter.rolEmpleadoToEntity(e.getRolEmpleado()));
 		
 		empleado.setSucursal(SucursalConverter.sucursalToEntity(e.getSucursal()));
+		
+		empleado.setPassword(e.getPassword());
 
 		session.beginTransaction();
 		
