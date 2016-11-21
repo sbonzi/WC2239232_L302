@@ -10,6 +10,7 @@ public class MantenimientoDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 3515381920118471317L;
 	
+	private int id;
 	private Date fecha;
 	private String tipo;
 	private int ultimoKilometraje;
@@ -58,4 +59,13 @@ public class MantenimientoDTO implements Serializable{
 	public void setVehiculo(VehiculoDTO vehiculo) {
 		this.vehiculo = vehiculo;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

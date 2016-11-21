@@ -10,6 +10,7 @@ public abstract class VehiculoDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = -2018870516268130584L;
 	
+	private int numero;
 	private int anio;
 	private boolean habilitadoParaUtilizar;
 	private int kilometraje;
@@ -37,6 +38,14 @@ public abstract class VehiculoDTO implements Serializable{
 		this.patente = patente;
 		this.peso = peso;
 		this.tara = tara;
+	}
+	
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 
 	public int getAnio() {
