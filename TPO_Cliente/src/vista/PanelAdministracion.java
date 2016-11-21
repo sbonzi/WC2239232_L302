@@ -22,12 +22,14 @@ import javax.swing.table.DefaultTableModel;
 
 import businessDelegate.BusinessDelegate;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguridadDTO;
 import dto.EmpresaSeguroDTO;
 import dto.MantenimientoDTO;
 import dto.RolEmpleadoDTO;
 import dto.ServicioTercerizadoDTO;
 import dto.VehiculoDTO;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguridadException;
 import exceptions.EmpresaSeguroException;
 import exceptions.MantenimientoException;
 import exceptions.ServicioTercerizadoException;
@@ -75,6 +77,7 @@ public class PanelAdministracion extends JFrame {
 	private JTextField txtPrecioServicioEmpSeg;
 	private JTable table;
 	private JTable tblListadoCarries;
+	private JTable tblListadoEmpresasSeguridad;
 	private JTextField txtPrecioCarrier;
 	private JTable tblEmpresasAseguradoras;
 	private String headerEmpresasAseg[] = new String[] {"Id",
@@ -89,7 +92,10 @@ public class PanelAdministracion extends JFrame {
 												 	"Tiempo de entrega (dias)",
 												 	"Seguridad de carga",
 												 	"Tarifa"};
-	
+	private String headerEmpresasSeguridad[] = new String[] {"Nombre",
+														 	"Servicio",
+														 	"Tarifa"};
+			
 	private JTextField txtTipoMantenimientoVeh;
 	private JTextField txtUltimoKilometrajeVeh;
 	private DefaultTableModel dtmMantenimientoVehiculos; 
@@ -98,6 +104,8 @@ public class PanelAdministracion extends JFrame {
 	private JLabel lblMensajeMantenimientoVeh;
 	private ServicioTercerizadoDTO carrierSelecccionado;
 	private DefaultTableModel dtmCarriers; 
+	private DefaultTableModel dtmEmpresasSeguridad;
+	private EmpresaSeguridadDTO empresaSeguridadSeleccionada;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -116,6 +124,7 @@ public class PanelAdministracion extends JFrame {
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	public PanelAdministracion() {
 		getContentPane().setBackground(new Color(118,184,82)); //RGB de hexa: #76b852
 		setTitle("Panel de administraci\u00F3n");
@@ -516,29 +525,140 @@ public class PanelAdministracion extends JFrame {
 		});
 		
 		JPanel EmpresasSeguridad = new JPanel();
-		tabbedPane.addTab("Empresas Seguridad", null, EmpresasSeguridad, null);
+		tabbedPane.addTab("EmpresasSeguridad", null, EmpresasSeguridad, null);
 		EmpresasSeguridad.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Empresas de seguridad:");
-		lblNewLabel.setBounds(47, 32, 245, 26);
-		EmpresasSeguridad.add(lblNewLabel);
+		JLabel lblEmpresasSeguridad = new JLabel("Empresas:");
+		lblEmpresasSeguridad.setBounds(31, 35, 245, 26);
+		EmpresasSeguridad.add(lblEmpresasSeguridad);
 		
-		JComboBox listadoEmpresasSeguridad = new JComboBox();
-		listadoEmpresasSeguridad.setBounds(306, 29, 290, 32);
+		List<EmpresaSeguridadDTO> empresasSeguridad = new ArrayList<EmpresaSeguridadDTO>();
+		try {
+			empresasSeguridad = new BusinessDelegate().getBusinessService().getListadoEmpresasSeguridad();
+		} catch (RemoteException | EmpresaSeguridadException e) {
+			e.printStackTrace();
+		}
+		
+		final List<EmpresaSeguridadDTO> empresasSeguridadAux = empresasSeguridad;
+		
+		DefaultComboBoxModel<Object> listModelEmpreSeg = new DefaultComboBoxModel<Object>();
+		
+		HashMap<Integer,String> MapSelecEmpreSeg = new HashMap<>();
+		MapSelecEmpreSeg.put(9999,"Seleccione una empresa de seguridad");
+		listModelEmpreSeg.addElement(MapSelecEmpreSeg);
+	
+		for(EmpresaSeguridadDTO c:empresasSeguridad){
+			HashMap<Integer,String> MapEmpreSeg = new HashMap<>();
+			MapEmpreSeg.put(c.getId(),c.getNombre());
+			listModelEmpreSeg.addElement(MapEmpreSeg);
+		}
+		
+		final JComboBox listadoEmpresasSeguridad = new JComboBox<>(listModelEmpreSeg);
+		listadoEmpresasSeguridad.setBounds(141, 32, 316, 32);
 		EmpresasSeguridad.add(listadoEmpresasSeguridad);
 		
-		JLabel lblPrecioDelServicio = new JLabel("Precio del servicio:");
-		lblPrecioDelServicio.setBounds(47, 103, 175, 26);
-		EmpresasSeguridad.add(lblPrecioDelServicio);
+		listadoEmpresasSeguridad.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				limpiarTablaEmpresasSeguridad();
+				cargarTablaEmpresasSeguridad(empresasSeguridadAux);
+				
+				Integer nroEmpreSeg = 0;
+				HashMap<Integer,String> carrSel = (HashMap<Integer, String>) listadoEmpresasSeguridad.getSelectedItem();
+		    	Iterator<Entry<Integer, String>> it = carrSel.entrySet().iterator();
+		    	while (it.hasNext()) {
+		    		@SuppressWarnings("rawtypes")
+					Map.Entry pair = (Map.Entry)it.next();
+		    		nroEmpreSeg = (Integer) pair.getKey();
+		    	}
+
+				if(!empresasSeguridadAux.isEmpty()){
+					for(EmpresaSeguridadDTO c:empresasSeguridadAux){
+						if(c.getId() == nroEmpreSeg){
+							empresaSeguridadSeleccionada = c;
+						}
+					}
+				}
+				txtPrecioServicioEmpSeg.setText(Float.toString(empresaSeguridadSeleccionada.getTarifa()));
+			}
+		});
+		
+		JLabel lblListadoEmpresaSeg = new JLabel("Listado:");
+		lblListadoEmpresaSeg.setBounds(31, 227, 92, 32);
+		EmpresasSeguridad.add(lblListadoEmpresaSeg);
+		
+		tblListadoEmpresasSeguridad = new JTable();
+		tblListadoEmpresasSeguridad.setEnabled(false);
+		tblListadoEmpresasSeguridad.setBounds(31, 405, 565, -125);
+		
+		dtmEmpresasSeguridad = new DefaultTableModel(0, 0);
+		dtmEmpresasSeguridad.setColumnIdentifiers(headerEmpresasSeguridad);
+		tblListadoEmpresasSeguridad.setModel(dtmEmpresasSeguridad);
+		
+		JScrollPane scrollPaneempresasSeguridad = new JScrollPane(tblListadoEmpresasSeguridad);
+		scrollPaneempresasSeguridad.setBounds(20, 266, 576, 166);
+		scrollPaneempresasSeguridad.setVisible(true);
+		EmpresasSeguridad.add(scrollPaneempresasSeguridad);
+		
+		JLabel lblTarifaEmpreSeg = new JLabel("Tarifa:");
+		lblTarifaEmpreSeg.setBounds(33, 110, 92, 26);
+		EmpresasSeguridad.add(lblTarifaEmpreSeg);
 		
 		txtPrecioServicioEmpSeg = new JTextField();
-		txtPrecioServicioEmpSeg.setBounds(306, 100, 186, 32);
+		txtPrecioServicioEmpSeg.setBounds(146, 107, 316, 32);
 		EmpresasSeguridad.add(txtPrecioServicioEmpSeg);
 		txtPrecioServicioEmpSeg.setColumns(10);
 		
-		JButton btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(215, 171, 141, 35);
-		EmpresasSeguridad.add(btnGuardar);
+		JSeparator separatorEmpreSeg_2 = new JSeparator();
+		separatorEmpreSeg_2.setBounds(31, 82, 533, 17);
+		EmpresasSeguridad.add(separatorEmpreSeg_2);
+		
+		JSeparator separatorEmpreSeg_3 = new JSeparator();
+		separatorEmpreSeg_3.setBounds(33, 216, 533, 2);
+		EmpresasSeguridad.add(separatorEmpreSeg_3);
+		
+		JButton btnActualizarEmpreSeg = new JButton("Actualizar");
+		btnActualizarEmpreSeg.setBounds(31, 157, 146, 35);
+		EmpresasSeguridad.add(btnActualizarEmpreSeg);
+		
+		final JLabel lblMensajeEmpreSeg = new JLabel("");
+		lblMensajeEmpreSeg.setBounds(187, 160, 280, 31);
+		EmpresasSeguridad.add(lblMensajeEmpreSeg);
+		
+		btnActualizarEmpreSeg.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Float tarifa = (float) 0;
+				if(txtPrecioServicioEmpSeg.getText().length() > 0 && Formato.isNumeric(txtPrecioServicioEmpSeg.getText())){
+
+					tarifa = Float.valueOf(txtPrecioServicioEmpSeg.getText());
+					if(tarifa > 0 && empresaSeguridadSeleccionada.getId() != 9999){
+						empresaSeguridadSeleccionada.setTarifa(tarifa);
+						try {
+							new BusinessDelegate().getBusinessService().actualizarEmpresasSeguridad(empresaSeguridadSeleccionada);
+							
+							limpiarTablaEmpresasSeguridad();
+							cargarTablaEmpresasSeguridad(empresasSeguridadAux);
+							
+							lblMensajeEmpreSeg.setText("Tarifa actualizada");
+							new Timer(1500, new ActionListener() {
+					            @Override
+					            public void actionPerformed(ActionEvent e) {
+					            	lblMensajeEmpreSeg.setText("");
+					            }
+					        }).start();
+							
+						} catch (RemoteException | EmpresaSeguridadException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}else{
+					lblMensajeEmpreSeg.setText("Tarifa inválida");
+				}
+			}
+		});
 
 	}
 	
@@ -581,6 +701,25 @@ public class PanelAdministracion extends JFrame {
 		if(filas > 0){
 			while(filas >= 0){
 				dtmCarriers.removeRow(filas);
+				filas--;
+			}
+		}
+	}
+	
+	public void cargarTablaEmpresasSeguridad(List<EmpresaSeguridadDTO> empresas){
+		for(EmpresaSeguridadDTO c : empresas){
+			dtmEmpresasSeguridad.addRow(new Object[]{c.getNombre(),
+													 c.getServicio(),
+													 c.getTarifa()
+													});
+		}
+	}
+	
+	public void limpiarTablaEmpresasSeguridad(){
+		int filas = dtmEmpresasSeguridad.getRowCount() - 1;
+		if(filas > 0){
+			while(filas >= 0){
+				dtmEmpresasSeguridad.removeRow(filas);
 				filas--;
 			}
 		}
