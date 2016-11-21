@@ -3,18 +3,18 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TPO_Repositorio"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/commons-collections-3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/ejb3-persistence.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/hibernate3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/hibernate-annotations.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/hibernate-commons-annotations.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/javassist-3.4.GA.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/jta-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/jtds-1.2.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/slf4j-api-1.5.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Documents/ambbientee/C05/xhbt-01-entity/lib/slf4j-simple-1.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/jtds-1.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Daniel PC/Documents/software/librerias_java/slf4j-simple-1.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

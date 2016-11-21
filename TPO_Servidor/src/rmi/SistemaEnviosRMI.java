@@ -17,6 +17,7 @@ import dto.ProvinciaDTO;
 import dto.RemitoDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
+import dto.ServicioTercerizadoDTO;
 import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import dto.ViajeDTO;
@@ -34,6 +35,7 @@ import exceptions.ProvinciaException;
 import exceptions.RemitoException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
+import exceptions.ServicioTercerizadoException;
 import exceptions.SucursalException;
 import exceptions.VehiculoException;
 import exceptions.ViajeException;
@@ -49,6 +51,7 @@ import srv.ProvinciaSRV;
 import srv.RemitoSRV;
 import srv.RolEmpleadoSRV;
 import srv.RutaSRV;
+import srv.ServicioTercerizadoSRV;
 import srv.SucursalSRV;
 import srv.VehiculoSRV;
 import srv.ViajeSRV;
@@ -269,5 +272,17 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	public boolean guardarMantenimientoPorVehiculo(VehiculoDTO vehiculo)
 			throws RemoteException, MantenimientoException {
 		return VehiculoSRV.guardarMantenimientoPorVehiculo(vehiculo);
+	}
+
+	@Override
+	public List<ServicioTercerizadoDTO> getListadoServiciosTercerizados()
+			throws RemoteException, ServicioTercerizadoException {
+		return ServicioTercerizadoSRV.getListadoServiciosTercerizados();
+	}
+
+	@Override
+	public ServicioTercerizadoDTO actualizarServicioTercerizado(ServicioTercerizadoDTO st)
+			throws RemoteException, ServicioTercerizadoException {
+		return ServicioTercerizadoSRV.actualizarServicioTercerizado(st);
 	}
 }

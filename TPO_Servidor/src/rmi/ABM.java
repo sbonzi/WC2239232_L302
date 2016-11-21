@@ -12,6 +12,7 @@ import dto.EmpresaSeguroDTO;
 import dto.PaisDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
+import dto.ServicioTercerizadoDTO;
 import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import exceptions.DestinatarioException;
@@ -23,6 +24,7 @@ import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
+import exceptions.ServicioTercerizadoException;
 import exceptions.SucursalException;
 import interfaz.IABM;
 import srv.DestinatarioSRV;
@@ -32,6 +34,7 @@ import srv.ParticularSRV;
 import srv.ProvinciaSRV;
 import srv.RolEmpleadoSRV;
 import srv.RutaSRV;
+import srv.ServicioTercerizadoSRV;
 import srv.SucursalSRV;
 import srv.VehiculoSRV;
 
@@ -173,6 +176,18 @@ public class ABM extends UnicastRemoteObject implements IABM{
 	public boolean guardarMantenimientoPorVehiculo(VehiculoDTO vehiculo)
 			throws RemoteException, MantenimientoException {
 		return VehiculoSRV.guardarMantenimientoPorVehiculo(vehiculo);
+	}
+
+	@Override
+	public List<ServicioTercerizadoDTO> getListadoServiciosTercerizados()
+			throws RemoteException, ServicioTercerizadoException {
+		return ServicioTercerizadoSRV.getListadoServiciosTercerizados();
+	}
+
+	@Override
+	public ServicioTercerizadoDTO actualizarServicioTercerizado(ServicioTercerizadoDTO st)
+			throws RemoteException, ServicioTercerizadoException {
+		return ServicioTercerizadoSRV.actualizarServicioTercerizado(st);
 	}
 
 }
