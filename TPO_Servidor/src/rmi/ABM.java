@@ -6,6 +6,7 @@ import java.util.List;
 
 import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguridadDTO;
 import dto.ParticularDTO;
 import dto.ProvinciaDTO;
 import dto.EmpresaSeguroDTO;
@@ -17,6 +18,7 @@ import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import exceptions.DestinatarioException;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguridadException;
 import exceptions.ParticularException;
 import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
@@ -29,6 +31,7 @@ import exceptions.SucursalException;
 import interfaz.IABM;
 import srv.DestinatarioSRV;
 import srv.EmpleadoSRV;
+import srv.EmpresaSeguridadSRV;
 import srv.PaisSRV;
 import srv.ParticularSRV;
 import srv.ProvinciaSRV;
@@ -188,6 +191,17 @@ public class ABM extends UnicastRemoteObject implements IABM{
 	public ServicioTercerizadoDTO actualizarServicioTercerizado(ServicioTercerizadoDTO st)
 			throws RemoteException, ServicioTercerizadoException {
 		return ServicioTercerizadoSRV.actualizarServicioTercerizado(st);
+	}
+
+	@Override
+	public List<EmpresaSeguridadDTO> getListadoEmpresasSeguridad() throws RemoteException, EmpresaSeguridadException {
+		return EmpresaSeguridadSRV.getListadoEmpresasSeguridad();
+	}
+
+	@Override
+	public EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad)
+			throws RemoteException, EmpresaSeguridadException {
+		return EmpresaSeguridadSRV.actualizarEmpresaSeguridad(empresaSeguridad);
 	}
 
 }

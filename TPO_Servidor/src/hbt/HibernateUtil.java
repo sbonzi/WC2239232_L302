@@ -12,6 +12,7 @@ import entities.ClienteParticular;
 import entities.CuentaCorrienteEmpresa;
 import entities.Destinatario;
 import entities.Empleado;
+import entities.EmpresaSeguridad;
 import entities.EmpresaSeguro;
 import entities.Envio;
 import entities.EstadoEnvio;
@@ -70,6 +71,7 @@ public class HibernateUtil {
        	    config.addAnnotatedClass(Provincia.class);
        	    config.addAnnotatedClass(Destinatario.class);
        	    config.addAnnotatedClass(ServicioTercerizado.class);
+       	    config.addAnnotatedClass(EmpresaSeguridad.class);
        	 	sessionFactory = config.buildSessionFactory();
        	 	
 		}catch(Throwable ex){

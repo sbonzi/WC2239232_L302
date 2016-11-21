@@ -8,6 +8,7 @@ import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguridadDTO;
 import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
@@ -25,6 +26,7 @@ import exceptions.CargaException;
 import exceptions.ClienteException;
 import exceptions.DestinatarioException;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguridadException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
@@ -42,6 +44,7 @@ import exceptions.ViajeException;
 import interfaz.ISistemaEnvios;
 import srv.DestinatarioSRV;
 import srv.EmpleadoSRV;
+import srv.EmpresaSeguridadSRV;
 import srv.EmpresaSeguroSRV;
 import srv.EnvioSRV;
 import srv.FacturaSRV;
@@ -284,5 +287,16 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	public ServicioTercerizadoDTO actualizarServicioTercerizado(ServicioTercerizadoDTO st)
 			throws RemoteException, ServicioTercerizadoException {
 		return ServicioTercerizadoSRV.actualizarServicioTercerizado(st);
+	}
+
+	@Override
+	public List<EmpresaSeguridadDTO> getListadoEmpresasSeguridad() throws RemoteException, EmpresaSeguridadException {
+		return EmpresaSeguridadSRV.getListadoEmpresasSeguridad();
+	}
+
+	@Override
+	public EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad)
+			throws RemoteException, EmpresaSeguridadException {
+		return EmpresaSeguridadSRV.actualizarEmpresaSeguridad(empresaSeguridad);
 	}
 }
