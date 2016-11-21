@@ -59,6 +59,8 @@ public class AltaEmpleado extends JFrame {
 	private Integer nroRolSeleccionado;
 	private Integer nroSucursalSeleccionada;
 	private JLabel lblMensajeEmpleadoExiste;
+	private JLabel lblContrasea;
+	private JTextField txtPassword;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -67,7 +69,7 @@ public class AltaEmpleado extends JFrame {
 					AltaEmpleado frame = new AltaEmpleado();
 					frame.setVisible(true);
 					Dimension d = new Dimension();
-					d.setSize(700,600);
+					d.setSize(700,650);
 					frame.setSize(d); 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -181,7 +183,7 @@ public class AltaEmpleado extends JFrame {
 		getContentPane().add(lblSucursalAsignada);
 		
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(208, 455, 141, 35);
+		btnGuardar.setBounds(208, 518, 141, 35);
 		btnGuardar.setEnabled(false);
 		getContentPane().add(btnGuardar);
 		
@@ -203,6 +205,10 @@ public class AltaEmpleado extends JFrame {
 				//Asigna rol
 				RolEmpleadoDTO rolEmpleado = getRolEmpleadoByNro(nroRolSeleccionado); 
 				empleado.setRolEmpleado(rolEmpleado);
+				
+				//password
+				String password = txtPassword.getText();
+				empleado.setPassword(password);
 				
 				//Crea empleado
 				try {
@@ -268,7 +274,6 @@ public class AltaEmpleado extends JFrame {
 			    		@SuppressWarnings("rawtypes")
 						Map.Entry pair = (Map.Entry)it.next();
 			    		nroRolSeleccionado = (Integer) pair.getKey();
-			    		System.out.println("Rol seleccionado: " + nroRolSeleccionado + " - " + pair.getValue() );
 			    	}
 			    }
 			}
@@ -302,7 +307,7 @@ public class AltaEmpleado extends JFrame {
 		lblMensaje = new JLabel("");
 		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblMensaje.setVisible(false);
-		lblMensaje.setBounds(370, 455, 274, 35);
+		lblMensaje.setBounds(370, 518, 274, 35);
 		getContentPane().add(lblMensaje);
 		
 		lblMensajeEmpleadoExiste = new JLabel("");
@@ -310,6 +315,15 @@ public class AltaEmpleado extends JFrame {
 		lblMensaje.setVisible(false);
 		lblMensajeEmpleadoExiste.setBounds(21, 92, 583, 35);
 		getContentPane().add(lblMensajeEmpleadoExiste);
+		
+		lblContrasea = new JLabel("Contrase\u00F1a");
+		lblContrasea.setBounds(21, 461, 169, 26);
+		getContentPane().add(lblContrasea);
+		
+		txtPassword = new JTextField();
+		txtPassword.setBounds(208, 465, 294, 32);
+		getContentPane().add(txtPassword);
+		txtPassword.setColumns(10);
 		
 		listadoSucursales.addListSelectionListener(new ListSelectionListener() {
 			@SuppressWarnings("unchecked")
@@ -321,7 +335,6 @@ public class AltaEmpleado extends JFrame {
 			    		@SuppressWarnings("rawtypes")
 						Map.Entry pair = (Map.Entry)it.next();
 			    		nroSucursalSeleccionada = (Integer) pair.getKey();
-			    		System.out.println("Sucursal seleccionada: " + nroSucursalSeleccionada + " - " + pair.getValue() );
 			    	}
 			    }
 			}

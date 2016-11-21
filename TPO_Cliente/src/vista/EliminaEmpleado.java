@@ -61,6 +61,8 @@ public class EliminaEmpleado extends JFrame {
 	private Integer nroRolSeleccionado;
 	private Integer nroSucursalSeleccionada;
 	private JLabel lblMensajeEmpleadoExiste;
+	private JLabel lblContrasea;
+	private JTextField txtPassword;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -69,7 +71,7 @@ public class EliminaEmpleado extends JFrame {
 					EliminaEmpleado frame = new EliminaEmpleado();
 					frame.setVisible(true);
 					Dimension d = new Dimension();
-					d.setSize(700,600);
+					d.setSize(700,660);
 					frame.setSize(d); 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -171,6 +173,8 @@ public class EliminaEmpleado extends JFrame {
 			private void cargarCampos(EmpleadoDTO empleado) {
 				txtNombreYApellido.setText(empleado.getNombre());
 				
+				txtPassword.setText(empleado.getPassword());
+				
 				//Marcamos el rol y sucursal en los listados correspondientes
 				ListModel listRoles = listadoRoles.getModel();
 				for(int i=0;i < listRoles.getSize();i++){
@@ -201,6 +205,7 @@ public class EliminaEmpleado extends JFrame {
 			
 			private void limpiarCampos() {
 				txtNombreYApellido.setText("");
+				txtPassword.setText("");
 			}
 		});
 	
@@ -223,7 +228,7 @@ public class EliminaEmpleado extends JFrame {
 		getContentPane().add(lblSucursalAsignada);
 		
 		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(208, 455, 141, 35);
+		btnEliminar.setBounds(208, 534, 141, 35);
 		btnEliminar.setEnabled(false);
 		getContentPane().add(btnEliminar);
 		
@@ -235,6 +240,8 @@ public class EliminaEmpleado extends JFrame {
 					EmpleadoDTO empleadoEliminar = empleado;
 					
 					empleadoEliminar.setNombre(txtNombreYApellido.getText());
+					
+					empleadoEliminar.setPassword(txtPassword.getText());
 					
 					//Asigna sucursal
 					SucursalDTO sucursal;
@@ -252,7 +259,7 @@ public class EliminaEmpleado extends JFrame {
 							lblMensaje.setVisible(true);
 							lblMensaje.setText("Empleado eliminado!");	
 	
-							new Timer(1500, new ActionListener() {
+							new Timer(2000, new ActionListener() {
 					            @Override
 					            public void actionPerformed(ActionEvent e) {
 					            	lblMensaje.setText("");
@@ -346,13 +353,23 @@ public class EliminaEmpleado extends JFrame {
 		lblMensaje = new JLabel("");
 		lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblMensaje.setVisible(false);
-		lblMensaje.setBounds(370, 455, 274, 35);
+		lblMensaje.setBounds(370, 534, 274, 35);
 		getContentPane().add(lblMensaje);
 		
 		lblMensajeEmpleadoExiste = new JLabel("");
 		lblMensajeEmpleadoExiste.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		lblMensajeEmpleadoExiste.setBounds(21, 92, 583, 35);
 		getContentPane().add(lblMensajeEmpleadoExiste);
+		
+		lblContrasea = new JLabel("Contrase\u00F1a");
+		lblContrasea.setBounds(21, 469, 163, 26);
+		getContentPane().add(lblContrasea);
+		
+		txtPassword = new JTextField();
+		txtPassword.setBounds(208, 466, 294, 32);
+		getContentPane().add(txtPassword);
+		txtPassword.setColumns(10);
+		txtPassword.setEnabled(false);
 		
 		listadoSucursales.addListSelectionListener(new ListSelectionListener() {
 			@SuppressWarnings("unchecked")
@@ -372,6 +389,7 @@ public class EliminaEmpleado extends JFrame {
 	
 	public void habilitarCampos(){
 		txtNombreYApellido.setEnabled(true);
+		txtPassword.setEnabled(true);
 		listadoRoles.setEnabled(true);
 		listadoSucursales.setEnabled(true);
 		btnEliminar.setEnabled(true);
@@ -379,6 +397,7 @@ public class EliminaEmpleado extends JFrame {
 	
 	public void deshabilitarCampos(){
 		txtNombreYApellido.setEnabled(false);
+		txtPassword.setEnabled(false);
 		listadoRoles.setEnabled(false);
 		listadoSucursales.setEnabled(false);
 	}
