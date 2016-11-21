@@ -16,8 +16,10 @@ import dto.EnvioDTO;
 import dto.SucursalDTO;
 import entities.Carga;
 import entities.ClienteParticular;
+import entities.Destinatario;
 import entities.Envio;
 import entities.EstadoEnvio;
+import entities.Manifiesto;
 import entities.Sucursal;
 import hbt.HibernateUtil;
 
@@ -45,7 +47,6 @@ public class EnvioDAO {
 	public Envio gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas, DestinatarioDTO destinatario, SucursalDTO sOrigen,SucursalDTO sDestino)
 	{
 		Session session = sf.openSession();
-		session.beginTransaction();
 		
 		ClienteParticular cp = null;
 		
@@ -68,12 +69,25 @@ public class EnvioDAO {
 		
 		if (sDestino != null)
 			sucDestino = SucursalConverter.sucursalToEntity(sDestino);
-
+		
+		session.beginTransaction();
+		
+		Destinatario dest = null; 
+		//Guardamos el destinatario
+		if (destinatario != null)
+			dest = DestinatarioConverter.destinatarioToEntity(destinatario);
+		
+		session.save(dest);
+		
+		session.getTransaction().commit();
+		
+		session.beginTransaction();
+		
 		//Generamos nuevo envio
 		Envio envio = new Envio(cp//cliente
 								,(float)100.2//cobro
 								,true//cobroOrigen
-								,new Date()//fechaMaxLlegada
+								,null//fechaMaxLlegada
 								,true//retiroEnSucursal
 								,sucDestino//sucursalDestino
 								,SucursalConverter.sucursalToEntity(sOrigen)//sucursalOrigen
@@ -81,19 +95,9 @@ public class EnvioDAO {
 								,true//trajoCargaEnPersona
 								,estadoEnvio//estadoEnvio
 								,false//esClienteEmpresa
-								,DestinatarioConverter.destinatarioToEntity(destinatario));
+								,dest);
 		
-		//Asignamos el id_envio a la carga
-		List<Carga> c = CargaConverter.cargasToEntity(cargas);
-		for(int j = 0;j<c.size();j++){
-			c.get(j).setEnvio(envio);
-			
-			//asigno id_Carga al manifiesto
-			c.get(j).getManifiesto().setCarga(c.get(j));
-		}
 		
-		//asignamos las cargas al envio
-		envio.setCargas(c);
 		
 		//Persistimos objeto en BD
 		session.save(envio);
@@ -102,6 +106,35 @@ public class EnvioDAO {
 		//session.flush();
 		session.getTransaction().commit();
 
+		session.beginTransaction();
+
+			//Asignamos el id_envio a la carga
+			List<Carga> c = CargaConverter.cargasToEntity(cargas);
+			for (Carga carga : c) {
+				carga.setEnvio(envio);
+				carga.setManifiesto(null);
+				session.save(carga);
+			}
+		
+		session.getTransaction().commit();
+		
+		//asignamos las cargas al envio
+		envio.setCargas(c);
+		
+		session.beginTransaction();
+		
+			List<Carga> cManifiestos = CargaConverter.cargasToEntity(cargas);
+		
+			for(int j = 0;j<cManifiestos.size();j++)
+			{
+				Manifiesto m = cManifiestos.get(j).getManifiesto();
+				m.setCarga(envio.getCargas().get(j));
+				session.save(m);
+				
+				envio.getCargas().get(j).setManifiesto(m);
+			}
+		
+		session.getTransaction().commit();
 		session.close();
 		return envio;
 	}

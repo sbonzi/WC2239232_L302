@@ -386,7 +386,7 @@ public class abmEnvios extends HttpServlet {
         				 				   new CategoriaTratamientoDTO(),
         				 				   inflamable,
         				 				   toxica,
-        				 				   new ManifiestoDTO("CARGA DECLARADA"),
+        				 				   new ManifiestoDTO("CARGA GENERICA DECLARADA"),
         				 				   Integer.parseInt(request.getParameter("txtNewMaxApilable").toString()),
         				 				   request.getParameter("txtNewNotaManip").toString(),
         				 				   Float.parseFloat(request.getParameter("txtNewPeso").toString()),

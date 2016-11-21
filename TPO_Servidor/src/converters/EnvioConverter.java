@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import dto.DestinatarioDTO;
 import dto.EnvioDTO;
 import dto.EnvioEmpresaDTO;
 import dto.EnvioParticularDTO;
@@ -24,6 +25,10 @@ public class EnvioConverter implements Serializable{
 		if(e.getSucursalDestino() != null)
 			sucDestino = SucursalConverter.sucursalToDTO(e.getSucursalDestino());
 		
+		DestinatarioDTO destinatario = null;
+		if(e.getDestinatario() != null)
+			destinatario =  DestinatarioConverter.destinatarioToDTO(e.getDestinatario());
+		
 		if(e.isEsClienteEmpresa()){
 			
 			
@@ -40,7 +45,7 @@ public class EnvioConverter implements Serializable{
 										   SucursalConverter.sucursalToDTO(e.getSucursalOrigen()),
 										   e.isTercerizarEnvio(),
 										   e.isTrajoCargaEnPersona(),
-										   DestinatarioConverter.destinatarioToDTO(e.getDestinatario()));
+										   destinatario);
 		}else{
 			envioDTO = new EnvioParticularDTO(e.getIdEnvio(),
 											   CargaConverter.cargasToDTO(e.getCargas()),
@@ -54,7 +59,7 @@ public class EnvioConverter implements Serializable{
 											   SucursalConverter.sucursalToDTO(e.getSucursalOrigen()),
 											   e.isTercerizarEnvio(),
 											   e.isTrajoCargaEnPersona(),
-											   DestinatarioConverter.destinatarioToDTO(e.getDestinatario()));
+											   destinatario);
 		}
 		return envioDTO;
 	}

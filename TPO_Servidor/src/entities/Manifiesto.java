@@ -16,23 +16,22 @@ import javax.persistence.Table;
 @Table(name="Manifiesto")
 public class Manifiesto implements Serializable{
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 566675663969314578L;
-	
+	private static final long serialVersionUID = -414101497190388817L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String declaracion;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name="id_Carga")
 	private Carga carga;
 
 	public Manifiesto() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Manifiesto(String declaracion) {

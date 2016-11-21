@@ -20,6 +20,8 @@ public class ClienteConverter implements Serializable {
 		ClienteDTO cliente;
 		if(c.getEsParticular()){
 			cliente = (ClienteDTO)new ParticularDTO(c.getDomicilio(),c.getNombre());
+			cliente.setId(c.getId());
+			cliente.setEsParticular(true);
 		}else{
 			cliente = (ClienteDTO)new EmpresaDTO();
 		}
