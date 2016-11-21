@@ -9,34 +9,73 @@ public class ServicioTercerizadoDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = -7718966513685179916L;
 	
-	private String descServicio;
-	private String empresa;
+	private int id;
+	private String nombre;
+	private String descripcion;
+	private int tiempoDeEntregaDias;
+	private String seguridadDeCarga;
+	private float tarifa;
 	
 	public ServicioTercerizadoDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ServicioTercerizadoDTO(String descServicio, String empresa) {
+	public ServicioTercerizadoDTO(int id, String nombre, String descripcion, int tiempoDeEntregaDias,
+			String seguridadDeCarga, float tarifa) {
 		super();
-		this.descServicio = descServicio;
-		this.empresa = empresa;
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.tiempoDeEntregaDias = tiempoDeEntregaDias;
+		this.seguridadDeCarga = seguridadDeCarga;
+		this.tarifa = tarifa;
 	}
 
-	public String getDescServicio() {
-		return descServicio;
+	public int getId() {
+		return id;
 	}
 
-	public void setDescServicio(String descServicio) {
-		this.descServicio = descServicio;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getEmpresa() {
-		return empresa;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setEmpresa(String empresa) {
-		this.empresa = empresa;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public int getTiempoDeEntregaDias() {
+		return tiempoDeEntregaDias;
+	}
+
+	public void setTiempoDeEntregaDias(int tiempoDeEntregaDias) {
+		this.tiempoDeEntregaDias = tiempoDeEntregaDias;
+	}
+
+	public String getSeguridadDeCarga() {
+		return seguridadDeCarga;
+	}
+
+	public void setSeguridadDeCarga(String seguridadDeCarga) {
+		this.seguridadDeCarga = seguridadDeCarga;
+	}
+
+	public float getTarifa() {
+		return tarifa;
+	}
+
+	public void setTarifa(float tarifa) {
+		this.tarifa = tarifa;
+	}
 }

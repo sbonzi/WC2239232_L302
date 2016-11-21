@@ -12,6 +12,7 @@ import dto.EmpresaSeguroDTO;
 import dto.PaisDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
+import dto.ServicioTercerizadoDTO;
 import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import exceptions.EmpleadoException;
@@ -22,6 +23,7 @@ import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
+import exceptions.ServicioTercerizadoException;
 import exceptions.SucursalException;
 import exceptions.DestinatarioException;
 
@@ -76,7 +78,11 @@ public interface IABM extends Remote{
 	
 	//ABM Vehiculos
 	boolean guardarMantenimientoPorVehiculo(VehiculoDTO vehiculo) throws RemoteException,MantenimientoException;
+	
 	//ABM Proveedores
+	List<ServicioTercerizadoDTO> getListadoServiciosTercerizados() throws RemoteException,ServicioTercerizadoException;
+	
+	ServicioTercerizadoDTO actualizarServicioTercerizado(ServicioTercerizadoDTO st) throws RemoteException,ServicioTercerizadoException;
 	
 	//Empresas aseguradoras
 	List<EmpresaSeguroDTO> getListadoAseguradoras() throws RemoteException,EmpresaSeguroException;
