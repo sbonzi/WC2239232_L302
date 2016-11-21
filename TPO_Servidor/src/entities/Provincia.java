@@ -41,6 +41,7 @@ public class Provincia implements Serializable{
 		super();
 		this.descripcion = descripcion;
 		this.habilitado = habilitado;
+		this.pais = pais;
 	}
 
 	public int getId() {

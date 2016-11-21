@@ -537,7 +537,7 @@ public class abmEnvios extends HttpServlet {
 								"",  //ctlCargas
 								"none",  //divDestinatario
 								"",  //ctlDestinatarioEnvio
-								"none", //divGuardar
+								"", //divGuardar
 								"none", //errorDisplay
 								""); //error
 	        	 } 

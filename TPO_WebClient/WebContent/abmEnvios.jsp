@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import= "dto.ParticularDTO"%>
 <%@ page import= "dto.CargaDTO"%>
+<%@ page import= "dto.DestinatarioDTO"%>
 <%@ page import= "java.util.List"%>
 <%@ page import= "java.util.ArrayList"%>
 <%@ page import= "config.viewStateAbmEnvios"%>
@@ -155,8 +156,6 @@
 											ParticularDTO c = (ParticularDTO)request.getAttribute("clienteById");
 											if (c == null)
 												c = new ParticularDTO();	
-											
-											request.setAttribute("clienteById", c);
 											%>
 						    				<td>
 						    					<p class="formLabel">DNI</p>
@@ -262,9 +261,6 @@
 	    								
 					if (cargasAgregadas == null)
 						cargasAgregadas = new ArrayList<CargaDTO>();
-					
-					request. setAttribute("cargasAgregadas",cargasAgregadas);
-					
 					%>
 	    			<tr id="ctlCargas" style="display:<%=viewState.getCtlCargasDisplay()%>">
 	    				<td colspan="2">
@@ -368,27 +364,37 @@
 	  						</table>
 	   					</td>
 	    			</tr>
-	    			<tr id="ctlDestinatarioEnvio" style="display:<%=viewState.getCtlDestinatarioEnvioDisplay()%>; width:100%">
-	    				<td>
-	    					<table class="grid-table">
-		    					<thead>
-							    	<tr>
-							    		<th scope="col">LARA PEREYRA</th>
-							    		<th scope="col">JUAN B JUSTO 4806</th>
-							    		<th scope="col">1882</th>
-							    		<th scope="col">ARGENTINA</th>
-							    		<th scope="col">BUENOS AIRES</th>
-							    		<th scope="col">-</th>
-							    		<th scope="col">-</th>
-							    		<th scope="col">35942387</th>
-							    		<th scope="col">LUIS PEREYRA</th>
-						    		</tr>
-					    		</thead>
-	    					</table>
-	    				</td>
-	    			</tr>
     			</table>
 	    	</form>
+	    </div>
+	    <div id="ctlDestinatarioEnvio" style="display:<%=viewState.getCtlDestinatarioEnvioDisplay()%>">
+	    	<table style="width: 100%">
+    			<%
+					DestinatarioDTO d = (DestinatarioDTO)request.getAttribute("destinatario");
+					if (d == null)
+						d = new DestinatarioDTO();	
+				%>
+    			
+    			<tr>
+    				<td>
+    					<table class="grid-table">
+	    					<thead>
+						    	<tr>
+						    		<th scope="col"><%=d.getNombre()%></th>
+						    		<th scope="col"><%=d.getDomicilio()%></th>
+						    		<th scope="col"><%=d.getCodigoPostal()%></th>
+						    		<th scope="col"><%=d.getPais().getDescripcion()%></th>
+						    		<th scope="col"><%=d.getProvincia().getDescripcion()%></th>
+						    		<th scope="col"><%=d.getPiso()%></th>
+						    		<th scope="col"><%=d.getDepartamento()%></th>
+						    		<th scope="col"><%=d.getNroDocumento()%></th>
+						    		<th scope="col"><%=d.getPersonasAutorizadas()%></th>
+					    		</tr>
+				    		</thead>
+    					</table>
+    				</td>
+    			</tr>
+	    	</table>
 	    </div>
 	    <div id="divGuardar"  style="display:<%=viewState.getDivGuardarDisplay()%>">
 		    <table class="grid-table">
