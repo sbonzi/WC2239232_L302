@@ -15,10 +15,14 @@ public class viewStateAbmEnvios {
 		private String divDestinatarioDisplay;
 		private String ctlDestinatarioEnvioDisplay;
 		private String divGuardarDisplay;
+		private String divFinalizadoParticularDisplay;
 		private String error;
 	
      
-	    public String getDivParticularDisplay() {
+	    public String getDivFinalizadoParticularDisplay() {
+			return divFinalizadoParticularDisplay;
+		}
+		public String getDivParticularDisplay() {
 			return divParticularDisplay;
 		}
 		public String getDivSeleccionClienteDisplay() {
@@ -67,7 +71,7 @@ public class viewStateAbmEnvios {
 				String ctlSearchClienteDisplay, String ctlNewClienteDisplay, String divBuscarClienteParticularDisplay,
 				String divNuevoClienteParticularDisplay, String ctlClienteEnvioDisplay,
 				String divCargasParticularDisplay, String ctlCargasDisplay, String divDestinatarioDisplay,
-				String ctlDestinatarioEnvioDisplay, String divGuardarDisplay, String errorDisplay, String error) {
+				String ctlDestinatarioEnvioDisplay, String divGuardarDisplay,String divFinalizadoParticularDisplay, String errorDisplay, String error) {
 			super();
 			this.divParticularDisplay = divParticularDisplay;
 			this.divSeleccionClienteDisplay = divSeleccionClienteDisplay;
@@ -81,6 +85,7 @@ public class viewStateAbmEnvios {
 			this.divDestinatarioDisplay = divDestinatarioDisplay;
 			this.ctlDestinatarioEnvioDisplay = ctlDestinatarioEnvioDisplay;
 			this.divGuardarDisplay = divGuardarDisplay;
+			this.divFinalizadoParticularDisplay = divFinalizadoParticularDisplay;
 			this.errorDisplay = errorDisplay;
 			this.error = error;
 		}	

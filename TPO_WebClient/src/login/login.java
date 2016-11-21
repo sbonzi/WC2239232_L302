@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import businessDelegate.BusinessDelegate;
+import dto.EmpleadoDTO;
+import exceptions.EmpleadoException;
+
 public class login extends HttpServlet{
 
 	private static final long serialVersionUID = 6682978410902534081L;
@@ -27,12 +31,25 @@ public class login extends HttpServlet{
         	 String jspPage = "/home.jsp";
              dispatch(jspPage, request, response);
         }
+        
         else if(usu.equals("admin") && pass.equals("admin") && sesion.getAttribute("usuario") == null){
             //si coincide usuario y password y además no hay sesión iniciada
-            sesion.setAttribute("usuario", usu);
-            //redirijo a página con información de login exitoso
-            String jspPage = "/home.jsp";
-            dispatch(jspPage, request, response);
+        	EmpleadoDTO nEmpleado;
+			try 
+			{
+				nEmpleado = new BusinessDelegate().getBusinessService().getEmpleados().get(0);
+				sesion.setAttribute("usuario", usu);
+		        sesion.setAttribute("empleado", nEmpleado);
+		            
+		            //redirijo a página con información de login exitoso
+		        String jspPage = "/home.jsp";
+		        dispatch(jspPage, request, response);
+			} 
+			catch (EmpleadoException e) {
+				String jspPage = "/login.jsp";
+	            dispatch(jspPage, request, response);
+			}
+           
         }else{
             //lógica para login inválido
         	String jspPage = "/login.jsp";

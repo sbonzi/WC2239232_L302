@@ -22,8 +22,13 @@ import dto.CategoriaFragilidadDTO;
 import dto.CategoriaTratamientoDTO;
 import dto.ClienteDTO;
 import dto.DestinatarioDTO;
+import dto.EmpleadoDTO;
+import dto.EnvioDTO;
+import dto.EnvioParticularDTO;
 import dto.ManifiestoDTO;
 import dto.PaisDTO;
+import exceptions.CargaException;
+import exceptions.ClienteException;
 import exceptions.DestinatarioException;
 import exceptions.PaisException;
 import exceptions.ParticularException;
@@ -36,6 +41,13 @@ public class abmEnvios extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 
 		 HttpSession misession = request.getSession(true);
+		 if(misession == null || misession.getAttribute("usuario") == null)
+		 {
+  			response.sendRedirect("/TPO_WebClient/login.jsp");
+  			misession.removeAttribute("clienteById");
+  			misession.removeAttribute("cargasAgregadas");
+  			misession.removeAttribute("destinatario");
+		 }
 		
 		 String action = request.getParameter("action");
          String jspPage = "/abmEnvios.jsp";
@@ -59,6 +71,7 @@ public class abmEnvios extends HttpServlet {
 																"none",  //ctlCargas
 																"none",  //divDestinatario
 																"none",  //ctlDestinatarioEnvio
+																"none", //divFinalizadoParticularDisplay
 																"none", //divGuardar
 																"none", //errorDisplay
  					""); //error
@@ -86,6 +99,7 @@ public class abmEnvios extends HttpServlet {
 		        			 											"none",  //divDestinatario
 		        			 											"none",  //ctlDestinatarioEnvio
 		        			 											"none", //divGuardar
+		        			 											"", //divFinalizadoParticularDisplay
 		        			 											"", //errorDisplay
 		 					"DEBE INDICAR EL NUMERO DE DOCUMENTO A BUSCAR."); //error
         	}
@@ -108,6 +122,7 @@ public class abmEnvios extends HttpServlet {
 		        			 											"none",  //ctlCargas
 		        			 											"none",  //divDestinatario
 		        			 											"none",  //ctlDestinatarioEnvio
+		        			 											"", //divFinalizadoParticularDisplay
 		        			 											"none", //divGuardar
 		        			 											"none", //errorDisplay
 		 					""); //error
@@ -127,6 +142,7 @@ public class abmEnvios extends HttpServlet {
 			        			 											"none",  //divDestinatario
 			        			 											"none",  //ctlDestinatarioEnvio
 			        			 											"none", //divGuardar
+			        			 											"", //divFinalizadoParticularDisplay
 			        			 											"", //errorDisplay
 			 					"NO SE HA ENCONTRADO NINGUN CLIENTE CON EL TIPO y NRO DOCUMENTO INDICADO"); //error
 					}	
@@ -144,6 +160,7 @@ public class abmEnvios extends HttpServlet {
 								"none",  //divDestinatario
 								"none",  //ctlDestinatarioEnvio
 								"none", //divGuardar
+								"", //divFinalizadoParticularDisplay
 								"", //errorDisplay
 							"ERROR AL BUSCAR EL CLIENTE"); //error
 				}
@@ -209,6 +226,7 @@ public class abmEnvios extends HttpServlet {
 								"none",  //divDestinatario
 								"none",  //ctlDestinatarioEnvio
 								"none", //divGuardar
+								"", //divFinalizadoParticularDisplay
 								displayError, //errorDisplay
 								error); //error
 	        	 } 
@@ -227,6 +245,7 @@ public class abmEnvios extends HttpServlet {
 								"none",  //divDestinatario
 								"none",  //ctlDestinatarioEnvio
 								"none", //divGuardar
+								"", //divFinalizadoParticularDisplay
 								"OCURRIÒ UN ERROR AL TRATAR DE GRABAR EL CLIENTE", //errorDisplay
 								""); //error
 	        	 }
@@ -249,6 +268,7 @@ public class abmEnvios extends HttpServlet {
 							"none",  //divDestinatario
 							"none",  //ctlDestinatarioEnvio
 							"none", //divGuardar
+							"", //divFinalizadoParticularDisplay
 							displayError, //errorDisplay
 							error); //error
         	 }
@@ -366,7 +386,7 @@ public class abmEnvios extends HttpServlet {
         				 				   new CategoriaTratamientoDTO(),
         				 				   inflamable,
         				 				   toxica,
-        				 				   new ManifiestoDTO(),
+        				 				   new ManifiestoDTO("CARGA DECLARADA"),
         				 				   Integer.parseInt(request.getParameter("txtNewMaxApilable").toString()),
         				 				   request.getParameter("txtNewNotaManip").toString(),
         				 				   Float.parseFloat(request.getParameter("txtNewPeso").toString()),
@@ -392,6 +412,7 @@ public class abmEnvios extends HttpServlet {
 							"",  //divDestinatario
 							"none",  //ctlDestinatarioEnvio
 							"none", //divGuardar
+							"", //divFinalizadoParticularDisplay
 							"none", //errorDisplay
 							""); //error
         	 }
@@ -409,6 +430,7 @@ public class abmEnvios extends HttpServlet {
 							"none",  //divDestinatario
 							"none",  //ctlDestinatarioEnvio
 							"none", //divGuardar
+							"", //divFinalizadoParticularDisplay
 							displayError, //errorDisplay
 							error); //error
         	 }
@@ -538,6 +560,7 @@ public class abmEnvios extends HttpServlet {
 								"none",  //divDestinatario
 								"",  //ctlDestinatarioEnvio
 								"", //divGuardar
+								"", //divFinalizadoParticularDisplay
 								"none", //errorDisplay
 								""); //error
 	        	 } 
@@ -556,6 +579,7 @@ public class abmEnvios extends HttpServlet {
 								"",  //divDestinatario
 								"none",  //ctlDestinatarioEnvio
 								"none", //divGuardar
+								"", //divFinalizadoParticularDisplay
 								"OCURRIÒ UN ERROR AL TRATAR DE GRABAR EL CLIENTE", //errorDisplay
 								""); //error
 	        	 }
@@ -578,6 +602,7 @@ public class abmEnvios extends HttpServlet {
 							"",  //divDestinatario
 							"none",  //ctlDestinatarioEnvio
 							"none", //divGuardar
+							"", //divFinalizadoParticularDisplay
 							displayError, //errorDisplay
 							error); //error
         	 }
@@ -588,7 +613,76 @@ public class abmEnvios extends HttpServlet {
              jspPage = "/abmEnvios.jsp";
              dispatch(jspPage, request, response); 
          }  
+         else if ("saveEnvioParticular".equals(action))
+         {
+        	 String error = "";
+        	 String displayError = "none";
+        	 viewStateAbmEnvios viewState;
         	 
+        	 ParticularDTO cliente = (ParticularDTO)misession.getAttribute("clienteById");
+        	 List<CargaDTO> cargas = (List<CargaDTO>)misession.getAttribute("cargasAgregadas");
+        	 DestinatarioDTO destinatario = (DestinatarioDTO)misession.getAttribute("destinatario");
+    
+        	 if(cliente == null)
+     		 {
+				 error = "SE HA PERDIDO LA SESION, Y LOS DATOS GUARDADOS. POR FAVOR VUELVA A INICIAR EL PROCESO DE CARGA DEL ENVIO.";
+				 displayError = "";
+			 }
+        	 
+        	 if(cargas == null || cargas.size() <0)
+     		 {
+				 error = "SE HA PERDIDO LA SESION, Y LOS DATOS GUARDADOS. POR FAVOR VUELVA A INICIAR EL PROCESO DE CARGA DEL ENVIO.";
+				 displayError = "";
+			 }
+        	 
+        	 if(destinatario == null)
+     		 {
+				 error = "SE HA PERDIDO LA SESION, Y LOS DATOS GUARDADOS. POR FAVOR VUELVA A INICIAR EL PROCESO DE CARGA DEL ENVIO.";
+				 displayError = "";
+			 }
+        	 
+    		 if(misession == null || misession.getAttribute("usuario") == null)
+    		 {
+    	  			response.sendRedirect("/TPO_WebClient/login.jsp");
+    	  			misession.removeAttribute("clienteById");
+    	  			misession.removeAttribute("cargasAgregadas");
+    	  			misession.removeAttribute("destinatario");
+    		 }
+        	 else
+        	 {
+        		 EnvioDTO nEnvio = null;
+        		 EmpleadoDTO empleado = (EmpleadoDTO)misession.getAttribute("empleado");
+        		 try {
+					nEnvio = new BusinessDelegate().getBusinessService().gestionarEnvio(cliente, cargas, destinatario, empleado.getSucursal(), null);
+				} catch (ClienteException e) {
+						error = "HA OCURRIDO UN ERROR AL ASOCIAR EL CLIENTE AL ENVIO GENERADO.";
+					 displayError = "";
+				} catch (CargaException e) {
+					error = "HA OCURRIDO UN ERROR AL ASOCIAR LAS CARGAS AL ENVIO GENERADO.";
+					displayError = "";
+				}
+        		 
+        		 error = "SE HA GENERADO CORRECTAMENTE EL ENVIO N°:" + nEnvio.getIdEnvio();
+        		 displayError = "";
+        		 
+        		 viewState = new viewStateAbmEnvios("",	 //divParticular
+     				    "none",  //divSeleccionCliente
+							"none",  //ctlSearchCliente
+							"none",  //ctlNewCliente
+							"none",  //divBuscarClienteParticular
+							"none",  //divNuevoClienteParticular
+							"",  //ctlClienteEnvio
+							"none",  //divCargasParticular
+							"",  //ctlCargas
+							"none",  //divDestinatario
+							"",  //ctlDestinatarioEnvio
+							"none", //divGuardar
+							"", //divFinalizadoParticularDisplay
+							"", //errorDisplay
+							error); //error
+        	 }
+        	 
+         }
 	}
 	
 	 protected void dispatch(String jsp, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

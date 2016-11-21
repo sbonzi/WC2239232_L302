@@ -62,9 +62,9 @@ public class BusinessDelegate implements ISistemaEnvios{
 	}
 
 	@Override
-	public EnvioDTO gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas, SucursalDTO sOrigen, SucursalDTO sDestino)
+	public EnvioDTO gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas, DestinatarioDTO destinatario, SucursalDTO sOrigen, SucursalDTO sDestino)
 			throws ClienteException, CargaException, RemoteException {
-		return businessService.gestionarEnvio(cliente, cargas, sOrigen, sDestino);
+		return businessService.gestionarEnvio(cliente, cargas, destinatario, sOrigen, sDestino);
 	}
 
 	@Override

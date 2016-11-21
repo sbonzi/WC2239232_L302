@@ -2,6 +2,8 @@
 <%@ page import= "dto.ParticularDTO"%>
 <%@ page import= "dto.CargaDTO"%>
 <%@ page import= "dto.DestinatarioDTO"%>
+<%@ page import= "dto.ProvinciaDTO"%>
+<%@ page import= "dto.PaisDTO"%>
 <%@ page import= "java.util.List"%>
 <%@ page import= "java.util.ArrayList"%>
 <%@ page import= "config.viewStateAbmEnvios"%>
@@ -69,7 +71,12 @@
 	  <li><a href="abmSucursal.html">ABM Sucursal</a></li>
 	  <li style="float:right"><a class="active" href="login?action=out" method=GET>Exit</a></li>
 	</ul>
-	<% viewStateAbmEnvios viewState = (viewStateAbmEnvios)request.getAttribute("viewState");
+	<% 
+		
+		if(request.getSession() == null || request.getSession().getAttribute("usuario") == null)
+			response.sendRedirect("/TPO_WebClient/login.jsp");		
+	
+		viewStateAbmEnvios viewState = (viewStateAbmEnvios)request.getAttribute("viewState");
 		if (viewState == null)
 		{
 			 viewState = new viewStateAbmEnvios("none",	 //divParticular
@@ -84,6 +91,7 @@
 					"none",  //divDestinatario
 					"none",  //ctlDestinatarioEnvio
 					"none", //divGuardar
+					"none",
 					"none", //errorDisplay
 					""); //error
 		}
@@ -372,7 +380,11 @@
     			<%
 					DestinatarioDTO d = (DestinatarioDTO)request.getAttribute("destinatario");
 					if (d == null)
-						d = new DestinatarioDTO();	
+					{
+						d = new DestinatarioDTO();
+						d.setPais(new PaisDTO());
+						d.setProvincia(new ProvinciaDTO());
+					}
 				%>
     			
     			<tr>
@@ -397,14 +409,28 @@
 	    	</table>
 	    </div>
 	    <div id="divGuardar"  style="display:<%=viewState.getDivGuardarDisplay()%>">
-		    <table class="grid-table">
-		    	<tr>
-		    		<td style="vertical-align: bottom;" align="right">
-		    			<!-- <input id="btnGuardarClienteParticular" style="cursor: pointer" type="button" value="Guardar" onclick="AbmEnvio?action=saveClienteParticular" method="POST"/> -->
-		    			<input id="btnGuardarEnvio" style="cursor: pointer" type="button" value="CONFIRMAR ENVIO" onclick="setEnvio();"/>
-		   			</td>
-		   		</tr>
-			</table>
+	    	<form class="normal-form">
+			    <table class="grid-table">
+			    	<tr>
+			    		<td style="vertical-align: bottom;" align="right">
+			    			<input name="action" type="hidden" width="400px" value="saveEnvioParticular"/>
+			    			<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="CONFIRMAR ENVIO">
+			   			</td>
+			   		</tr>
+				</table>
+			</form>
+	    </div>
+	    <div id="divFinalizadoParticular"  style="display:<%=viewState.getDivFinalizadoParticularDisplay()%>">
+	    	<form class="normal-form">
+			    <table class="grid-table">
+			    	<tr>
+			    		<td style="vertical-align: bottom;" align="right">
+			    			<input type="submit" style="cursor: pointer" value="GENERAR OTRO ENVIO" formaction="abmEnvios.jsp">
+			    			<input type="submit" style="cursor: pointer" value="SALIR" formaction="home.jsp">
+			   			</td>
+			   		</tr>
+				</table>
+			</form>
 	    </div>
 	</div>
 </body>

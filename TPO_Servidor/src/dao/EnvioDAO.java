@@ -7,15 +7,18 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 
 import converters.CargaConverter;
+import converters.DestinatarioConverter;
 import converters.SucursalConverter;
 import dto.CargaDTO;
 import dto.ClienteDTO;
+import dto.DestinatarioDTO;
 import dto.EnvioDTO;
 import dto.SucursalDTO;
 import entities.Carga;
 import entities.ClienteParticular;
 import entities.Envio;
 import entities.EstadoEnvio;
+import entities.Sucursal;
 import hbt.HibernateUtil;
 
 
@@ -39,7 +42,7 @@ public class EnvioDAO {
 	 * @param sDestino
 	 * @return Envio
 	 */
-	public Envio gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas,SucursalDTO sOrigen,SucursalDTO sDestino)
+	public Envio gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas, DestinatarioDTO destinatario, SucursalDTO sOrigen,SucursalDTO sDestino)
 	{
 		Session session = sf.openSession();
 		session.beginTransaction();
@@ -60,6 +63,11 @@ public class EnvioDAO {
 		EstadoEnvio estadoEnvio	= new EstadoEnvio();
 		estadoEnvio.setDescripcion("En recepcion");
 		estadoEnvio.setId(1);
+		
+		Sucursal sucDestino = null;
+		
+		if (sDestino != null)
+			sucDestino = SucursalConverter.sucursalToEntity(sDestino);
 
 		//Generamos nuevo envio
 		Envio envio = new Envio(cp//cliente
@@ -67,13 +75,13 @@ public class EnvioDAO {
 								,true//cobroOrigen
 								,new Date()//fechaMaxLlegada
 								,true//retiroEnSucursal
-								,SucursalConverter.sucursalToEntity(sDestino)//sucursalDestino
+								,sucDestino//sucursalDestino
 								,SucursalConverter.sucursalToEntity(sOrigen)//sucursalOrigen
 								,false//tercerizarEnvio
 								,true//trajoCargaEnPersona
 								,estadoEnvio//estadoEnvio
 								,false//esClienteEmpresa
-								);
+								,DestinatarioConverter.destinatarioToEntity(destinatario));
 		
 		//Asignamos el id_envio a la carga
 		List<Carga> c = CargaConverter.cargasToEntity(cargas);

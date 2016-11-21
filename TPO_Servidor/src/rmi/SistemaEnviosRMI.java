@@ -72,9 +72,9 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	}
 
 	@Override
-	public EnvioDTO gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas, SucursalDTO sOrigen, SucursalDTO sDestino)
+	public EnvioDTO gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas, DestinatarioDTO destinatario, SucursalDTO sOrigen, SucursalDTO sDestino)
 			throws ClienteException, CargaException, RemoteException {
-		return EnvioSRV.gestionarEnvio(cliente, cargas, sOrigen, sDestino);
+		return EnvioSRV.gestionarEnvio(cliente, cargas, destinatario, sOrigen, sDestino);
 	}
 
 	@Override

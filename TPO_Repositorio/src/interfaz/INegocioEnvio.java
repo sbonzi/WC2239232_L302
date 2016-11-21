@@ -6,6 +6,7 @@ import java.util.List;
 
 import dto.CargaDTO;
 import dto.ClienteDTO;
+import dto.DestinatarioDTO;
 import dto.EnvioDTO;
 import dto.SucursalDTO;
 import exceptions.CargaException;
@@ -17,7 +18,7 @@ public interface INegocioEnvio extends Remote {
 	/**
 	 * Gestión de envio de N cargas para un cliente en particular
 	 */
-	EnvioDTO gestionarEnvio(ClienteDTO cliente,List<CargaDTO> cargas,SucursalDTO sOrigen,SucursalDTO sDestino) throws ClienteException,CargaException,RemoteException;
+	EnvioDTO gestionarEnvio(ClienteDTO cliente,List<CargaDTO> cargas, DestinatarioDTO destinatario,SucursalDTO sOrigen,SucursalDTO sDestino) throws ClienteException,CargaException,RemoteException;
 
 	/**
 	 * Devuelte todos los envios gestionados por un cliente

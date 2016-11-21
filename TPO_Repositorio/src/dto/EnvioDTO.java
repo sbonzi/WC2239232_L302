@@ -25,6 +25,7 @@ public abstract class EnvioDTO implements Serializable{
 	private boolean tercerizarEnvio;
 	private boolean trajoCajaEnPersona;
 	private boolean esClienteEmpresa;
+	private DestinatarioDTO destinatario;
 	
 	public EnvioDTO() {
 		super();
@@ -34,7 +35,7 @@ public abstract class EnvioDTO implements Serializable{
 
 	public EnvioDTO(int idEnvio ,List<CargaDTO> cargas, ClienteDTO cliente, Float cobro, boolean cobroOrigen, EstadoEnvioDTO estado,
 			Date fechaMaxLlegada, boolean retiroEnSucursal, SucursalDTO sucursalDestino, SucursalDTO sucursalOrigen,
-			boolean tercerizarEnvio, boolean trajoCajaEnPersona) {
+			boolean tercerizarEnvio, boolean trajoCajaEnPersona, DestinatarioDTO destinatario) {
 		super();
 		this.idEnvio = idEnvio;
 		this.cargas = cargas;
@@ -48,6 +49,7 @@ public abstract class EnvioDTO implements Serializable{
 		this.sucursalOrigen = sucursalOrigen;
 		this.tercerizarEnvio = tercerizarEnvio;
 		this.trajoCajaEnPersona = trajoCajaEnPersona;
+		this.destinatario = destinatario;
 	}
 
 	public int getIdEnvio() {
@@ -158,4 +160,16 @@ public abstract class EnvioDTO implements Serializable{
 	public String toString(){
 		return "[cargas=(" + cargas + "),cliente=" + cliente + "]";
 	}
+
+
+	public DestinatarioDTO getDestinatario() {
+		return destinatario;
+	}
+
+
+	public void setDestinatario(DestinatarioDTO destinatario) {
+		this.destinatario = destinatario;
+	}
+	
+	
 }

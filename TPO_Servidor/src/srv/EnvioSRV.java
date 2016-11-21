@@ -9,6 +9,7 @@ import converters.EnvioConverter;
 import dao.EnvioDAO;
 import dto.CargaDTO;
 import dto.ClienteDTO;
+import dto.DestinatarioDTO;
 import dto.EnvioDTO;
 import dto.SucursalDTO;
 import entities.Carga;
@@ -22,9 +23,9 @@ public class EnvioSRV {
 		dao = EnvioDAO.getInstancia();
 	}
 	
-	public static EnvioDTO gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas,SucursalDTO sOrigen,SucursalDTO sDestino){
+	public static EnvioDTO gestionarEnvio(ClienteDTO cliente, List<CargaDTO> cargas, DestinatarioDTO destinatario, SucursalDTO sOrigen,SucursalDTO sDestino){
 		EnvioDTO envioDTO =  null;
-		Envio envio = dao.gestionarEnvio(cliente, cargas,sOrigen,sDestino);
+		Envio envio = dao.gestionarEnvio(cliente, cargas, destinatario, sOrigen,sDestino);
 		
 		envioDTO = EnvioConverter.envioToDTO(envio);
 		return envioDTO;

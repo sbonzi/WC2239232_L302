@@ -7,6 +7,7 @@ import java.util.List;
 import dto.EnvioDTO;
 import dto.EnvioEmpresaDTO;
 import dto.EnvioParticularDTO;
+import dto.SucursalDTO;
 import entities.Envio;
 
 public class EnvioConverter implements Serializable{
@@ -19,7 +20,14 @@ public class EnvioConverter implements Serializable{
 	public static EnvioDTO envioToDTO(Envio e){
 		EnvioDTO envioDTO;
 		
+		SucursalDTO sucDestino = null;
+		if(e.getSucursalDestino() != null)
+			sucDestino = SucursalConverter.sucursalToDTO(e.getSucursalDestino());
+		
 		if(e.isEsClienteEmpresa()){
+			
+			
+			
 			envioDTO = new EnvioEmpresaDTO(e.getIdEnvio(),
 					 					   CargaConverter.cargasToDTO(e.getCargas()),
 										   ClienteConverter.clienteToDTO(e.getCliente()),
@@ -28,10 +36,11 @@ public class EnvioConverter implements Serializable{
 										   EstadoEnvioConverter.estadoEnvioToDTO(e.getEstadoEnvio()),
 										   e.getFechaMaxLlegada(),
 										   e.isRetiroEnSucursal(),
-										   SucursalConverter.sucursalToDTO(e.getSucursalDestino()),
+										   sucDestino,
 										   SucursalConverter.sucursalToDTO(e.getSucursalOrigen()),
 										   e.isTercerizarEnvio(),
-										   e.isTrajoCargaEnPersona());
+										   e.isTrajoCargaEnPersona(),
+										   DestinatarioConverter.destinatarioToDTO(e.getDestinatario()));
 		}else{
 			envioDTO = new EnvioParticularDTO(e.getIdEnvio(),
 											   CargaConverter.cargasToDTO(e.getCargas()),
@@ -41,10 +50,11 @@ public class EnvioConverter implements Serializable{
 											   EstadoEnvioConverter.estadoEnvioToDTO(e.getEstadoEnvio()),
 											   e.getFechaMaxLlegada(),
 											   e.isRetiroEnSucursal(),
-											   SucursalConverter.sucursalToDTO(e.getSucursalDestino()),
+											   sucDestino,
 											   SucursalConverter.sucursalToDTO(e.getSucursalOrigen()),
 											   e.isTercerizarEnvio(),
-											   e.isTrajoCargaEnPersona());
+											   e.isTrajoCargaEnPersona(),
+											   DestinatarioConverter.destinatarioToDTO(e.getDestinatario()));
 		}
 		return envioDTO;
 	}
@@ -69,7 +79,8 @@ public class EnvioConverter implements Serializable{
 								envioDTO.isTercerizarEnvio(),
 								envioDTO.isTrajoCajaEnPersona(),
 								EstadoEnvioConverter.estadoEnvioToEntity(envioDTO.getEstado()),
-								envioDTO.isEsClienteEmpresa());
+								envioDTO.isEsClienteEmpresa(),
+								DestinatarioConverter.destinatarioToEntity(envioDTO.getDestinatario()));
 		
 			envio.setIdEnvio(envioDTO.getIdEnvio());
 		return envio;

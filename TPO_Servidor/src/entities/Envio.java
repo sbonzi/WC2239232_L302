@@ -72,6 +72,10 @@ public class Envio implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_Viaje")
 	private Viaje viaje;
+	
+	@OneToOne
+	@JoinColumn(name="id_Destinatario")
+	private Destinatario destinatario;
 
 	public Envio() {
 		super();
@@ -88,7 +92,8 @@ public class Envio implements Serializable{
 				 boolean tercerizarEnvio,
 				 boolean trajoCargaEnPersona,
 				 EstadoEnvio estadoEnvio,
-				 boolean esClienteEmpresa) {
+				 boolean esClienteEmpresa,
+				 Destinatario destinatario) {
 		super();
 		this.cliente				= cliente;
 		this.cobro 					= cobro;
@@ -101,6 +106,7 @@ public class Envio implements Serializable{
 		this.trajoCargaEnPersona 	= trajoCargaEnPersona;
 		this.estadoEnvio 			= estadoEnvio;
 		this.esClienteEmpresa 		= esClienteEmpresa;
+		this.destinatario		    = destinatario;
 	}
 
 	public List<Carga> getCargas() {
@@ -207,4 +213,13 @@ public class Envio implements Serializable{
 		this.esClienteEmpresa = esClienteEmpresa;
 	}
 
+	public void setDestinatario(Destinatario destinatario) {
+		this.destinatario = destinatario;
+	}
+
+	public Destinatario getDestinatario() {
+		return destinatario;
+	}
+	
+	
 }

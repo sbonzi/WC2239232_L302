@@ -134,7 +134,7 @@ public class AdministracionEnvios {
 			//sOrigen.setEmpleados(empleadosSucDestino);
 
 			//Envio asociando un cliente con sus cargas
-			EnvioDTO envio = new BusinessDelegate().getBusinessService().gestionarEnvio(cliente, cargas, sOrigen, sDestino);
+			EnvioDTO envio = new BusinessDelegate().getBusinessService().gestionarEnvio(cliente, cargas, new DestinatarioDTO(), sOrigen, sDestino);
 
 			//Cliente y cargas realizadas en la BD
 			System.out.println("EnvioDTO: " + envio);
