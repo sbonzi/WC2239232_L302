@@ -14,6 +14,7 @@ public class EmpleadoDTO implements Serializable{
 	private String nombre;
 	private RolEmpleadoDTO rolEmpleado;
 	private SucursalDTO sucursal;
+	private String password;
 	
 	public EmpleadoDTO() {
 		super();
@@ -64,6 +65,14 @@ public class EmpleadoDTO implements Serializable{
 
 	public void setSucursal(SucursalDTO sucursal) {
 		this.sucursal = sucursal;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
