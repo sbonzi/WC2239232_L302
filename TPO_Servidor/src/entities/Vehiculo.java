@@ -45,13 +45,12 @@ public class Vehiculo implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Vehiculo(int anio, boolean habilitadoParaUtilizar, int kilometraje, List<Mantenimiento> mantenimientos,
+	public Vehiculo(int anio, boolean habilitadoParaUtilizar, int kilometraje,
 			String marca, String modelo, String patente, Float peso, Float tara) {
 		super();
 		this.anio = anio;
 		this.habilitadoParaUtilizar = habilitadoParaUtilizar;
 		this.kilometraje = kilometraje;
-		this.mantenimientos = mantenimientos;
 		this.marca = marca;
 		this.modelo = modelo;
 		this.patente = patente;

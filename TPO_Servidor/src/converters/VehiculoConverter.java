@@ -19,7 +19,7 @@ public class VehiculoConverter implements Serializable{
 	
 	public static VehiculoDTO vehiculoToDTO(Vehiculo vehiculo){
 		List<MantenimientoDTO> mantenimientoV = null;
-		
+	
 		if(vehiculo.getMantenimientos() != null){
 			mantenimientoV = MantenimientoConverter.mantenimientosToDTO(vehiculo.getMantenimientos());
 		}
@@ -33,6 +33,7 @@ public class VehiculoConverter implements Serializable{
 														vehiculo.getPatente(),
 														vehiculo.getPeso(),
 														vehiculo.getTara());
+					vehiculoDTO.setNumero(vehiculo.getId());
 		return vehiculoDTO;
 	}
 
@@ -44,12 +45,13 @@ public class VehiculoConverter implements Serializable{
 		Vehiculo vehiculo = new Vehiculo(vehiculoDTO.getAnio(),
 										 vehiculoDTO.isHabilitadoParaUtilizar(),
 										 vehiculoDTO.getKilometraje(),
-										 mantenimientoV,
 										 vehiculoDTO.getMarca(),
 										 vehiculoDTO.getModelo(),
 										 vehiculoDTO.getPatente(),
 										 vehiculoDTO.getPeso(),
 										 vehiculoDTO.getTara());
+				vehiculo.setId(vehiculoDTO.getNumero());
+				vehiculo.setMantenimientos(mantenimientoV);
 		return vehiculo;
 	}
 

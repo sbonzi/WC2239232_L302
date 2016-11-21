@@ -27,6 +27,7 @@ import exceptions.EmpleadoException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
+import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.ParticularException;
 import exceptions.ProvinciaException;
@@ -262,5 +263,11 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	@Override
 	public ProvinciaDTO getProvincia(int id) throws RemoteException, ProvinciaException {
 		return ProvinciaSRV.getProvincia(id);
+	}
+
+	@Override
+	public boolean guardarMantenimientoPorVehiculo(VehiculoDTO vehiculo)
+			throws RemoteException, MantenimientoException {
+		return VehiculoSRV.guardarMantenimientoPorVehiculo(vehiculo);
 	}
 }

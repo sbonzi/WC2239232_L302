@@ -19,5 +19,9 @@ public class VehiculoSRV {
 		List<VehiculoDTO> vehiculosDTO		= VehiculoConverter.vehiculosToTDO(vehiculosDisponibles);
 		return vehiculosDTO;
 	}
+	
+	public static boolean guardarMantenimientoPorVehiculo(VehiculoDTO vehiculo) {
+		return dao.guardarMantenimientoPorVehiculo(vehiculo);
+	}
 
 }

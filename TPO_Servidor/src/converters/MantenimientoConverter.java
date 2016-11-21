@@ -18,14 +18,14 @@ public class MantenimientoConverter implements Serializable{
 		MantenimientoDTO mantenimientoDTO = new MantenimientoDTO(mantenimiento.getFecha(),
 																 mantenimiento.getTipo(),
 																 mantenimiento.getUltimoKilometraje());
+						 mantenimientoDTO.setId(mantenimiento.getId());
 		return mantenimientoDTO;
 	}
 
 	public static List<MantenimientoDTO> mantenimientosToDTO(List<Mantenimiento> mantenimientos) {
 		List<MantenimientoDTO> mantenimientosDTO = new ArrayList<MantenimientoDTO>();
 		for(Mantenimiento m:mantenimientos){
-			MantenimientoDTO mantenimientoDTO = MantenimientoConverter.mantenimientoToDTO(m);
-			mantenimientosDTO.add(mantenimientoDTO);
+			mantenimientosDTO.add(MantenimientoConverter.mantenimientoToDTO(m));
 		}
 		return mantenimientosDTO;
 	}
@@ -33,8 +33,8 @@ public class MantenimientoConverter implements Serializable{
 	public static Mantenimiento mantenimientoToEntity(MantenimientoDTO mantenimientoDTO){
 		Mantenimiento mantenimiento = new Mantenimiento(mantenimientoDTO.getFecha(),
 														mantenimientoDTO.getTipo(),
-														mantenimientoDTO.getUltimoKilometraje(),
-														VehiculoConverter.vehiculoToEntity(mantenimientoDTO.getVehiculo()));
+														mantenimientoDTO.getUltimoKilometraje());
+					  mantenimiento.setId(mantenimientoDTO.getId());
 		return mantenimiento;
 	}
 
@@ -42,8 +42,7 @@ public class MantenimientoConverter implements Serializable{
 		List<Mantenimiento> mantenimientos = new ArrayList<Mantenimiento>();
 		
 		for(MantenimientoDTO m:mantenimientosDTO){
-			Mantenimiento mantenimiento = MantenimientoConverter.mantenimientoToEntity(m);
-			mantenimientos.add(mantenimiento);
+			mantenimientos.add(MantenimientoConverter.mantenimientoToEntity(m));
 		}
 		
 		return mantenimientos;

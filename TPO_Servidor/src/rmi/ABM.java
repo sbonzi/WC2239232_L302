@@ -13,11 +13,13 @@ import dto.PaisDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
 import dto.SucursalDTO;
+import dto.VehiculoDTO;
 import exceptions.DestinatarioException;
 import exceptions.EmpleadoException;
 import exceptions.ParticularException;
 import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
+import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
@@ -31,6 +33,7 @@ import srv.ProvinciaSRV;
 import srv.RolEmpleadoSRV;
 import srv.RutaSRV;
 import srv.SucursalSRV;
+import srv.VehiculoSRV;
 
 public class ABM extends UnicastRemoteObject implements IABM{
 
@@ -164,6 +167,12 @@ public class ABM extends UnicastRemoteObject implements IABM{
 	@Override
 	public ProvinciaDTO getProvincia(int id) throws RemoteException, ProvinciaException {
 		return ProvinciaSRV.getProvincia(id);
+	}
+
+	@Override
+	public boolean guardarMantenimientoPorVehiculo(VehiculoDTO vehiculo)
+			throws RemoteException, MantenimientoException {
+		return VehiculoSRV.guardarMantenimientoPorVehiculo(vehiculo);
 	}
 
 }
