@@ -17,6 +17,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 import businessDelegate.BusinessDelegate;
@@ -24,10 +25,12 @@ import dto.EmpleadoDTO;
 import dto.EmpresaSeguroDTO;
 import dto.MantenimientoDTO;
 import dto.RolEmpleadoDTO;
+import dto.ServicioTercerizadoDTO;
 import dto.VehiculoDTO;
 import exceptions.EmpleadoException;
 import exceptions.EmpresaSeguroException;
 import exceptions.MantenimientoException;
+import exceptions.ServicioTercerizadoException;
 import exceptions.VehiculoException;
 import util.Formato;
 
@@ -81,6 +84,11 @@ public class PanelAdministracion extends JFrame {
 	private String headerMantenimientoVehiculo[] = new String[] {"Fecha",
 																 "Tipo de mantenimiento",
 																 "Ultimo Kilometraje"};
+	private String headerCarriers[] = new String[] {"Nombre",
+												 	"Descripción",
+												 	"Tiempo de entrega (dias)",
+												 	"Seguridad de carga",
+												 	"Tarifa"};
 	
 	private JTextField txtTipoMantenimientoVeh;
 	private JTextField txtUltimoKilometrajeVeh;
@@ -88,6 +96,8 @@ public class PanelAdministracion extends JFrame {
 	private VehiculoDTO vehiculoSelecccionado;
 	private List<MantenimientoDTO> mantenimientos;
 	private JLabel lblMensajeMantenimientoVeh;
+	private ServicioTercerizadoDTO carrierSelecccionado;
+	private DefaultTableModel dtmCarriers; 
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -374,29 +384,136 @@ public class PanelAdministracion extends JFrame {
 		Carries.setLayout(null);
 		
 		JLabel lblCarries = new JLabel("Carries:");
-		lblCarries.setBounds(53, 35, 72, 26);
+		lblCarries.setBounds(31, 35, 72, 26);
 		Carries.add(lblCarries);
 		
-		JComboBox listadoCarries = new JComboBox();
-		listadoCarries.setBounds(159, 32, 316, 32);
+		List<ServicioTercerizadoDTO> carriers = new ArrayList<ServicioTercerizadoDTO>();
+		try {
+			carriers = new BusinessDelegate().getBusinessService().getListadoServiciosTercerizados();
+		} catch (RemoteException | ServicioTercerizadoException e) {
+			e.printStackTrace();
+		}
+		
+		final List<ServicioTercerizadoDTO> carriersAux = carriers;
+		
+		DefaultComboBoxModel<Object> listModelServTerc = new DefaultComboBoxModel<Object>();
+		
+		HashMap<Integer,String> MapSelecServTerc = new HashMap<>();
+		MapSelecServTerc.put(9999,"Seleccione un carrier");
+		listModelServTerc.addElement(MapSelecServTerc);
+	
+		for(ServicioTercerizadoDTO c:carriers){
+			HashMap<Integer,String> MapServTerc = new HashMap<>();
+			MapServTerc.put(c.getId(),c.getNombre() + " - " + c.getDescripcion());
+			listModelServTerc.addElement(MapServTerc);
+		}
+		
+		final JComboBox listadoCarries = new JComboBox<>(listModelServTerc);
+		listadoCarries.setBounds(124, 32, 316, 32);
 		Carries.add(listadoCarries);
 		
+		listadoCarries.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				limpiarTablaCarriers();
+				cargarTablaCarriers(carriersAux);
+				
+				Integer nroCarrier = 0;
+				HashMap<Integer,String> carrSel = (HashMap<Integer, String>) listadoCarries.getSelectedItem();
+		    	Iterator<Entry<Integer, String>> it = carrSel.entrySet().iterator();
+		    	while (it.hasNext()) {
+		    		@SuppressWarnings("rawtypes")
+					Map.Entry pair = (Map.Entry)it.next();
+		    		nroCarrier = (Integer) pair.getKey();
+		    	}
+
+				if(!carriersAux.isEmpty()){
+					for(ServicioTercerizadoDTO c:carriersAux){
+						if(c.getId() == nroCarrier){
+							carrierSelecccionado = c;
+						}
+					}
+				}
+				txtPrecioCarrier.setText(Float.toString(carrierSelecccionado.getTarifa()));
+			}
+		});
+		
 		JLabel lblDatos_1 = new JLabel("Listado:");
-		lblDatos_1.setBounds(53, 181, 92, 32);
+		lblDatos_1.setBounds(31, 227, 92, 32);
 		Carries.add(lblDatos_1);
 		
 		tblListadoCarries = new JTable();
-		tblListadoCarries.setBounds(31, 302, 565, -65);
-		Carries.add(tblListadoCarries);
+		tblListadoCarries.setEnabled(false);
+		tblListadoCarries.setBounds(31, 405, 565, -125);
 		
-		JLabel lblPrecio = new JLabel("Precio:");
-		lblPrecio.setBounds(53, 110, 92, 26);
-		Carries.add(lblPrecio);
+		dtmCarriers = new DefaultTableModel(0, 0);
+		dtmCarriers.setColumnIdentifiers(headerCarriers);
+		tblListadoCarries.setModel(dtmCarriers);
+		
+		JScrollPane scrollPaneCarriers = new JScrollPane(tblListadoCarries);
+		scrollPaneCarriers.setBounds(20, 266, 576, 166);
+		scrollPaneCarriers.setVisible(true);
+		Carries.add(scrollPaneCarriers);
+		
+		JLabel lblTarifa = new JLabel("Tarifa:");
+		lblTarifa.setBounds(33, 110, 92, 26);
+		Carries.add(lblTarifa);
 		
 		txtPrecioCarrier = new JTextField();
-		txtPrecioCarrier.setBounds(159, 107, 186, 32);
+		txtPrecioCarrier.setBounds(118, 107, 316, 32);
 		Carries.add(txtPrecioCarrier);
 		txtPrecioCarrier.setColumns(10);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(31, 82, 533, 17);
+		Carries.add(separator_2);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setBounds(33, 216, 533, 2);
+		Carries.add(separator_3);
+		
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.setBounds(31, 157, 146, 35);
+		Carries.add(btnActualizar);
+		
+		final JLabel lblMensajeCarrier = new JLabel("");
+		lblMensajeCarrier.setBounds(187, 160, 280, 31);
+		Carries.add(lblMensajeCarrier);
+		
+		btnActualizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Float tarifa = (float) 0;
+				if(txtPrecioCarrier.getText().length() > 0 && Formato.isNumeric(txtPrecioCarrier.getText())){
+
+					tarifa = Float.valueOf(txtPrecioCarrier.getText());
+					if(tarifa > 0 && carrierSelecccionado.getId() != 9999){
+						carrierSelecccionado.setTarifa(tarifa);
+						try {
+							new BusinessDelegate().getBusinessService().actualizarServicioTercerizado(carrierSelecccionado);
+							
+							limpiarTablaCarriers();
+							cargarTablaCarriers(carriersAux);
+							
+							lblMensajeCarrier.setText("Tarifa actualizada");
+							new Timer(1500, new ActionListener() {
+					            @Override
+					            public void actionPerformed(ActionEvent e) {
+					            	lblMensajeCarrier.setText("");
+					            }
+					        }).start();
+							
+						} catch (RemoteException | ServicioTercerizadoException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}else{
+					lblMensajeCarrier.setText("Tarifa inválida");
+				}
+			}
+		});
 		
 		JPanel EmpresasSeguridad = new JPanel();
 		tabbedPane.addTab("Empresas Seguridad", null, EmpresasSeguridad, null);
@@ -447,6 +564,26 @@ public class PanelAdministracion extends JFrame {
 	public void inicializarCamposMantVehic(){
 		txtTipoMantenimientoVeh.setText("");
 		txtUltimoKilometrajeVeh.setText("");
+	}
+	
+	public void cargarTablaCarriers(List<ServicioTercerizadoDTO> carriers){
+		for(ServicioTercerizadoDTO c : carriers){
+			dtmCarriers.addRow(new Object[] {c.getNombre(),
+											 c.getDescripcion(),
+											 c.getTiempoDeEntregaDias(),
+											 c.getSeguridadDeCarga(),
+											 c.getTarifa()});
+		}
+	}
+	
+	public void limpiarTablaCarriers(){
+		int filas = dtmCarriers.getRowCount() - 1;
+		if(filas > 0){
+			while(filas >= 0){
+				dtmCarriers.removeRow(filas);
+				filas--;
+			}
+		}
 	}
 	
 }
