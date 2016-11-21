@@ -6,6 +6,7 @@ import java.util.List;
 
 import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguridadDTO;
 import dto.ParticularDTO;
 import dto.ProvinciaDTO;
 import dto.EmpresaSeguroDTO;
@@ -16,6 +17,7 @@ import dto.ServicioTercerizadoDTO;
 import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguridadException;
 import exceptions.ParticularException;
 import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
@@ -96,4 +98,10 @@ public interface IABM extends Remote{
 	PaisDTO getPais(int id)throws RemoteException,PaisException;
 	
 	ProvinciaDTO getProvincia(int id)throws RemoteException,ProvinciaException;
+	
+	//Empresa seguridad
+	List<EmpresaSeguridadDTO> getListadoEmpresasSeguridad() throws RemoteException,EmpresaSeguridadException;
+	
+	EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad) throws RemoteException,EmpresaSeguridadException;
+	
 }

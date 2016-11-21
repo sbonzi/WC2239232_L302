@@ -8,6 +8,7 @@ import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
+import dto.EmpresaSeguridadDTO;
 import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
 import dto.FacturaDTO;
@@ -25,6 +26,7 @@ import exceptions.CargaException;
 import exceptions.ClienteException;
 import exceptions.DestinatarioException;
 import exceptions.EmpleadoException;
+import exceptions.EmpresaSeguridadException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
 import exceptions.FacturaException;
@@ -271,6 +273,17 @@ public class BusinessDelegate implements ISistemaEnvios{
 	public ServicioTercerizadoDTO actualizarServicioTercerizado(ServicioTercerizadoDTO st)
 			throws RemoteException, ServicioTercerizadoException {
 		return businessService.actualizarServicioTercerizado(st);
+	}
+
+	@Override
+	public List<EmpresaSeguridadDTO> getListadoEmpresasSeguridad() throws RemoteException, EmpresaSeguridadException {
+		return businessService.getListadoEmpresasSeguridad();
+	}
+
+	@Override
+	public EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad)
+			throws RemoteException, EmpresaSeguridadException {
+		return businessService.actualizarEmpresasSeguridad(empresaSeguridad);
 	}
 
 }
