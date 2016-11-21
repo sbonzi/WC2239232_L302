@@ -9,14 +9,17 @@ import dto.CargaDTO;
 import dto.CategoriaFragilidadDTO;
 import dto.CategoriaTratamientoDTO;
 import dto.ClienteDTO;
+import dto.DestinatarioDTO;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.ManifiestoDTO;
 import dto.PaisDTO;
 import dto.ParticularDTO;
+import dto.ProvinciaDTO;
 import dto.SucursalDTO;
 import exceptions.CargaException;
 import exceptions.ClienteException;
+import exceptions.DestinatarioException;
 import exceptions.PaisException;
 import interfaz.INegocioEnvio;
 
@@ -30,14 +33,44 @@ public class AdministracionEnvios {
 	public AdministracionEnvios() {
 		try{
 			
+			
+			ClienteDTO cliente 	= new ParticularDTO();
+			cliente.setId(2);
+			
+			PaisDTO pais 	= new PaisDTO();
+			pais.setId(1);
+			pais.setDescripcion("ARGENTINA");
+			pais.setHabilitado(true);
+			
+			
+			ProvinciaDTO provincia 	= new ProvinciaDTO();
+			provincia.setId(1);
+			provincia.setDescripcion("BUENOS AIRES");
+			provincia.setHabilitado(true);
+			provincia.setPais(pais);
+			
+			 DestinatarioDTO nDetinatario = new DestinatarioDTO("CHAVO",
+						"SAN JUAN 456",
+		    			"1234",
+		    			pais,
+		    			provincia,
+		    			2,
+		    			"1",
+		    			33456789,
+		    			"NADIE",
+		    			cliente);
+
+
+			 nDetinatario = new BusinessDelegate().getBusinessService().crearDestinatario(nDetinatario);
+			
 			//En la BD cargar a mano(Despues hay que hacer el AMB)
 			//Valores cargados en BD
 			//De la BD, tomamos el cliente que está gestionando el envio de cargas
-			ClienteDTO cliente 	= new ParticularDTO();
+			/*ClienteDTO cliente 	= new ParticularDTO();
 			cliente.setNombre("Jose Lopez");
 			cliente.setDomicilio("Rivadavia 500");
 			cliente.setEsParticular(true);
-			cliente.setId(1);
+			cliente.setId(1);*/
 			
 			//Cargas dadas de alta en la pantalla para el cliente
 			List<CargaDTO> cargas = new ArrayList<CargaDTO>();
@@ -110,6 +143,9 @@ public class AdministracionEnvios {
 			new AdministracionFacturacion(envio);
 			
 		}catch(RemoteException | ClienteException | CargaException e){
+			e.printStackTrace();
+		} catch (DestinatarioException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}

@@ -356,7 +356,7 @@
 	    							<td><p class="formLabel" style="width: 170px">DEPARTAMENTO</p></td>
 	    							<td><input name="txtNewDtoDestinatario" type="number" width="100px"/></td>
 	    							<td><p class="formLabel" style="width: 200px">NRO. DOCUMENTO</p></td>
-	    							<td><input name="txtNewNumDocDestinatario" type="number" width="100px"/></td>
+	    							<td><input name="txtNewNumDocDestinatario" maxlength="8" type="number" width="100px"/></td>
 	    							<td><p class="formLabel">AUTORIZANTES</p></td>
 	    							<td><input name="txtNewAutorizantesDestinatario" type="text" width="400px"/></td>
 	    						</tr>

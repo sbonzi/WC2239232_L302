@@ -29,7 +29,7 @@ public class ClienteConverter implements Serializable {
 	public static Cliente clienteToEntity(ClienteDTO c) {
 		Cliente cliente;
 		if(c.getEsParticular()){
-			cliente = (Cliente)new ClienteParticular();
+			cliente = (Cliente)ParticularConverter.particularToEntity((ParticularDTO)c);
 		}else{
 			cliente = (Cliente)new ClienteEmpresa();
 		}

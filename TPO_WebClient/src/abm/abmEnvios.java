@@ -27,7 +27,6 @@ import dto.PaisDTO;
 import exceptions.DestinatarioException;
 import exceptions.PaisException;
 import exceptions.ParticularException;
-//import negocio.Particular;
 import exceptions.ProvinciaException;
 
 public class abmEnvios extends HttpServlet {
@@ -503,9 +502,9 @@ public class abmEnvios extends HttpServlet {
 				 displayError = "";
 			 }
      		
-     		 ClienteDTO cliente = (ParticularDTO)misession.getAttribute("clienteById");
-     		
-     		 if(misession.getAttribute("clienteById") == null)
+     		 ClienteDTO cliente = (ClienteDTO)misession.getAttribute("clienteById");
+     		 
+     		 if(cliente == null)
      		 {
 				 error = "SE HA PERDIDO LA SESION, Y LOS DATOS GUARDADOS. POR FAVOR VUELVA A INICIAR EL PROCESO DE CARGA DEL ENVIO.";
 				 displayError = "";

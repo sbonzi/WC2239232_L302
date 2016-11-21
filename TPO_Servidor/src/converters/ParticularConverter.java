@@ -21,4 +21,13 @@ public class ParticularConverter implements Serializable{
 					  particularDTO.setNumDoc(p.getNumDoc());
 		return particularDTO;
 	}
+	
+	public static ClienteParticular particularToEntity(ParticularDTO c){
+		ClienteParticular particular = new ClienteParticular(c.getNumDoc(), c.getTipoDoc());
+		particular.setId(c.getId());
+		particular.setNombre(c.getNombre());
+		particular.setDomicilio(c.getDomicilio());
+		particular.setEsParticular(true);
+		return particular;
+	}
 }

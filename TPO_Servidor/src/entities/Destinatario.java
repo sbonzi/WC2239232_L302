@@ -51,7 +51,6 @@ public class Destinatario implements Serializable{
 	public Destinatario(String nombre, String domicilio, String codigoPostal, Pais pais, Provincia provincia,
 			int piso, String departamento, int nroDocumento, String personasAutorizadas, Cliente clienteRemitente) {
 		super();
-		this.id = id;
 		this.nombre = nombre;
 		this.domicilio = domicilio;
 		this.codigoPostal = codigoPostal;
