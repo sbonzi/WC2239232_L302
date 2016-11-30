@@ -12,12 +12,14 @@
 	<ul>
 	  <li><a class="active" href="home.jsp">Home</a></li>
 	  <li><a href="abmEnvios.jsp">ABM Envio</a></li>
-	  <li><a href="abmCliente.html">ABM Cliente</a></li>
-	  <li><a href="abmVehiculo.html">ABM Vehìculo</a></li>
-	  <li><a href="abmSucursal.html">ABM Sucursal</a></li>
+	  <li><a href="arribos.jsp">Arribos</a></li>
 	  <li style="float:right"><a class="active" href="login?action=out" method=GET>Exit</a></li>
 	</ul>
-	<%if (request.getSession() != null && request.getSession().getAttribute("usuario") != null) {%>
+	<%
+		if(request.getSession() == null || request.getSession().getAttribute("usuario") == null)
+			response.sendRedirect("/TPO_WebClient/login.jsp");		
+	
+		if (request.getSession() != null && request.getSession().getAttribute("usuario") != null) {%>
 		<a class="message" style="float:right" href="home?action=login" target="_self"><%=request.getSession().getAttribute("usuario")%></a>
 	<%}else{%>
 		<a class="message" style="float:right" href="home?action=login" target="_self">Login</a>

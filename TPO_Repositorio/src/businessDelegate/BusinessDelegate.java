@@ -11,6 +11,7 @@ import dto.EmpleadoDTO;
 import dto.EmpresaSeguridadDTO;
 import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
+import dto.EstadoEnvioDTO;
 import dto.FacturaDTO;
 import dto.PaisDTO;
 import dto.ParticularDTO;
@@ -284,6 +285,23 @@ public class BusinessDelegate implements ISistemaEnvios{
 	public EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad)
 			throws RemoteException, EmpresaSeguridadException {
 		return businessService.actualizarEmpresasSeguridad(empresaSeguridad);
+	}
+
+	@Override
+	public List<EnvioDTO> getEnviosPorSucursalOrigen(SucursalDTO sucOrigen) throws RemoteException, EnvioException {
+		return businessService.getEnviosPorSucursalOrigen(sucOrigen);
+	}
+
+	@Override
+	public List<EnvioDTO> getEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado)
+			throws RemoteException, EnvioException {
+		return businessService.getEnviosPorSucursalDestinoEstado(sucDestino, estado);
+	}
+
+	@Override
+	public List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal)
+			throws RemoteException, VehiculoException {
+		return businessService.getVehiculosDisponiblesPorSucursal(sucursal);
 	}
 
 }

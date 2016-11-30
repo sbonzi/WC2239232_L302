@@ -25,4 +25,10 @@ public class SucursalSRV {
 		List<SucursalDTO> sucursalesDTO = SucursalConverter.sucursalesToDTO(sucursales);
 		return sucursalesDTO;
 	}
+	
+	public static SucursalDTO getSucursalById(int idSucursal){
+		Sucursal sucursal = dao.getSucursalById(idSucursal);
+		SucursalDTO sucursalesDTO = SucursalConverter.sucursalToDTO(sucursal);
+		return sucursalesDTO;
+	}
 }

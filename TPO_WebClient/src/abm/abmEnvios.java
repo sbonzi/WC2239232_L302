@@ -17,6 +17,7 @@ import businessDelegate.BusinessDelegate;
 import config.viewStateAbmEnvios;
 import dto.ParticularDTO;
 import dto.ProvinciaDTO;
+import dto.SucursalDTO;
 import dto.CargaDTO;
 import dto.CategoriaFragilidadDTO;
 import dto.CategoriaTratamientoDTO;
@@ -33,6 +34,7 @@ import exceptions.DestinatarioException;
 import exceptions.PaisException;
 import exceptions.ParticularException;
 import exceptions.ProvinciaException;
+import exceptions.SucursalException;
 
 public class abmEnvios extends HttpServlet {
 
@@ -122,8 +124,8 @@ public class abmEnvios extends HttpServlet {
 		        			 											"none",  //ctlCargas
 		        			 											"none",  //divDestinatario
 		        			 											"none",  //ctlDestinatarioEnvio
-		        			 											"", //divFinalizadoParticularDisplay
 		        			 											"none", //divGuardar
+		        			 											"", //divFinalizadoParticularDisplay
 		        			 											"none", //errorDisplay
 		 					""); //error
 					}
@@ -502,6 +504,12 @@ public class abmEnvios extends HttpServlet {
         		 displayError = "";
         	 }
         	 
+        	 if (request.getParameter("txtSucursalDestino")==null || request.getParameter("txtSucursalDestino").length() < 1)
+        	 {
+        		 error = "DEBE INDICAR LA SUCURSAL DESTINO DEL DESTINATARIO";
+        		 displayError = "";
+        	 }
+        	 
         	 PaisDTO pais = null;
 			 try 
 			 {
@@ -544,9 +552,13 @@ public class abmEnvios extends HttpServlet {
 													    			Integer.parseInt(request.getParameter("txtNewNumDocDestinatario")),
 													    			request.getParameter("txtNewAutorizantesDestinatario"),
 													    			cliente);
+	        	 
+	        	 SucursalDTO nSucDestino = null;
+	        	 
 	        	 try 
 	        	 {
 	        		 nDetinatario = new BusinessDelegate().getBusinessService().crearDestinatario(nDetinatario);
+	        		 nSucDestino = new BusinessDelegate().getBusinessService().getSucursalById(Integer.parseInt(request.getParameter("txtSucursalDestino")));
 	        		 
 	        		 viewState = new viewStateAbmEnvios("",	 //divParticular
 	        				    "none",  //divSeleccionCliente
@@ -564,7 +576,7 @@ public class abmEnvios extends HttpServlet {
 								"none", //errorDisplay
 								""); //error
 	        	 } 
-	        	 catch (DestinatarioException e) 
+	        	 catch (DestinatarioException | NumberFormatException | SucursalException e) 
 	        	 {
 	        		 nDetinatario = null;
 	        		 viewState = new viewStateAbmEnvios("",	 //divParticular
@@ -585,7 +597,9 @@ public class abmEnvios extends HttpServlet {
 	        	 }
 	        	 
 	        	 request.setAttribute("destinatario", nDetinatario);
+	        	 request.setAttribute("sucDestino", nSucDestino);
 	        	 misession.setAttribute("destinatario",nDetinatario);
+	        	 misession.setAttribute("sucDestino",nSucDestino);
 	        	 
         	 }
         	 else
@@ -622,6 +636,7 @@ public class abmEnvios extends HttpServlet {
         	 ParticularDTO cliente = (ParticularDTO)misession.getAttribute("clienteById");
         	 List<CargaDTO> cargas = (List<CargaDTO>)misession.getAttribute("cargasAgregadas");
         	 DestinatarioDTO destinatario = (DestinatarioDTO)misession.getAttribute("destinatario");
+        	 SucursalDTO sucDestino = (SucursalDTO)misession.getAttribute("sucDestino");
     
         	 if(cliente == null)
      		 {
@@ -653,7 +668,7 @@ public class abmEnvios extends HttpServlet {
         		 EnvioDTO nEnvio = null;
         		 EmpleadoDTO empleado = (EmpleadoDTO)misession.getAttribute("empleado");
         		 try {
-					nEnvio = new BusinessDelegate().getBusinessService().gestionarEnvio(cliente, cargas, destinatario, empleado.getSucursal(), null);
+					nEnvio = new BusinessDelegate().getBusinessService().gestionarEnvio(cliente, cargas, destinatario, empleado.getSucursal(), sucDestino);
 				} catch (ClienteException e) {
 						error = "HA OCURRIDO UN ERROR AL ASOCIAR EL CLIENTE AL ENVIO GENERADO.";
 					 displayError = "";
@@ -680,6 +695,14 @@ public class abmEnvios extends HttpServlet {
 							"", //divFinalizadoParticularDisplay
 							"", //errorDisplay
 							error); //error
+        		 
+        		 misession.removeAttribute("clienteById");
+ 	  			 misession.removeAttribute("cargasAgregadas");
+ 	  			 misession.removeAttribute("destinatario");
+ 	  			 misession.removeAttribute("sucDestino");
+        		 
+        		 jspPage = "/abmEnvios.jsp";
+                 dispatch(jspPage, request, response); 
         	 }
         	 
          }

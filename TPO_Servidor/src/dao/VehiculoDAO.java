@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 
 import converters.MantenimientoConverter;
+import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import entities.Envio;
 import entities.Mantenimiento;
@@ -64,5 +65,17 @@ public class VehiculoDAO {
 		session.close();
 		
 		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Vehiculo> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal) {
+		Session session = sf.openSession();
+		List<Vehiculo> list = session.createQuery("SELECT v "
+												+ "	FROM Vehiculo v "
+												+ " WHERE habilitadoParaUtilizar = 1 AND id_Sucursal = :idSucursal")
+				.setParameter("idSucursal", sucursal.getNumero())
+				.list();
+		session.close();
+		return list;
 	}
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import= "dto.ParticularDTO"%>
 <%@ page import= "dto.CargaDTO"%>
+<%@ page import= "dto.SucursalDTO"%>
 <%@ page import= "dto.DestinatarioDTO"%>
 <%@ page import= "dto.ProvinciaDTO"%>
 <%@ page import= "dto.PaisDTO"%>
@@ -36,27 +37,6 @@
             msgErrorCtlClienteParticular.innerHtml="";
             msgErrorCtlClienteParticular.style.display = "none";
         }
-         function setCliente() {
-        	ctlClienteEnvio.style.display = "";
-            ctlNewCliente.style.display = "none";
-            ctlSearchCliente.style.display = "none";
-            divBuscarClienteParticular.style.display = "none";
-            divNuevoClienteParticular.style.display = "none";
-            divCargasParticular.style.display = "";
-        }
-        function setCarga() {
-        	ctlCargas.style.display = "";
-        	divDestinatario.style.display = "";
-        }
-        function setDestinatario()
-        {
-        	ctlDestinatarioEnvio.style.display = "";
-        	divGuardar.style.display = "";
-        }
-        function setEnvio()
-        {
-        	alert("ENVIO CARGADO");
-        }
     </script>
 	<link rel="stylesheet" type="text/css" href="css/pages.css">
 	<link rel="stylesheet" type="text/css" href="css/menu.css">
@@ -66,9 +46,7 @@
 	<ul>
 	  <li><a href="home.jsp">Home</a></li>
 	  <li><a class="active" href="abmEnvios.jsp">ABM Envio</a></li>
-	  <li><a href="abmCliente.html">ABM Cliente</a></li>
-	  <li><a href="abmVehiculo.html">ABM Vehìculo</a></li>
-	  <li><a href="abmSucursal.html">ABM Sucursal</a></li>
+	  <li><a href="arribos.jsp">Arribos</a></li>
 	  <li style="float:right"><a class="active" href="login?action=out" method=GET>Exit</a></li>
 	</ul>
 	<% 
@@ -365,7 +343,9 @@
 	    							<td><input name="txtNewAutorizantesDestinatario" type="text" width="400px"/></td>
 	    						</tr>
 	    						<tr>
-	    							<td colspan="6"  style="vertical-align: bottom;" align="right">
+	    							<td><p class="formLabel" style="width: 170px">SUCURSAL DESTINO</p></td>
+	    							<td><input name="txtSucursalDestino" type="number" width="100px"/></td>
+	    							<td colspan="4"  style="vertical-align: bottom;" align="right">
 	    								<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Agregar Destinatario">
 	    							</td>
 	    						</tr>
@@ -385,6 +365,12 @@
 						d.setPais(new PaisDTO());
 						d.setProvincia(new ProvinciaDTO());
 					}
+					
+					SucursalDTO s = (SucursalDTO)request.getAttribute("sucDestino");
+					if(s == null)
+					{
+						s = new SucursalDTO();
+					}
 				%>
     			
     			<tr>
@@ -401,6 +387,7 @@
 						    		<th scope="col"><%=d.getDepartamento()%></th>
 						    		<th scope="col"><%=d.getNroDocumento()%></th>
 						    		<th scope="col"><%=d.getPersonasAutorizadas()%></th>
+						    		<th scope="col"><%="Destino: " + s.getNombre()%></th>
 					    		</tr>
 				    		</thead>
     					</table>

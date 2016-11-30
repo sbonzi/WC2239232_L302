@@ -13,6 +13,7 @@ import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.DestinatarioDTO;
 import dto.EnvioDTO;
+import dto.EstadoEnvioDTO;
 import dto.SucursalDTO;
 import entities.Carga;
 import entities.ClienteParticular;
@@ -145,6 +146,33 @@ public class EnvioDAO {
 		List<Envio> envios = session.createQuery(
 				"select env from Envio env where env.Cliente = :idCliente")
 				.setParameter("idCliente", cliente.getId())
+				.list();
+		session.close();
+		return envios;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Envio> obtenerEnviosPorSucursalOrigen(SucursalDTO sucOrigen){
+		Session session = sf.openSession();
+		List<Envio> envios = session.createQuery(
+				"select e from Envio e "
+				+ "JOIN e.sucursalOrigen s "
+				+ "WHERE s.id = :idSucOrigen")
+				.setParameter("idSucOrigen", sucOrigen.getNumero())
+				.list();
+		session.close();
+		return envios;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Envio> obtenerEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado){
+		Session session = sf.openSession();
+		
+		List<Envio> envios = session.createQuery(
+				"select e from Envio e "
+				+ "JOIN e.sucursalDestino s "
+				+ "WHERE s.id = :idSucDestino")
+				.setParameter("idSucDestino", sucDestino.getNumero())
 				.list();
 		session.close();
 		return envios;

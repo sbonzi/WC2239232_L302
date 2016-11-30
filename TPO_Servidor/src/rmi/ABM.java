@@ -10,6 +10,8 @@ import dto.EmpresaSeguridadDTO;
 import dto.ParticularDTO;
 import dto.ProvinciaDTO;
 import dto.EmpresaSeguroDTO;
+import dto.EnvioDTO;
+import dto.EstadoEnvioDTO;
 import dto.PaisDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
@@ -22,16 +24,19 @@ import exceptions.EmpresaSeguridadException;
 import exceptions.ParticularException;
 import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
+import exceptions.EnvioException;
 import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.ServicioTercerizadoException;
 import exceptions.SucursalException;
+import exceptions.VehiculoException;
 import interfaz.IABM;
 import srv.DestinatarioSRV;
 import srv.EmpleadoSRV;
 import srv.EmpresaSeguridadSRV;
+import srv.EnvioSRV;
 import srv.PaisSRV;
 import srv.ParticularSRV;
 import srv.ProvinciaSRV;
@@ -72,8 +77,7 @@ public class ABM extends UnicastRemoteObject implements IABM{
 
 	@Override
 	public SucursalDTO getSucursalById(int idSucursal) throws RemoteException, SucursalException {
-		// TODO Auto-generated method stub
-		return null;
+		return SucursalSRV.getSucursalById(idSucursal);
 	}
 
 	@Override
@@ -202,6 +206,21 @@ public class ABM extends UnicastRemoteObject implements IABM{
 	public EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad)
 			throws RemoteException, EmpresaSeguridadException {
 		return EmpresaSeguridadSRV.actualizarEmpresaSeguridad(empresaSeguridad);
+	}
+	public List<EnvioDTO> getEnviosPorSucursalOrigen(SucursalDTO sucOrigen) throws RemoteException, EnvioException {
+		return EnvioSRV.getEnviosPorSucursalOrigen(sucOrigen);
+	}
+
+	@Override
+	public List<EnvioDTO> getEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado)
+			throws RemoteException, EnvioException {
+		return EnvioSRV.getEnviosPorSucursalDestinoEstado(sucDestino, estado);
+	}
+
+	@Override
+	public List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal)
+			throws RemoteException, VehiculoException {
+		return VehiculoSRV.getVehiculosDisponiblesPorSucursal(sucursal);
 	}
 
 }

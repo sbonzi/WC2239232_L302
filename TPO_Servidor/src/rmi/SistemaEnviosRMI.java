@@ -11,6 +11,7 @@ import dto.EmpleadoDTO;
 import dto.EmpresaSeguridadDTO;
 import dto.EmpresaSeguroDTO;
 import dto.EnvioDTO;
+import dto.EstadoEnvioDTO;
 import dto.FacturaDTO;
 import dto.PaisDTO;
 import dto.ParticularDTO;
@@ -170,8 +171,7 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 
 	@Override
 	public SucursalDTO getSucursalById(int idSucursal) throws RemoteException, SucursalException {
-		// TODO Auto-generated method stub
-		return null;
+		return SucursalSRV.getSucursalById(idSucursal);
 	}
 
 	@Override
@@ -298,5 +298,21 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	public EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad)
 			throws RemoteException, EmpresaSeguridadException {
 		return EmpresaSeguridadSRV.actualizarEmpresaSeguridad(empresaSeguridad);
+	}
+	
+	public List<EnvioDTO> getEnviosPorSucursalOrigen(SucursalDTO sucOrigen) throws RemoteException, EnvioException {
+		return EnvioSRV.getEnviosPorSucursalOrigen(sucOrigen);
+	}
+
+	@Override
+	public List<EnvioDTO> getEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado)
+			throws RemoteException, EnvioException {
+		return EnvioSRV.getEnviosPorSucursalDestinoEstado(sucDestino, estado);
+	}
+
+	@Override
+	public List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal)
+			throws RemoteException, VehiculoException {
+		return VehiculoSRV.getVehiculosDisponiblesPorSucursal(sucursal);
 	}
 }

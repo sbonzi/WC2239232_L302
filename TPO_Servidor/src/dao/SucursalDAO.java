@@ -46,4 +46,15 @@ public class SucursalDAO {
 		session.close();
 		return list;
 	}
+	
+	public Sucursal getSucursalById(int idSucursal) {
+		Session session = sf.openSession();
+		List<Sucursal> list = session.createQuery("SELECT s FROM Sucursal s WHERE s.id = :id").setParameter("id", idSucursal).list();
+		session.close();
+
+		if (list.isEmpty())
+			return null;
+		else
+			return list.get(0);
+	}
 }

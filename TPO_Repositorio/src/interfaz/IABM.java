@@ -10,6 +10,8 @@ import dto.EmpresaSeguridadDTO;
 import dto.ParticularDTO;
 import dto.ProvinciaDTO;
 import dto.EmpresaSeguroDTO;
+import dto.EnvioDTO;
+import dto.EstadoEnvioDTO;
 import dto.PaisDTO;
 import dto.RolEmpleadoDTO;
 import dto.RutaDTO;
@@ -21,12 +23,14 @@ import exceptions.EmpresaSeguridadException;
 import exceptions.ParticularException;
 import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
+import exceptions.EnvioException;
 import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
 import exceptions.RutaException;
 import exceptions.ServicioTercerizadoException;
 import exceptions.SucursalException;
+import exceptions.VehiculoException;
 import exceptions.DestinatarioException;
 
 /**
@@ -99,9 +103,20 @@ public interface IABM extends Remote{
 	
 	ProvinciaDTO getProvincia(int id)throws RemoteException,ProvinciaException;
 	
+
 	//Empresa seguridad
 	List<EmpresaSeguridadDTO> getListadoEmpresasSeguridad() throws RemoteException,EmpresaSeguridadException;
 	
 	EmpresaSeguridadDTO actualizarEmpresasSeguridad(EmpresaSeguridadDTO empresaSeguridad) throws RemoteException,EmpresaSeguridadException;
 	
+
+	//envios por suc origen
+	List<EnvioDTO> getEnviosPorSucursalOrigen(SucursalDTO sucOrigen) throws RemoteException,EnvioException;
+	
+	//envios por suc destino y estado
+	List<EnvioDTO> getEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado) throws RemoteException,EnvioException;
+	
+	//vehiculos disponibles por sucursal
+	List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal) throws RemoteException,VehiculoException;
+
 }

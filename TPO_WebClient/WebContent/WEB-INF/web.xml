@@ -39,5 +39,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j
 		<servlet-name>abmEnvios</servlet-name>
 		<url-pattern>/abmEnvios</url-pattern>
 	</servlet-mapping>	
+	
+	<servlet>
+	    <description></description>
+	    <display-name>arribos</display-name>
+	    <servlet-name>arribos</servlet-name>
+	    <servlet-class>abm.arribos</servlet-class>
+  	</servlet>
+	<servlet-mapping>
+		<servlet-name>arribos</servlet-name>
+		<url-pattern>/arribos</url-pattern>
+	</servlet-mapping>	
 </web-app>
 	

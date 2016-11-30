@@ -11,6 +11,7 @@ import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.DestinatarioDTO;
 import dto.EnvioDTO;
+import dto.EstadoEnvioDTO;
 import dto.SucursalDTO;
 import entities.Carga;
 import entities.Envio;
@@ -43,6 +44,28 @@ public class EnvioSRV {
 		return enviosDTO;
 	}
 	
+	public static List<EnvioDTO> obtenerEnviosPorSucursalOrigen(SucursalDTO sucOrigen){
+		List<EnvioDTO> enviosDTO = new ArrayList<EnvioDTO>();
+		List<Envio> envios = dao.obtenerEnviosPorSucursalOrigen(sucOrigen);
+		for(int i = 0; i<= envios.size(); i++)
+		{
+			enviosDTO.add(EnvioConverter.envioToDTO(envios.get(i)));
+		}
+		
+		return enviosDTO;
+	}
+	
+	public static List<EnvioDTO> obtenerEnviosPorCliente(SucursalDTO sucDestino, int estado){
+		List<EnvioDTO> enviosDTO = new ArrayList<EnvioDTO>();
+		List<Envio> envios = dao.obtenerEnviosPorSucursalDestinoEstado(sucDestino, estado);
+		for(int i = 0; i<= envios.size(); i++)
+		{
+			enviosDTO.add(EnvioConverter.envioToDTO(envios.get(i)));
+		}
+		
+		return enviosDTO;
+	}
+	
 	public static List<CargaDTO> obtenerCargasPorEnvio(EnvioDTO envio){
 		List<CargaDTO> cargasDTO = new ArrayList<CargaDTO>();
 		List<Carga> cargas = dao.obtenerCargasPorEnvio(envio);
@@ -52,5 +75,27 @@ public class EnvioSRV {
 		}
 		
 		return cargasDTO;
+	}
+
+
+	public static List<EnvioDTO> getEnviosPorSucursalOrigen(SucursalDTO sucOrigen) {
+		List<EnvioDTO> enviosDTO = new ArrayList<EnvioDTO>();
+		List<Envio> envios = dao.obtenerEnviosPorSucursalOrigen(sucOrigen);
+		for(Envio e: envios)
+			enviosDTO.add(EnvioConverter.envioToDTO(e));
+		
+		return enviosDTO;
+	}
+
+
+	public static List<EnvioDTO> getEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado) {
+		List<EnvioDTO> enviosDTO = new ArrayList<EnvioDTO>();
+		List<Envio> envios = dao.obtenerEnviosPorSucursalDestinoEstado(sucDestino, estado);
+		for(int i = 0; i<= envios.size(); i++)
+		{
+			enviosDTO.add(EnvioConverter.envioToDTO(envios.get(i)));
+		}
+		
+		return enviosDTO;
 	}
 }

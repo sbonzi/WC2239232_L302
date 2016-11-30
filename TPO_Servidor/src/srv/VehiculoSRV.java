@@ -4,6 +4,7 @@ import java.util.List;
 
 import converters.VehiculoConverter;
 import dao.VehiculoDAO;
+import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import entities.Vehiculo;
 
@@ -22,6 +23,12 @@ public class VehiculoSRV {
 	
 	public static boolean guardarMantenimientoPorVehiculo(VehiculoDTO vehiculo) {
 		return dao.guardarMantenimientoPorVehiculo(vehiculo);
+	}
+
+	public static List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal) {
+		List<Vehiculo> vehiculosDisponibles = dao.getVehiculosDisponiblesPorSucursal(sucursal);
+		List<VehiculoDTO> vehiculosDTO		= VehiculoConverter.vehiculosToTDO(vehiculosDisponibles);
+		return vehiculosDTO;
 	}
 
 }
