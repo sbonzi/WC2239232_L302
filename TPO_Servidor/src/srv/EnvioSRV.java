@@ -81,8 +81,8 @@ public class EnvioSRV {
 	public static List<EnvioDTO> getEnviosPorSucursalOrigen(SucursalDTO sucOrigen) {
 		List<EnvioDTO> enviosDTO = new ArrayList<EnvioDTO>();
 		List<Envio> envios = dao.obtenerEnviosPorSucursalOrigen(sucOrigen);
-		for(Envio e: envios)
-			enviosDTO.add(EnvioConverter.envioToDTO(e));
+		for(Envio envio: envios)
+			enviosDTO.add(EnvioConverter.envioToDTO(envio));
 		
 		return enviosDTO;
 	}
@@ -91,10 +91,9 @@ public class EnvioSRV {
 	public static List<EnvioDTO> getEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado) {
 		List<EnvioDTO> enviosDTO = new ArrayList<EnvioDTO>();
 		List<Envio> envios = dao.obtenerEnviosPorSucursalDestinoEstado(sucDestino, estado);
-		for(int i = 0; i<= envios.size(); i++)
-		{
-			enviosDTO.add(EnvioConverter.envioToDTO(envios.get(i)));
-		}
+		
+		for (Envio envio : envios)
+			enviosDTO.add(EnvioConverter.envioToDTO(envio));
 		
 		return enviosDTO;
 	}

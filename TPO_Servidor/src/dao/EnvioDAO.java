@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -167,13 +168,41 @@ public class EnvioDAO {
 	@SuppressWarnings("unchecked")
 	public List<Envio> obtenerEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado){
 		Session session = sf.openSession();
+		List<Envio> envios = new ArrayList<Envio>();
+		String query =  "select e from Envio e ";
 		
-		List<Envio> envios = session.createQuery(
-				"select e from Envio e "
-				+ "JOIN e.sucursalDestino s "
-				+ "WHERE s.id = :idSucDestino")
-				.setParameter("idSucDestino", sucDestino.getNumero())
-				.list();
+		if (sucDestino != null || estado != 0)
+		{
+			if (sucDestino != null && estado == 0)
+			{
+			envios = session.createQuery(query 
+					+ "JOIN e.sucursalDestino s "
+					+ "WHERE s.id = :idSucDestino")
+					.setParameter("idSucDestino", sucDestino.getNumero())
+					.list();
+			}
+			else if (sucDestino == null && estado != 0)
+				{
+				envios = session.createQuery(query 
+						+ "JOIN e.estadoEnvio s "
+						+ "WHERE s.id = :idEstadoEnvio")
+						.setParameter("idEstadoEnvio", estado)
+						.list();
+				}
+			else
+			{
+				envios = session.createQuery(query
+						+ "JOIN e.sucursalDestino s "
+						+ "JOIN e.estadoEnvio v "
+						+ "WHERE s.id = :idSucDestino and v.id = :idEstadoEnvio")
+						.setParameter("idSucDestino", sucDestino.getNumero())
+						.setParameter("idEstadoEnvio", estado)
+						.list();
+			}
+		}
+		else
+			envios = session.createQuery(query).list();
+			
 		session.close();
 		return envios;
 	}

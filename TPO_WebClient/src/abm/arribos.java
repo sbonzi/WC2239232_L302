@@ -63,13 +63,13 @@ public class arribos extends HttpServlet {
         	 try 
         	 {
         		 SucursalDTO suc = null;
-        		 if (request.getParameter("txtSUCDESTINO")==null || request.getParameter("txtSUCDESTINO").length() < 1)
+        		 if (request.getParameter("txtSUCDESTINO")!=null && request.getParameter("txtSUCDESTINO").length() >= 1)
             	 {
         			 suc = new BusinessDelegate().getBusinessService().getSucursalById(Integer.parseInt(request.getParameter("txtSUCDESTINO").toString()));
             	 }
         		 
         		 int estado =0;
-        		 if (request.getParameter("txtESTADO")==null || request.getParameter("txtESTADO").length() < 1)
+        		 if (request.getParameter("txtESTADO")!=null && request.getParameter("txtESTADO").length() >= 1)
             	 {
         			 estado = Integer.parseInt(request.getParameter("txtESTADO").toString());
             	 }
