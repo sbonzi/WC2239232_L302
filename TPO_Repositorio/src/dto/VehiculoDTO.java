@@ -20,6 +20,7 @@ public abstract class VehiculoDTO implements Serializable{
 	private String patente;
 	private Float peso;
 	private Float tara;
+	private int volumen;
 	
 	public VehiculoDTO() {
 		super();
@@ -119,7 +120,15 @@ public abstract class VehiculoDTO implements Serializable{
 	public void setTara(Float tara) {
 		this.tara = tara;
 	}
-	
+
+	public int getVolumen() {
+		return volumen;
+	}
+
+	public void setVolumen(int volumen) {
+		this.volumen = volumen;
+	}
+
 	@Override
 	public String toString(){
 		return "[marca=" + marca + ",modelo=" + modelo + ",patente=" + patente + "]";

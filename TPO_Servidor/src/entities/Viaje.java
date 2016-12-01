@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import util.Constantes;
 import util.GenerarArchivoXML;
 
@@ -38,10 +40,6 @@ public class Viaje implements Serializable{
 	@Column(name="id")
 	private int id;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_Chofer")
-	private Empleado chofer;
-	
 	@OneToMany(mappedBy="viaje",cascade = CascadeType.ALL)
 	private List<Envio> envios;
 	
@@ -56,38 +54,22 @@ public class Viaje implements Serializable{
 	@JoinColumn(name="id_EstadoViaje")
 	private EstadoViaje estadoViaje;
 	
+	@Column(name = "fechaSalida", columnDefinition="DATE")
+	@Type(type="date")
 	private Date fechaSalida;
 	
+	@Column(name = "fechaLlegada", columnDefinition="DATE")
+	@Type(type="date")
 	private Date fechaLlegada;
 	
-	/*
-	@OneToMany(mappedBy="viaje",cascade = CascadeType.ALL)
-	@JoinColumn(name="id_Viaje")
-	private List<Ruta> rutas;
-	*/
-	
-	/*
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_SucursalOrigen")
-	private Sucursal sucursalOrigen;
-	*/
-	
-	/*
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_SucursalDestino")
-	private List<Sucursal> sucursalesDestino;
-	*/
-
 	public Viaje() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Viaje(Empleado chofer,
-				 List<Envio> envios,
+	public Viaje(List<Envio> envios,
 				 Vehiculo vehiculoDesignado) {
 		super();
-		this.chofer = chofer;
 		this.envios = envios;
 		this.vehiculoDesignado = vehiculoDesignado;
 	}
@@ -98,14 +80,6 @@ public class Viaje implements Serializable{
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Empleado getChofer() {
-		return chofer;
-	}
-
-	public void setChofer(Empleado chofer) {
-		this.chofer = chofer;
 	}
 
 	public List<Envio> getEnvios() {
@@ -163,36 +137,6 @@ public class Viaje implements Serializable{
 	public void setFechaLlegada(Date fechaLlegada) {
 		this.fechaLlegada = fechaLlegada;
 	}
-
-	/*
-	public List<Ruta> getRutas() {
-		return rutas;
-	}
-
-	public void setRutas(List<Ruta> rutas) {
-		this.rutas = rutas;
-	}
-	*/
-	
-	/*
-	public Sucursal getSucursalOrigen() {
-		return sucursalOrigen;
-	}
-
-	public void setSucursalOrigen(Sucursal sucursalOrigen) {
-		this.sucursalOrigen = sucursalOrigen;
-	}
-	*/
-	
-	/*
-	public List<Sucursal> getSucursalesDestino() {
-		return sucursalesDestino;
-	}
-
-	public void setSucursalesDestino(List<Sucursal> sucursalDestino) {
-		this.sucursalesDestino = sucursalDestino;
-	}
-	*/
 
 	/**
 	 * Asigna al viaje el mejor camino para llegar a cada sucursal destino
@@ -318,35 +262,4 @@ public class Viaje implements Serializable{
 		}, 0, Constantes.tiempo_delay_envio_mje_xml);
 	}
 	
-	/**
-	 * Verifica si el viaje está en condiciones de aceptar más envios
-	 * dada la capacidad del vehiculo asignado
-	 * @return
-	 */
-	public boolean tengoCapacidad() {
-		boolean tengoCapacidad 			= false;
-		List<Envio> enviosEnVehiculo 	= this.getEnvios();
-		float pesoTotalEnvios 			= 0;
-		
-		if(enviosEnVehiculo.size() > 0){
-			float pesoMaximo = this.getVehiculoDesignado().getPeso();
-			
-			//Verificamos el peso total de las cargas de cada envio asignados al viaje
-			for(Envio e:enviosEnVehiculo){
-				for(Carga c:e.getCargas()){
-					pesoTotalEnvios = pesoTotalEnvios + c.getPeso();
-				}
-			}
-			
-			if(pesoTotalEnvios <  pesoMaximo){
-				tengoCapacidad = true;
-			}else{
-				tengoCapacidad = false;
-			}
-			
-		}else{
-			tengoCapacidad = true;
-		}
-		return tengoCapacidad;
-	}
 }

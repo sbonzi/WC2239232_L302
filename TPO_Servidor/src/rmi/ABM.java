@@ -25,6 +25,7 @@ import exceptions.ParticularException;
 import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
+import exceptions.EstadoEnvioException;
 import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
@@ -37,6 +38,7 @@ import srv.DestinatarioSRV;
 import srv.EmpleadoSRV;
 import srv.EmpresaSeguridadSRV;
 import srv.EnvioSRV;
+import srv.EstadoEnvioSRV;
 import srv.PaisSRV;
 import srv.ParticularSRV;
 import srv.ProvinciaSRV;
@@ -221,6 +223,16 @@ public class ABM extends UnicastRemoteObject implements IABM{
 	public List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal)
 			throws RemoteException, VehiculoException {
 		return VehiculoSRV.getVehiculosDisponiblesPorSucursal(sucursal);
+	}
+
+	@Override
+	public List<EstadoEnvioDTO> getEstadosEnvios() throws RemoteException, EstadoEnvioException {
+		return EstadoEnvioSRV.getEstadosEnvio();
+	}
+
+	@Override
+	public EstadoEnvioDTO getEstadoEnvio(int idEstadoEnvio) throws RemoteException, EstadoEnvioException {
+		return EstadoEnvioSRV.getEstadoEnvioById(idEstadoEnvio);
 	}
 
 }

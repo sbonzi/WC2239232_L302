@@ -42,6 +42,7 @@ import exceptions.ServicioTercerizadoException;
 import exceptions.SucursalException;
 import exceptions.VehiculoException;
 import exceptions.ViajeException;
+import exceptions.EstadoEnvioException;
 import interfaz.ISistemaEnvios;
 import util.Constantes;
 
@@ -303,5 +304,22 @@ public class BusinessDelegate implements ISistemaEnvios{
 			throws RemoteException, VehiculoException {
 		return businessService.getVehiculosDisponiblesPorSucursal(sucursal);
 	}
+
+	@Override
+	public List<EstadoEnvioDTO> getEstadosEnvios() throws RemoteException, EstadoEnvioException {
+		return businessService.getEstadosEnvios();
+	}
+
+	@Override
+	public EstadoEnvioDTO getEstadoEnvio(int idEstadoEnvio) throws RemoteException, EstadoEnvioException {
+		return businessService.getEstadoEnvio(idEstadoEnvio);
+	}
+	
+	@Override
+	public ViajeDTO crearViaje(List<EnvioDTO> envios, VehiculoDTO vehiculo)
+			throws EnvioException, VehiculoException, RemoteException {
+		return businessService.crearViaje(envios, vehiculo);
+	}
+
 
 }

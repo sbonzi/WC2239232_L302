@@ -30,6 +30,7 @@ import exceptions.EmpleadoException;
 import exceptions.EmpresaSeguridadException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
+import exceptions.EstadoEnvioException;
 import exceptions.FacturaException;
 import exceptions.MantenimientoException;
 import exceptions.PaisException;
@@ -48,6 +49,7 @@ import srv.EmpleadoSRV;
 import srv.EmpresaSeguridadSRV;
 import srv.EmpresaSeguroSRV;
 import srv.EnvioSRV;
+import srv.EstadoEnvioSRV;
 import srv.FacturaSRV;
 import srv.PaisSRV;
 import srv.ParticularSRV;
@@ -314,5 +316,21 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	public List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal)
 			throws RemoteException, VehiculoException {
 		return VehiculoSRV.getVehiculosDisponiblesPorSucursal(sucursal);
+	}
+	
+	@Override
+	public List<EstadoEnvioDTO> getEstadosEnvios() throws RemoteException, EstadoEnvioException {
+		return EstadoEnvioSRV.getEstadosEnvio();
+	}
+
+	@Override
+	public EstadoEnvioDTO getEstadoEnvio(int idEstadoEnvio) throws RemoteException, EstadoEnvioException {
+		return EstadoEnvioSRV.getEstadoEnvioById(idEstadoEnvio);
+	}
+
+	@Override
+	public ViajeDTO crearViaje(List<EnvioDTO> envios, VehiculoDTO vehiculo)
+			throws EnvioException, VehiculoException, RemoteException {
+		return ViajeSRV.crearViaje(envios,vehiculo);
 	}
 }

@@ -8,6 +8,10 @@
 <%@ page import= "java.util.List"%>
 <%@ page import= "java.util.ArrayList"%>
 <%@ page import= "config.viewStateAbmEnvios"%>
+<%@ page import= "businessDelegate.BusinessDelegate"%>
+<%@ page import= "exceptions.SucursalException"%>
+<%@ page import= "exceptions.PaisException"%>
+<%@ page import= "exceptions.ProvinciaException"%>
 <%@ page import= "java.util.Iterator"%>
 
 <!DOCTYPE html>
@@ -73,6 +77,106 @@
 					"none", //errorDisplay
 					""); //error
 		}
+		
+		 if(request.getSession().getAttribute("sucursales")==null)
+	        {
+	        	List<SucursalDTO> sucursales = new ArrayList<SucursalDTO>();
+				try 
+				{
+					sucursales = new BusinessDelegate().getBusinessService().getSucursales();
+					request.getSession().setAttribute("sucursales", sucursales);
+					request.setAttribute("sucursales", sucursales);
+				} 
+				catch (SucursalException e) 
+				{
+					 viewState = new viewStateAbmEnvios("none",	 //divParticular
+								"",  //divSeleccionCliente
+								"",  //ctlSearchCliente
+							"none",  //ctlNewCliente
+							"none",  //divBuscarClienteParticular
+								"",  //divNuevoClienteParticular
+							"none",  //ctlClienteEnvio
+							"none",  //divCargasParticular
+							"none",  //ctlCargas
+							"none",  //divDestinatario
+							"none",  //ctlDestinatarioEnvio
+							"none", //divGuardar
+							"none",
+	 	    				"", //divErrorArribos
+	 	    				"HA OCURRIDO UN ERROR AL OBTENER LAS SUCURSALES"); //error
+				}
+	        }
+	        else
+	        {
+	        	request.setAttribute("sucursales", request.getSession().getAttribute("sucursales"));
+	        }
+		 
+		 List<PaisDTO> paises = new ArrayList<PaisDTO>();
+		 
+		 if(request.getSession().getAttribute("paises")==null)
+	        {
+				try 
+				{
+					paises = new BusinessDelegate().getBusinessService().getPaises();
+					request.getSession().setAttribute("paises", paises);
+					request.setAttribute("paises", paises);
+				} 
+				catch (PaisException e) 
+				{
+					 viewState = new viewStateAbmEnvios("none",	 //divParticular
+								"",  //divSeleccionCliente
+								"",  //ctlSearchCliente
+							"none",  //ctlNewCliente
+							"none",  //divBuscarClienteParticular
+								"",  //divNuevoClienteParticular
+							"none",  //ctlClienteEnvio
+							"none",  //divCargasParticular
+							"none",  //ctlCargas
+							"none",  //divDestinatario
+							"none",  //ctlDestinatarioEnvio
+							"none", //divGuardar
+							"none",
+	 	    				"", //divErrorArribos
+	 	    				"HA OCURRIDO UN ERROR AL OBTENER LOS PAISES"); //error
+				}
+	        }
+	        else
+	        {
+	        	request.setAttribute("paises", request.getSession().getAttribute("paises"));
+	        }
+		 
+		 if(request.getSession().getAttribute("provincias")==null && paises.size() > 0)
+	        {
+	        	List<ProvinciaDTO> provincias = new ArrayList<ProvinciaDTO>();
+				try 
+				{
+					provincias = new BusinessDelegate().getBusinessService().getProvincias(paises.get(0));
+					request.getSession().setAttribute("provincias", provincias);
+					request.setAttribute("provincias", provincias);
+				} 
+				catch (ProvinciaException e) 
+				{
+					 viewState = new viewStateAbmEnvios("none",	 //divParticular
+								"",  //divSeleccionCliente
+								"",  //ctlSearchCliente
+							"none",  //ctlNewCliente
+							"none",  //divBuscarClienteParticular
+								"",  //divNuevoClienteParticular
+							"none",  //ctlClienteEnvio
+							"none",  //divCargasParticular
+							"none",  //ctlCargas
+							"none",  //divDestinatario
+							"none",  //ctlDestinatarioEnvio
+							"none", //divGuardar
+							"none",
+	 	    				"", //divErrorArribos
+	 	    				"HA OCURRIDO UN ERROR AL OBTENER LAS PROVINCIAS"); //error
+				}
+	        }
+	        else
+	        {
+	        	request.setAttribute("provincias", request.getSession().getAttribute("provincias"));
+	        }
 	%>
 	<div class="control-page" id="divSeleccionCliente" style="display:<%=viewState.getDivSeleccionClienteDisplay()%>">
 	    <div class="control-form">
@@ -328,9 +432,43 @@
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">PAIS</p></td>
-	    							<td><input name="txtNewPaisDestinatario" type="number" width="100px"/></td>
+	    							<td>
+	    								<input name="txtNewPaisDestinatario" type="number" width="100px"/>
+				    					<select name="cmbPAIS">
+				    					<option value="0" selected>(please select:)</option>
+				    					<%
+											List<PaisDTO> p = (List<PaisDTO>)request.getAttribute("paises");
+											if(p != null)
+											{
+								 				for(PaisDTO pais: p)
+								 				{
+										%>
+											<option value="<%=pais.getId()%>"><%=pais.getDescripcion()%></option>
+										<%
+												}
+											}
+										%>
+										</select>
+	    							</td>
 	    							<td><p class="formLabel" style="width: 200px">PROVINCIA</p></td>
-	    							<td><input name="txtNewProvinciaDestinatario" type="number" width="100px"/></td>
+	    							<td>
+	    								<input name="txtNewProvinciaDestinatario" type="number" width="100px"/>
+				    					<select name="cmbPAIS">
+				    					<option value="0" selected>(please select:)</option>
+				    					<%
+											List<ProvinciaDTO> pr = (List<ProvinciaDTO>)request.getAttribute("provincias");
+											if(pr != null)
+											{
+								 				for(ProvinciaDTO provincia: pr)
+								 				{
+										%>
+											<option value="<%=provincia.getId()%>"><%=provincia.getDescripcion()%></option>
+										<%
+												}
+											}
+										%>
+										</select>
+	    							</td>
 	    							<td><p class="formLabel">PISO</p></td>
 	    							<td><input name="txtNewPisoDestinatario" type="number" width="70px"/></td>
 	    						</tr>
@@ -344,7 +482,24 @@
 	    						</tr>
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">SUCURSAL DESTINO</p></td>
-	    							<td><input name="txtSucursalDestino" type="number" width="100px"/></td>
+	    							<td>
+	    								<input name="txtSucursalDestino" type="number" width="100px"/>
+				    					<select name="cmbSUCDESTINO">
+				    					<option value="0" selected>(please select:)</option>
+				    					<%
+											List<SucursalDTO> s = (List<SucursalDTO>)request.getAttribute("sucursales");
+											if(s != null)
+											{
+								 				for(SucursalDTO sucursal: s)
+								 				{
+										%>
+											<option value="<%=sucursal.getNumero()%>"><%=sucursal.getNombre()%></option>
+										<%
+												}
+											}
+										%>
+										</select>
+	    							</td>
 	    							<td colspan="4"  style="vertical-align: bottom;" align="right">
 	    								<input type="submit" style="cursor: pointer" formaction="abmEnvios" value="Agregar Destinatario">
 	    							</td>
@@ -366,10 +521,10 @@
 						d.setProvincia(new ProvinciaDTO());
 					}
 					
-					SucursalDTO s = (SucursalDTO)request.getAttribute("sucDestino");
-					if(s == null)
+					SucursalDTO sles = (SucursalDTO)request.getAttribute("sucDestino");
+					if(sles == null)
 					{
-						s = new SucursalDTO();
+						sles = new SucursalDTO();
 					}
 				%>
     			
@@ -387,7 +542,7 @@
 						    		<th scope="col"><%=d.getDepartamento()%></th>
 						    		<th scope="col"><%=d.getNroDocumento()%></th>
 						    		<th scope="col"><%=d.getPersonasAutorizadas()%></th>
-						    		<th scope="col"><%="Destino: " + s.getNombre()%></th>
+						    		<th scope="col"><%="Destino: " + sles.getNombre()%></th>
 					    		</tr>
 				    		</thead>
     					</table>

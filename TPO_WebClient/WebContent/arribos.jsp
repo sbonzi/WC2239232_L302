@@ -6,6 +6,9 @@
 <%@ page import= "java.util.Iterator"%>
 <%@ page import= "java.util.List"%>
 <%@ page import= "java.util.ArrayList"%>
+<%@ page import= "businessDelegate.BusinessDelegate"%>
+<%@ page import= "exceptions.SucursalException"%>
+<%@ page import= "exceptions.EstadoEnvioException"%>
 
 <!DOCTYPE html>
 <html>
@@ -37,6 +40,50 @@
 				""); //error
 					 
 		}
+		
+		 if(request.getSession().getAttribute("sucursales")==null)
+	        {
+	        	List<SucursalDTO> sucursales = new ArrayList<SucursalDTO>();
+				try 
+				{
+					sucursales = new BusinessDelegate().getBusinessService().getSucursales();
+					request.getSession().setAttribute("sucursales", sucursales);
+					request.setAttribute("sucursales", sucursales);
+				} 
+				catch (SucursalException e) 
+				{
+					viewState = new viewStateArribos("", //divFiltroArribos
+	 	    				"none", //divGrillaArribos
+	 	    				"", //divErrorArribos
+	 	    				"HA OCURRIDO UN ERROR AL OBTENER LAS SUCURSALES"); //error
+				}
+	        }
+	        else
+	        {
+	        	request.setAttribute("sucursales", request.getSession().getAttribute("sucursales"));
+	        }
+		 
+		 if(request.getSession().getAttribute("estadosEnvios")==null)
+	        {
+	        	List<EstadoEnvioDTO> estados = new ArrayList<EstadoEnvioDTO>();
+				try 
+				{
+					estados = new BusinessDelegate().getBusinessService().getEstadosEnvios();
+					request.getSession().setAttribute("estadosEnvios", estados);
+					request.setAttribute("estadosEnvios", estados);
+				} 
+				catch (EstadoEnvioException e) 
+				{
+					viewState = new viewStateArribos("", //divFiltroArribos
+	 	    				"none", //divGrillaArribos
+	 	    				"", //divErrorArribos
+	 	    				"HA OCURRIDO UN ERROR AL OBTENER LOS ESTADOS DE LOS ENVIOS"); //error
+				}
+	        }
+	        else
+	        {
+	        	request.setAttribute("estadosEnvios", request.getSession().getAttribute("estadosEnvios"));
+	        }
 	%>
 	
 	<div class="normal-page">
@@ -59,13 +106,41 @@
 				    					<p class="formLabel">SUCURSAL DESTINO</p>
 				    				</td>
 				    				<td align="left">
-				    					<input name="txtSUCDESTINO" type="number" width="400px"/>
+				    					<select name="cmbSUCDESTINO">
+				    					<option value="0" selected>(please select:)</option>
+				    					<%
+											List<SucursalDTO> s = (List<SucursalDTO>)request.getAttribute("sucursales");
+											if(s != null)
+											{
+								 				for(SucursalDTO sucursal: s)
+								 				{
+										%>
+											<option value="<%=sucursal.getNumero()%>"><%=sucursal.getNombre()%></option>
+										<%
+												}
+											}
+										%>
+										</select>
 				   					</td>
 				   					<td align="left">
 				    					<p class="formLabel">ESTADO ENVIO</p>
 				    				</td>
 				    				<td align="left">
-				    					<input name="txtESTADO" type="number" width="400px"/>
+				    					<select name="cmbESTADO">
+				    					<option value="0" selected>(please select:)</option>
+				    					<%
+											List<EstadoEnvioDTO> es = (List<EstadoEnvioDTO>)request.getAttribute("estadosEnvios");
+											if(es != null)
+											{
+								 				for(EstadoEnvioDTO estado: es)
+								 				{
+										%>
+											<option value="<%=estado.getId()%>"><%=estado.getDescripcion()%></option>
+										<%
+												}
+											}
+										%>
+										</select>
 				   					</td>
 				   					<td align="right">
 				   						<input type="submit" style="cursor: pointer" formaction="arribos" value="FILTRAR">
@@ -83,7 +158,7 @@
 		    				<table style="width:100%">
 			    				<%
 								EnvioDTO aux;
-								List<EnvioDTO> e = (List<EnvioDTO>)request.getAttribute("envios");
+			    				List<EnvioDTO> e = (List<EnvioDTO>)request.getAttribute("envios");
 								if(e != null)
 								{
 					 				for(Iterator<EnvioDTO> i = e.iterator(); i.hasNext();)

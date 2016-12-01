@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 
 import converters.EnvioConverter;
+import converters.VehiculoConverter;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.VehiculoDTO;
@@ -93,5 +94,21 @@ public class ViajeDAO {
 											+ " WHERE estadoEnvio = 1").list();
 		session.close();
 		return list;
+	}
+	
+	public Viaje crearViaje(List<EnvioDTO> envios,VehiculoDTO vehiculo){
+		Session session = sf.openSession();
+		session.beginTransaction();
+		
+		Viaje viaje = new Viaje(EnvioConverter.enviosToEntity(envios),
+								VehiculoConverter.vehiculoToEntity(vehiculo));
+		
+		session.save(viaje);
+		
+		session.getTransaction().commit();
+
+		session.close();
+		
+		return viaje;
 	}
 }

@@ -1,6 +1,7 @@
 package abm;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,6 +17,7 @@ import dto.EnvioDTO;
 import dto.EstadoEnvioDTO;
 import dto.SucursalDTO;
 import exceptions.EnvioException;
+import exceptions.EstadoEnvioException;
 import exceptions.SucursalException;
 
 public class arribos extends HttpServlet {
@@ -32,10 +34,63 @@ public class arribos extends HttpServlet {
 		 {
  			response.sendRedirect("/TPO_WebClient/login.jsp");
  			misession.removeAttribute("envios");
+ 			misession.removeAttribute("sucursales");
 		 }
 		
 		String action = request.getParameter("action");
         String jspPage = "/arribos.jsp";
+        
+        if(misession.getAttribute("sucursales")==null)
+        {
+        	List<SucursalDTO> sucursales = new ArrayList<SucursalDTO>();
+			try 
+			{
+				sucursales = new BusinessDelegate().getBusinessService().getSucursales();
+				misession.setAttribute("sucursales", sucursales);
+				request.setAttribute("sucursales", sucursales);
+			} 
+			catch (SucursalException e) 
+			{
+				viewStateArribos viewState = new viewStateArribos("", //divFiltroArribos
+ 	    				"none", //divGrillaArribos
+ 	    				"", //divErrorArribos
+ 	    				"HA OCURRIDO UN ERROR AL OBTENER LAS SUCURSALES"); //error
+				
+				request.setAttribute("viewState", viewState);
+	            jspPage = "/arribos.jsp";
+	            dispatch(jspPage, request, response);
+			}
+        }
+        else
+        {
+        	request.setAttribute("sucursales", misession.getAttribute("sucursales"));
+        }
+        
+        if(misession.getAttribute("estadosEnvios")==null)
+        {
+        	List<EstadoEnvioDTO> estados = new ArrayList<EstadoEnvioDTO>();
+			try 
+			{
+				estados = new BusinessDelegate().getBusinessService().getEstadosEnvios();
+				misession.setAttribute("estadosEnvios", estados);
+				request.setAttribute("estadosEnvios", estados);
+			} 
+			catch (EstadoEnvioException e) 
+			{
+				viewStateArribos viewState = new viewStateArribos("", //divFiltroArribos
+ 	    				"none", //divGrillaArribos
+ 	    				"", //divErrorArribos
+ 	    				"HA OCURRIDO UN ERROR AL OBTENER LOS ESTADOS DE LOS ENVIOS"); //error
+				
+				request.setAttribute("viewState", viewState);
+	            jspPage = "/arribos.jsp";
+	            dispatch(jspPage, request, response);
+			}
+        }
+        else
+        {
+        	request.setAttribute("estadosEnvios", misession.getAttribute("estadosEnvios"));
+        }
         
 
         if ((action == null) || (action.length() < 1))
@@ -63,15 +118,15 @@ public class arribos extends HttpServlet {
         	 try 
         	 {
         		 SucursalDTO suc = null;
-        		 if (request.getParameter("txtSUCDESTINO")!=null && request.getParameter("txtSUCDESTINO").length() >= 1)
+        		 if (request.getParameter("cmbSUCDESTINO")!=null && Integer.parseInt(request.getParameter("cmbSUCDESTINO")) != 0)
             	 {
-        			 suc = new BusinessDelegate().getBusinessService().getSucursalById(Integer.parseInt(request.getParameter("txtSUCDESTINO").toString()));
+        			 suc = new BusinessDelegate().getBusinessService().getSucursalById(Integer.parseInt(request.getParameter("cmbSUCDESTINO").toString()));
             	 }
         		 
         		 int estado =0;
-        		 if (request.getParameter("txtESTADO")!=null && request.getParameter("txtESTADO").length() >= 1)
+        		 if (request.getParameter("cmbESTADO")!=null && Integer.parseInt(request.getParameter("cmbESTADO")) != 0)
             	 {
-        			 estado = Integer.parseInt(request.getParameter("txtESTADO").toString());
+        			 estado = Integer.parseInt(request.getParameter("cmbESTADO").toString());
             	 }
         		
 				List<EnvioDTO> envios = new BusinessDelegate().getBusinessService().getEnviosPorSucursalDestinoEstado(suc, estado);

@@ -10,7 +10,6 @@ public class ViajeDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = -6495922772662012832L;
 	
-	private EmpleadoDTO chofer;
 	private List<EnvioDTO> envios;
 	private String latitud;
 	private String longitud;
@@ -21,22 +20,10 @@ public class ViajeDTO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public ViajeDTO(EmpleadoDTO chofer, List<EnvioDTO> envios, String latitud, String longitud,
-			VehiculoDTO vehiculoDesignado) {
+	public ViajeDTO(List<EnvioDTO> envios,VehiculoDTO vehiculoDesignado) {
 		super();
-		this.chofer = chofer;
 		this.envios = envios;
-		this.latitud = latitud;
-		this.longitud = longitud;
 		this.vehiculoDesignado = vehiculoDesignado;
-	}
-
-	public EmpleadoDTO getChofer() {
-		return chofer;
-	}
-
-	public void setChofer(EmpleadoDTO chofer) {
-		this.chofer = chofer;
 	}
 
 	public List<EnvioDTO> getEnvios() {
@@ -73,7 +60,7 @@ public class ViajeDTO implements Serializable{
 	
 	@Override
 	public String toString(){
-		return "Viaje:[chofer=" + chofer + ",envios=(" + envios + "),vehiculo=" + vehiculoDesignado + "]";
+		return "Viaje:[envios=(" + envios + "),vehiculo=" + vehiculoDesignado + "]";
 	}
 
 }

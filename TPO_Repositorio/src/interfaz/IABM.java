@@ -24,6 +24,7 @@ import exceptions.ParticularException;
 import exceptions.ProvinciaException;
 import exceptions.EmpresaSeguroException;
 import exceptions.EnvioException;
+import exceptions.EstadoEnvioException;
 import exceptions.MantenimientoException;
 import exceptions.PaisException;
 import exceptions.RolEmpleadoException;
@@ -119,4 +120,8 @@ public interface IABM extends Remote{
 	//vehiculos disponibles por sucursal
 	List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal) throws RemoteException,VehiculoException;
 
+	List<EstadoEnvioDTO> getEstadosEnvios() throws RemoteException,EstadoEnvioException;
+	
+	EstadoEnvioDTO getEstadoEnvio(int idEstadoEnvio)throws RemoteException,EstadoEnvioException;
+	
 }

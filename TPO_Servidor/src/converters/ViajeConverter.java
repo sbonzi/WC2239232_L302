@@ -9,10 +9,7 @@ import entities.Viaje;
 public class ViajeConverter {
 
 	public static ViajeDTO viajeToDTO(Viaje viaje) {
-		ViajeDTO viajeDTO = new ViajeDTO(EmpleadoConverter.empleadoToDTO(viaje.getChofer()),
-									  	 EnvioConverter.enviosToDTO(viaje.getEnvios()),
-									  	 viaje.getLatitud(),
-									  	 viaje.getLongitud(),
+		ViajeDTO viajeDTO = new ViajeDTO(EnvioConverter.enviosToDTO(viaje.getEnvios()),
 									  	 VehiculoConverter.vehiculoToDTO(viaje.getVehiculoDesignado()));
 		return viajeDTO;
 	}
