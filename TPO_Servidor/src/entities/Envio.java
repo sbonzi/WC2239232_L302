@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Type;
+
 
 @Entity
 @Table(name="Envio")
@@ -47,7 +49,8 @@ public class Envio implements Serializable{
 	@Column(name="cobroEnOrigen")
 	private boolean cobroOrigen;
 	
-	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha", columnDefinition="DATE")
+	@Type(type="date")
 	private Date fechaMaxLlegada;
 	
 	private boolean retiroEnSucursal;

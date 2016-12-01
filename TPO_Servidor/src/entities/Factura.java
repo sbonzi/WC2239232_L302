@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name="Factura")
 public class Factura implements Serializable{
@@ -28,6 +30,8 @@ public class Factura implements Serializable{
 	@Column(name="id", nullable = false)
 	private int id;
 	
+	@Column(name = "fecha", columnDefinition="DATE")
+	@Type(type="date")
 	private Date fecha;
 	
 	@OneToMany(mappedBy="factura",cascade = CascadeType.ALL)

@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name="MovimientoEmpresa")
 public class MovimientoEmpresa implements Serializable{
@@ -26,6 +28,9 @@ public class MovimientoEmpresa implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
 	private int id;
+	
+	@Column(name = "fecha", columnDefinition="DATE")
+	@Type(type="date")
 	private Date fecha;
 	private float monto;
 	
