@@ -101,10 +101,21 @@ public class GenerarViaje extends TimerTask {
 										if((vehiculo.getTara() >= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera))){
 											if((vehiculo.getTara() * 0.2 /*0.7*/) <= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera)){
 												
-												System.out.println("**Se detectó un envio igual o mayor al 70% de la capacidad del vehiculo, genera Viaje**");
-												ViajeDTO viaje = new ViajeDTO(enviosSucDestino,vehiculo);
+												//Se unifican los envios pendientes y el actual
+												List<EnvioDTO> enviosUnificados = new ArrayList<EnvioDTO>();
+												enviosUnificados.addAll(enviosEnEspera);
+												enviosUnificados.add(envioSucDestino);
 												
-												ViajeDTO ViajeDTO = new BusinessDelegate().getBusinessService().crearViaje(enviosSucDestino, vehiculo);
+												System.out.println("**Se detectó un envio igual o mayor al 70% de la capacidad del vehiculo, genera Viaje**");
+												
+												/**
+												 * Sebas: Fijate en el ViajeDAO que puse el metodo actualizarEstadoEnvios(), no lo pude probar.
+												 */
+												
+												ViajeDTO ViajeDTO = new BusinessDelegate().getBusinessService().crearViaje(enviosUnificados, vehiculo);
+												if(ViajeDTO != null){
+													System.out.println("**Viaje creado exitosamente.**");
+												}
 												
 												//Actualizamos datos del vehiculo
 												vehiculo.setTara(pesoTotalCargasEnvio);
@@ -119,9 +130,14 @@ public class GenerarViaje extends TimerTask {
 											if((vehiculo.getTara() * 0.2 /*0.7*/) <= pesoTotalCargasEnvio){
 												
 												System.out.println("**Se detectó un envio igual o mayor al 70% de la capacidad del vehiculo, genera Viaje**");
-												ViajeDTO viaje = new ViajeDTO(enviosSucDestino,vehiculo);
-												
-												//TODO persistir viaje
+												//Si bien es un único envio asociado a un viaje, tiene que ir como lista
+												List<EnvioDTO> listEnvio = new ArrayList<EnvioDTO>();
+												listEnvio.add(envioSucDestino);
+	
+												ViajeDTO ViajeDTO = new BusinessDelegate().getBusinessService().crearViaje(listEnvio, vehiculo);
+												if(ViajeDTO != null){
+													System.out.println("**Viaje creado exitosamente.**");
+												}
 												
 												//Actualizamos datos del vehiculo
 												vehiculo.setTara(pesoTotalCargasEnvio);
