@@ -155,7 +155,15 @@
    				<td>
    					<div>
 	    				<form class="normal-form">
-		    				<table style="width:100%">
+		    				<table style="width:100%" class="grid-table">
+		    					<thead>
+							    	<tr>
+							    		<th scope="col">ID ENVIO</th>
+							    		<th scope="col">SUC. ORIGEN</th>
+							    		<th scope="col">SUC. DESTINO</th>
+							    		<th scope="col">ESTADO ENVIO</th>
+						    		</tr>
+					    		</thead>
 			    				<%
 								EnvioDTO aux;
 			    				List<EnvioDTO> e = (List<EnvioDTO>)request.getAttribute("envios");

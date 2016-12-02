@@ -137,4 +137,12 @@ public class Vehiculo implements Serializable{
 	public void setTara(Float tara) {
 		this.tara = tara;
 	}
+	
+	public boolean validarTara()
+	{
+		if (this.getTara() * 0.2 <= peso)
+			return true;
+		else
+			return false;
+	}
 }

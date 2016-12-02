@@ -23,9 +23,15 @@ public class ProvinciaDAO {
 		return instancia;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Provincia> getProvincias(PaisDTO pais) {
 		Session session = sf.openSession();
-		List<Provincia> list = session.createQuery("SELECT p FROM Provincia p WHERE p.habilitado = 'True' AND p.id_Pais = :idPais").setParameter("id", pais.getId()).list();
+		List<Provincia> list = session.createQuery("SELECT p FROM Provincia p "
+				+ "JOIN p.pais s "
+				+ "WHERE p.habilitado = 'True' AND s.id = :idPais")
+				.setParameter("idPais", pais.getId())
+				.list();
+		
 		session.close();
 		return list;
 	}

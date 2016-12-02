@@ -78,7 +78,8 @@ public class GenerarViaje extends TimerTask {
 						float pesoTotalEnviosEnEspera	= 0;
 						
 						List<EnvioDTO> enviosSucDestino = enviosPorSucursalDestino.get(idSucursalDestino);
-						for(EnvioDTO envioSucDestino:enviosSucDestino){
+						for(EnvioDTO envioSucDestino:enviosSucDestino)
+						{
 							System.out.println("	idEnvio: " + envioSucDestino.getIdEnvio());
 							
 							float pesoTotalCargasEnvio	= 0;
@@ -92,14 +93,19 @@ public class GenerarViaje extends TimerTask {
 							System.out.println("		peso total de las cargas: " + pesoTotalCargasEnvio);
 								
 							System.out.println("**Buscando vehiculo con capacidad para los envios..**");
-							if(vehiculos.size() > 0){
-								for(VehiculoDTO vehiculo:vehiculos){
+							if(vehiculos.size() > 0)
+							{
+								for(VehiculoDTO vehiculo:vehiculos)
+								{
 									System.out.println(vehiculo.getMarca() + " " + vehiculo.getModelo() + "(patente: " + vehiculo.getPatente() + ",tara: " + vehiculo.getTara() + ")");
 
-									if(hayEnviosEnEspera){
+									if(hayEnviosEnEspera)
+									{
 										System.out.println("**Hay envios en espera, se intenta asignar a un viaje**");
-										if((vehiculo.getTara() >= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera))){
-											if((vehiculo.getTara() * 0.2 /*0.7*/) <= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera)){
+										if((vehiculo.getTara() >= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera)) && vehiculo.isHabilitadoParaUtilizar())
+										{
+											if((vehiculo.getTara() * 0.2 /*0.7*/) <= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera))
+											{
 												
 												//Se unifican los envios pendientes y el actual
 												List<EnvioDTO> enviosUnificados = new ArrayList<EnvioDTO>();
@@ -108,26 +114,31 @@ public class GenerarViaje extends TimerTask {
 												
 												System.out.println("**Se detectó un envio igual o mayor al 70% de la capacidad del vehiculo, genera Viaje**");
 												
-												/**
-												 * Sebas: Fijate en el ViajeDAO que puse el metodo actualizarEstadoEnvios(), no lo pude probar.
-												 */
-												
 												ViajeDTO ViajeDTO = new BusinessDelegate().getBusinessService().crearViaje(enviosUnificados, vehiculo);
 												if(ViajeDTO != null){
 													System.out.println("**Viaje creado exitosamente.**");
 												}
 												
 												//Actualizamos datos del vehiculo
-												vehiculo.setTara(pesoTotalCargasEnvio);
+												//vehiculo.setTara(pesoTotalCargasEnvio);
 												vehiculo.setHabilitadoParaUtilizar(false);//vehiculoOcupado
+												
+												//inicializamos los acumuladores de envios
 												hayEnviosEnEspera = false;
+												enviosEnEspera.clear();
+												pesoTotalEnviosEnEspera = 0;
+												pesoTotalCargasEnvio =0;
 											}
 										}
-									}else{
-										if((vehiculo.getTara() >= pesoTotalCargasEnvio)){
+									}
+									else
+									{
+										if((vehiculo.getTara() >= pesoTotalCargasEnvio)  && vehiculo.isHabilitadoParaUtilizar())
+										{
 											
 											//Con 70% o más de capacidad se genera un viaje
-											if((vehiculo.getTara() * 0.2 /*0.7*/) <= pesoTotalCargasEnvio){
+											if((vehiculo.getTara() * 0.2 /*0.7*/) <= pesoTotalCargasEnvio)
+											{
 												
 												System.out.println("**Se detectó un envio igual o mayor al 70% de la capacidad del vehiculo, genera Viaje**");
 												//Si bien es un único envio asociado a un viaje, tiene que ir como lista
@@ -140,9 +151,15 @@ public class GenerarViaje extends TimerTask {
 												}
 												
 												//Actualizamos datos del vehiculo
-												vehiculo.setTara(pesoTotalCargasEnvio);
+												//vehiculo.setTara(pesoTotalCargasEnvio);
 												vehiculo.setHabilitadoParaUtilizar(false);//vehiculoOcupado
-											}else{
+												pesoTotalEnviosEnEspera = 0;
+												pesoTotalCargasEnvio =0;
+												enviosEnEspera.clear();
+												hayEnviosEnEspera = false;
+											}
+											else
+											{
 												//No genera viaje aún, sigue juntando envios intentando llenar el vehiculo
 												enviosEnEspera.add(envioSucDestino);
 												pesoTotalEnviosEnEspera = pesoTotalEnviosEnEspera + pesoTotalCargasEnvio;
@@ -153,7 +170,6 @@ public class GenerarViaje extends TimerTask {
 											break; // No sigue recorriendo los vehiculos disponibles
 										}
 									}
-									
 								}
 							}else{
 								System.out.println("Sin vehiculos");
@@ -180,7 +196,7 @@ public class GenerarViaje extends TimerTask {
     public static void iniciar(){
         TimerTask timerTask = new GenerarViaje();
         Timer timer = new Timer(); 
-        timer.scheduleAtFixedRate(timerTask, 0, 5000);
+        timer.scheduleAtFixedRate(timerTask, 0, 20000);
     }
 
 }

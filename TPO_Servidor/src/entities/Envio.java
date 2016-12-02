@@ -49,7 +49,7 @@ public class Envio implements Serializable{
 	@Column(name="cobroEnOrigen")
 	private boolean cobroOrigen;
 	
-	@Column(name = "fecha", columnDefinition="DATE")
+	@Column(name = "fechaMaxLlegada", columnDefinition="DATE")
 	@Type(type="date")
 	private Date fechaMaxLlegada;
 	

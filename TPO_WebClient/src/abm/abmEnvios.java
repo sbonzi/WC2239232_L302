@@ -468,13 +468,13 @@ public class abmEnvios extends HttpServlet {
         		 displayError = "";
         	 }
         	 
-        	 if (request.getParameter("txtNewPaisDestinatario")==null || request.getParameter("txtNewPaisDestinatario").length() < 1)
+        	 if (request.getParameter("cmbPAIS")==null ||  Integer.parseInt(request.getParameter("cmbPAIS")) == 0)
         	 {
         		 error = "DEBE INDICAR EL PAIS DEL DESTINATARIO";
         		 displayError = "";
         	 }
         	         	 
-        	 if (request.getParameter("txtNewProvinciaDestinatario")==null || request.getParameter("txtNewProvinciaDestinatario").length() < 1)
+        	 if (request.getParameter("cmbPROVINCIA")==null ||  Integer.parseInt(request.getParameter("cmbPROVINCIA")) == 0)
         	 {
         		 error = "DEBE INDICAR LA PROVINCIA DEL DESTINATARIO";
         		 displayError = "";
@@ -504,7 +504,7 @@ public class abmEnvios extends HttpServlet {
         		 displayError = "";
         	 }
         	 
-        	 if (request.getParameter("txtSucursalDestino")==null || request.getParameter("txtSucursalDestino").length() < 1)
+        	 if (request.getParameter("cmbSUCDESTINO")==null || Integer.parseInt(request.getParameter("cmbSUCDESTINO")) == 0)
         	 {
         		 error = "DEBE INDICAR LA SUCURSAL DESTINO DEL DESTINATARIO";
         		 displayError = "";
@@ -513,7 +513,7 @@ public class abmEnvios extends HttpServlet {
         	 PaisDTO pais = null;
 			 try 
 			 {
-			 	pais = new BusinessDelegate().getBusinessService().getPais(Integer.parseInt(request.getParameter("txtNewPaisDestinatario")));
+			 	pais = new BusinessDelegate().getBusinessService().getPais(Integer.parseInt(request.getParameter("cmbPAIS")));
 			 } 
 			 catch (PaisException e) 
 			 {
@@ -524,7 +524,7 @@ public class abmEnvios extends HttpServlet {
      		 ProvinciaDTO provincia = null;
      		 try 
 			 {
-     			provincia = new BusinessDelegate().getBusinessService().getProvincia(Integer.parseInt(request.getParameter("txtNewProvinciaDestinatario")));
+     			provincia = new BusinessDelegate().getBusinessService().getProvincia(Integer.parseInt(request.getParameter("cmbPROVINCIA")));
 			 } 
 			 catch (ProvinciaException e) 
 			 {
@@ -558,7 +558,7 @@ public class abmEnvios extends HttpServlet {
 	        	 try 
 	        	 {
 	        		 nDetinatario = new BusinessDelegate().getBusinessService().crearDestinatario(nDetinatario);
-	        		 nSucDestino = new BusinessDelegate().getBusinessService().getSucursalById(Integer.parseInt(request.getParameter("txtSucursalDestino")));
+	        		 nSucDestino = new BusinessDelegate().getBusinessService().getSucursalById(Integer.parseInt(request.getParameter("cmbSUCDESTINO")));
 	        		 
 	        		 viewState = new viewStateAbmEnvios("",	 //divParticular
 	        				    "none",  //divSeleccionCliente

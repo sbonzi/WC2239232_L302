@@ -2,6 +2,7 @@ package dao;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -17,9 +18,14 @@ import converters.VehiculoConverter;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.VehiculoDTO;
+import entities.Cliente;
+import entities.Destinatario;
 import entities.Envio;
+import entities.EstadoEnvio;
+import entities.Sucursal;
 import entities.Viaje;
 import hbt.HibernateUtil;
+import net.sourceforge.jtds.jdbc.DateTime;
 
 public class ViajeDAO {
 	public static ViajeDAO instancia = null;
@@ -102,8 +108,12 @@ public class ViajeDAO {
 		Session session = sf.openSession();
 		session.beginTransaction();
 		
-		Viaje viaje = new Viaje(EnvioConverter.enviosToEntity(envios),
-								VehiculoConverter.vehiculoToEntity(vehiculo));
+		Viaje viaje = new Viaje();
+		viaje.setLatitud("0");
+		viaje.setLongitud("0");
+		viaje.setFechaSalida(new Date());
+		viaje.setFechaLlegada(new Date());
+
 		
 		session.save(viaje);
 		
@@ -112,19 +122,35 @@ public class ViajeDAO {
 		session.close();
 		
 		//Actualiza envio estado: despachado
-		actualizarEstadoEnvios(envios);
+		actualizarEstadoEnvios(viaje.getId(), envios);
 		
 		return viaje;
 	}
 	
-	public void actualizarEstadoEnvios(List<EnvioDTO> envios){
+	public void actualizarEstadoEnvios(int idViaje, List<EnvioDTO> envios){
 		Session session = sf.openSession();
 		for(EnvioDTO e:envios){
 			Envio envio = new Envio();
 			
-			envio.setIdEnvio(e.getIdEnvio());
+			EstadoEnvio estado = new EstadoEnvio();
+			estado.setId(3);	
 			
-			envio.setEstadoEnvio(EstadoEnvioConverter.estadoEnvioToEntity(e.getEstado()));
+			Cliente cliente = new Cliente();
+			cliente.setId(e.getCliente().getId());	
+			
+			Sucursal sucursalDestino = new Sucursal();
+			sucursalDestino.setId(e.getSucursalDestino().getNumero());	
+			
+			Sucursal sucursalOrigen = new Sucursal();
+			sucursalOrigen.setId(e.getSucursalOrigen().getNumero());	
+			
+			
+			
+			envio.setEstadoEnvio(estado);
+			envio.setCliente(cliente);
+			envio.setSucursalDestino(sucursalDestino);
+			envio.setSucursalOrigen(sucursalOrigen);
+		
 			
 			session.beginTransaction();
 			

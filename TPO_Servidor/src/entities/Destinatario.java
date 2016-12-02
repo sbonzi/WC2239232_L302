@@ -30,6 +30,10 @@ public class Destinatario implements Serializable{
 	@JoinColumn(name="id_Pais")
 	private Pais pais;
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@OneToOne
 	@JoinColumn(name="id_Provincia")
 	private Provincia provincia;

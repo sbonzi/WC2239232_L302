@@ -145,7 +145,7 @@
 	        	request.setAttribute("paises", request.getSession().getAttribute("paises"));
 	        }
 		 
-		 if(request.getSession().getAttribute("provincias")==null && paises.size() > 0)
+		 	if(request.getSession().getAttribute("provincias")==null && paises.size() > 0)
 	        {
 	        	List<ProvinciaDTO> provincias = new ArrayList<ProvinciaDTO>();
 				try 
@@ -433,7 +433,6 @@
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">PAIS</p></td>
 	    							<td>
-	    								<input name="txtNewPaisDestinatario" type="number" width="100px"/>
 				    					<select name="cmbPAIS">
 				    					<option value="0" selected>(please select:)</option>
 				    					<%
@@ -452,8 +451,7 @@
 	    							</td>
 	    							<td><p class="formLabel" style="width: 200px">PROVINCIA</p></td>
 	    							<td>
-	    								<input name="txtNewProvinciaDestinatario" type="number" width="100px"/>
-				    					<select name="cmbPAIS">
+				    					<select name="cmbPROVINCIA">
 				    					<option value="0" selected>(please select:)</option>
 				    					<%
 											List<ProvinciaDTO> pr = (List<ProvinciaDTO>)request.getAttribute("provincias");
@@ -483,7 +481,6 @@
 	    						<tr>
 	    							<td><p class="formLabel" style="width: 170px">SUCURSAL DESTINO</p></td>
 	    							<td>
-	    								<input name="txtSucursalDestino" type="number" width="100px"/>
 				    					<select name="cmbSUCDESTINO">
 				    					<option value="0" selected>(please select:)</option>
 				    					<%
