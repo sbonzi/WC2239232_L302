@@ -39,9 +39,11 @@ public class VehiculoConverter implements Serializable{
 
 	public static Vehiculo vehiculoToEntity(VehiculoDTO vehiculoDTO) {
 		List<Mantenimiento> mantenimientoV = null;
-		if(vehiculoDTO.getMantenimientos()!=null){
-			mantenimientoV = MantenimientoConverter.mantenimientosToEntity(vehiculoDTO.getMantenimientos());
-		}
+		
+		//if(vehiculoDTO.getMantenimientos()!=null){
+		//	mantenimientoV = MantenimientoConverter.mantenimientosToEntity(vehiculoDTO.getMantenimientos());
+		//}
+		
 		Vehiculo vehiculo = new Vehiculo(vehiculoDTO.getAnio(),
 										 vehiculoDTO.isHabilitadoParaUtilizar(),
 										 vehiculoDTO.getKilometraje(),
