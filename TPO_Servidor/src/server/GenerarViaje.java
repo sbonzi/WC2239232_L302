@@ -177,7 +177,7 @@ public class GenerarViaje extends TimerTask {
 						}
 					}
 				}else{
-					System.out.println("Sin envios en deposito");
+					System.out.println("Sin envios en deposito para la sucursal " + sucursal.getNumero());
 				}
 			}
 			System.out.println("-- Fin recorrido sucursales buscando envios en deposito --");
