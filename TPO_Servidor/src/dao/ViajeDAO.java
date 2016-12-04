@@ -4,28 +4,21 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 
 import converters.EnvioConverter;
-import converters.EstadoEnvioConverter;
 import converters.VehiculoConverter;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.VehiculoDTO;
-import entities.Cliente;
-import entities.Destinatario;
 import entities.Envio;
-import entities.EstadoEnvio;
-import entities.Sucursal;
+import entities.EstadoViaje;
+import entities.Vehiculo;
 import entities.Viaje;
 import hbt.HibernateUtil;
-import net.sourceforge.jtds.jdbc.DateTime;
 
 public class ViajeDAO {
 	public static ViajeDAO instancia = null;
@@ -103,17 +96,22 @@ public class ViajeDAO {
 		return list;
 	}
 	
-	public Viaje crearViaje(List<EnvioDTO> envios,VehiculoDTO vehiculo){
-		
+	public Viaje crearViaje(List<EnvioDTO> envios,VehiculoDTO vehiculoDTO){
 		Session session = sf.openSession();
 		session.beginTransaction();
 		
+		EstadoViaje estadoViaje = new EstadoViaje();
+		estadoViaje.setDescripcion("Saliendo de sucursal origen");
+		estadoViaje.setHabilitado(true);
+		estadoViaje.setId(1);
+
 		Viaje viaje = new Viaje();
 		viaje.setLatitud("0");
 		viaje.setLongitud("0");
 		viaje.setFechaSalida(new Date());
 		viaje.setFechaLlegada(new Date());
-
+		viaje.setEstadoViaje(estadoViaje);
+		viaje.setVehiculoDesignado(VehiculoConverter.vehiculoToEntity(vehiculoDTO));
 		
 		session.save(viaje);
 		
@@ -121,7 +119,6 @@ public class ViajeDAO {
 
 		session.close();
 		
-		//Actualiza envio estado: despachado
 		actualizarEstadoEnvios(viaje.getId(), envios);
 		
 		return viaje;
@@ -130,31 +127,17 @@ public class ViajeDAO {
 	public void actualizarEstadoEnvios(int idViaje, List<EnvioDTO> envios){
 		Session session = sf.openSession();
 		for(EnvioDTO e:envios){
-			Envio envio = new Envio();
-			
-			EstadoEnvio estado = new EstadoEnvio();
-			estado.setId(3);	
-			
-			Cliente cliente = new Cliente();
-			cliente.setId(e.getCliente().getId());	
-			
-			Sucursal sucursalDestino = new Sucursal();
-			sucursalDestino.setId(e.getSucursalDestino().getNumero());	
-			
-			Sucursal sucursalOrigen = new Sucursal();
-			sucursalOrigen.setId(e.getSucursalOrigen().getNumero());	
-			
-			
-			
-			envio.setEstadoEnvio(estado);
-			envio.setCliente(cliente);
-			envio.setSucursalDestino(sucursalDestino);
-			envio.setSucursalOrigen(sucursalOrigen);
-		
-			
 			session.beginTransaction();
+			String hqlUpdate = "UPDATE Envio e "
+							 + "SET e.estadoEnvio.id = :idEstadoEnvio "
+							 + ",e.viaje.id = :idViaje "
+							 + "WHERE e.idEnvio = :idEnvio ";
 			
-			session.merge(envio);
+			session.createQuery(hqlUpdate)
+				   .setInteger("idEnvio",e.getIdEnvio())
+				   .setInteger("idViaje",idViaje)
+				   .setInteger("idEstadoEnvio",3)
+				   .executeUpdate();
 			
 			session.getTransaction().commit();
 		}
