@@ -1,6 +1,5 @@
 package server;
 
-import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,23 +9,14 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import businessDelegate.BusinessDelegate;
-import converters.EnvioConverter;
-import converters.VehiculoConverter;
 import dao.EnvioDAO;
 import dao.SucursalDAO;
 import dao.VehiculoDAO;
-import dto.EnvioDTO;
-import dto.SucursalDTO;
-import dto.VehiculoDTO;
 import entities.Carga;
 import entities.Envio;
 import entities.Sucursal;
 import entities.Vehiculo;
 import entities.Viaje;
-import exceptions.EnvioException;
-import exceptions.SucursalException;
-import exceptions.VehiculoException;
 
 /**
  * Verifica cada X segundos si existen Envios en deposito
