@@ -314,12 +314,5 @@ public class BusinessDelegate implements ISistemaEnvios{
 	public EstadoEnvioDTO getEstadoEnvio(int idEstadoEnvio) throws RemoteException, EstadoEnvioException {
 		return businessService.getEstadoEnvio(idEstadoEnvio);
 	}
-	
-	@Override
-	public ViajeDTO crearViaje(List<EnvioDTO> envios, VehiculoDTO vehiculo)
-			throws EnvioException, VehiculoException, RemoteException {
-		return businessService.crearViaje(envios, vehiculo);
-	}
-
 
 }

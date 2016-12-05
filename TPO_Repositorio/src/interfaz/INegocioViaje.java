@@ -33,7 +33,5 @@ public interface INegocioViaje extends Remote {
 
 	List<RutaDTO> getRutasDisponibles()
 	throws RutaException,RemoteException;
-	
-	ViajeDTO crearViaje(List<EnvioDTO> envios,VehiculoDTO vehiculo) 
-			throws EnvioException,VehiculoException,RemoteException;
+
 }

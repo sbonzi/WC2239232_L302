@@ -11,12 +11,19 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import businessDelegate.BusinessDelegate;
-import dto.CargaDTO;
+import converters.EnvioConverter;
+import converters.VehiculoConverter;
+import dao.EnvioDAO;
+import dao.SucursalDAO;
+import dao.VehiculoDAO;
 import dto.EnvioDTO;
-import dto.EstadoEnvioDTO;
 import dto.SucursalDTO;
 import dto.VehiculoDTO;
-import dto.ViajeDTO;
+import entities.Carga;
+import entities.Envio;
+import entities.Sucursal;
+import entities.Vehiculo;
+import entities.Viaje;
 import exceptions.EnvioException;
 import exceptions.SucursalException;
 import exceptions.VehiculoException;
@@ -33,160 +40,159 @@ public class GenerarViaje extends TimerTask {
 
     @Override
     public void run() {
-    	
-    	try {
-    		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    		LocalDateTime now = LocalDateTime.now();
-    		
-    		System.out.println("(" + iteraciones + ")" + dtf.format(now) + " -- Inicia recorrido sucursales buscando envios en deposito --");
-			List<SucursalDTO> sucursales = new BusinessDelegate().getBusinessService().getSucursales();
-			for(SucursalDTO sucursal:sucursales){
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		
+		System.out.println("(" + iteraciones + ")" + dtf.format(now) + " -- Inicia recorrido sucursales buscando envios en deposito --");
+		List<Sucursal> sucursales = SucursalDAO.getInstancia().getSucursales();
+		for(Sucursal sucursal:sucursales)
+		{
+			
+			System.out.println("### Suc: " + sucursal.getNombre() + " " +sucursal.getDireccion() + " ###");
+			
+			List<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
+			vehiculos = VehiculoDAO.getInstancia().getVehiculosDisponiblesPorSucursal(sucursal);
+			
+			//Envios en deposito esperando ser asignados a un viaje
+			List<Envio> envios = new ArrayList<Envio>();
+			envios  = EnvioDAO.getInstancia().obtenerEnviosPorSucursalOrigen(sucursal);
+			
+			if(envios.size() > 0)
+			{
 				
-				System.out.println("### Suc: " + sucursal.getNombre() + " " +sucursal.getDireccion() + " ###");
+				Hashtable<Integer,List<Envio>> enviosPorSucursalDestino = new Hashtable<>();
+				List<Envio> enviosPreselec = new ArrayList<Envio>();
 				
-				List<VehiculoDTO> vehiculos = new ArrayList<VehiculoDTO>();		
-				vehiculos = new BusinessDelegate().getBusinessService().getVehiculosDisponiblesPorSucursal(sucursal);
-				
-				//Envios en deposito esperando ser asignados a un viaje
-				List<EnvioDTO> envios = new ArrayList<EnvioDTO>();
-				envios 	= new BusinessDelegate().getBusinessService().getEnviosPorSucursalOrigen(sucursal);
-				
-				if(envios.size() > 0){
-					
-					Hashtable<Integer,List<EnvioDTO>> enviosPorSucursalDestino = new Hashtable<>();
-					List<EnvioDTO> enviosPreselec = new ArrayList<EnvioDTO>();
-					
-					//Organizando envios por sucursal destino
-					for(EnvioDTO envio:envios){
-						if(enviosPorSucursalDestino.containsKey(envio.getSucursalDestino().getNumero())){
-							enviosPreselec = enviosPorSucursalDestino.get(envio.getSucursalDestino().getNumero());
-							enviosPreselec.add(envio);
-							enviosPorSucursalDestino.replace(envio.getSucursalDestino().getNumero(),enviosPreselec);
-						}else{
-							enviosPreselec.add(envio);
-							enviosPorSucursalDestino.put(envio.getSucursalDestino().getNumero(),enviosPreselec);
-						}
+				//Organizando envios por sucursal destino
+				for(Envio envio:envios)
+				{
+					if(enviosPorSucursalDestino.containsKey(envio.getSucursalDestino().getId())){
+						enviosPreselec = enviosPorSucursalDestino.get(envio.getSucursalDestino().getId());
+						enviosPreselec.add(envio);
+						enviosPorSucursalDestino.replace(envio.getSucursalDestino().getId(),enviosPreselec);
+					}else{
+						enviosPreselec.add(envio);
+						enviosPorSucursalDestino.put(envio.getSucursalDestino().getId(),enviosPreselec);
 					}
-					
-					System.out.println("**Envios organizados por sucursal destino para optimizar los viajes**");
-					Set<Integer> idSucursalesDestino = enviosPorSucursalDestino.keySet();
-					for(Integer idSucursalDestino:idSucursalesDestino){
-						System.out.println("sucursalDestino: " + idSucursalDestino);
-						
-						List<EnvioDTO> enviosEnEspera 	= new ArrayList<EnvioDTO>();
-						boolean hayEnviosEnEspera 		= false;
-						float pesoTotalEnviosEnEspera	= 0;
-						
-						List<EnvioDTO> enviosSucDestino = enviosPorSucursalDestino.get(idSucursalDestino);
-						for(EnvioDTO envioSucDestino:enviosSucDestino)
-						{
-							System.out.println("	idEnvio: " + envioSucDestino.getIdEnvio());
-							
-							float pesoTotalCargasEnvio	= 0;
-							
-							//Calculamos el peso de las cargas del envio
-							for(CargaDTO carga:envioSucDestino.getCargas()){
-								float peso 	= carga.getPeso(); 
-								System.out.println("		idCarga: " + carga.getId() + ", peso: " + peso);
-								pesoTotalCargasEnvio = pesoTotalCargasEnvio + peso;
-							}
-							System.out.println("		peso total de las cargas: " + pesoTotalCargasEnvio);
-								
-							System.out.println("**Buscando vehiculo con capacidad para los envios..**");
-							if(vehiculos.size() > 0)
-							{
-								for(VehiculoDTO vehiculo:vehiculos)
-								{
-									System.out.println(vehiculo.getMarca() + " " + vehiculo.getModelo() + "(patente: " + vehiculo.getPatente() + ",tara: " + vehiculo.getTara() + ")");
+				}
+				
+				System.out.println("**Envios organizados por sucursal destino para optimizar los viajes**");
+				Set<Integer> idSucursalesDestino = enviosPorSucursalDestino.keySet();
+				for(Integer idSucursalDestino:idSucursalesDestino)
+				{
 
-									if(hayEnviosEnEspera)
+					/**
+					* Generamos un Viaje y le asignamos un vehiculo disponible
+					* El viaje irá calculando en base a la capacidad del vehiculo asignado,cuantos envios
+					* entran.
+					*/
+					
+					if(vehiculos.size() > 0)
+					{
+						//Tomamos el primer vehiculo disponible de la sucursal origen
+						Vehiculo vehiculo = null;
+						for(Vehiculo v:vehiculos){
+							if(v.isHabilitadoParaUtilizar()){
+								vehiculo = v;
+								v.setHabilitadoParaUtilizar(false);
+								break;
+							}
+						}
+						
+						if(vehiculo != null){
+							//Preparamos un viaje a asignar envios
+							Viaje viaje = new Viaje();
+							viaje.setVehiculoDesignado(vehiculo);
+							
+							System.out.println("Se designó el vehiculo nro: " + viaje.getVehiculoDesignado().getId());
+							
+							List<Envio> enviosSucDestino = enviosPorSucursalDestino.get(idSucursalDestino);
+							int cantidadEnvios = enviosSucDestino.size();
+							for(Envio envioSucDestino:enviosSucDestino)
+							{
+								System.out.println("idEnvio: " + envioSucDestino.getIdEnvio());
+								
+								for(Carga c:envioSucDestino.getCargas()){
+									System.out.println("	-idCarga: "+c.getId());
+								}
+								
+								/**
+								 * Pasamos cada envio al viaje generado para ver cuantos caben
+								 */
+								if(viaje.tengoCapacidadEnVehiculoAsignado(envioSucDestino))
+								{
+									boolean estaCompleto = viaje.agregarEnvioAVehiculoAsignado(envioSucDestino);
+									
+									cantidadEnvios--;
+									
+									/**
+									 * El viaje se despacha si el vehiculo completa su capacidad de 70%+ o bien si queda un solo 
+									 * envio en la sucursal ya que no podemos dejarlo esperando hasta que llegue otro envio
+									 * para cubrir el cupo minimo de envio.
+									 */
+									if(estaCompleto || cantidadEnvios == 0)
 									{
-										System.out.println("**Hay envios en espera, se intenta asignar a un viaje**");
-										if((vehiculo.getTara() >= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera)) && vehiculo.isHabilitadoParaUtilizar())
-										{
-											if((vehiculo.getTara() * 0.2 /*0.7*/) <= (pesoTotalCargasEnvio + pesoTotalEnviosEnEspera))
-											{
-												
-												//Se unifican los envios pendientes y el actual
-												List<EnvioDTO> enviosUnificados = new ArrayList<EnvioDTO>();
-												enviosUnificados.addAll(enviosEnEspera);
-												enviosUnificados.add(envioSucDestino);
-												
-												System.out.println("**Se detectó un envio igual o mayor al 70% de la capacidad del vehiculo, genera Viaje**");
-												
-												ViajeDTO ViajeDTO = new BusinessDelegate().getBusinessService().crearViaje(enviosUnificados, vehiculo);
-												if(ViajeDTO != null){
-													System.out.println("**Viaje creado exitosamente.**");
-												}
-												
-												//Actualizamos datos del vehiculo
-												//vehiculo.setTara(pesoTotalCargasEnvio);
-												vehiculo.setHabilitadoParaUtilizar(false);//vehiculoOcupado
-												
-												//inicializamos los acumuladores de envios
-												hayEnviosEnEspera = false;
-												enviosEnEspera.clear();
-												pesoTotalEnviosEnEspera = 0;
-												pesoTotalCargasEnvio =0;
+										if(viaje.despachar()){
+											if(cantidadEnvios == 0){
+												System.out.println("### Viaje despachado por ser ultimo envio en sucursal ###");
+											}else{
+												System.out.println("### Viaje despachado por vehiculo completo ###");
 											}
 										}
-									}
-									else
-									{
-										if((vehiculo.getTara() >= pesoTotalCargasEnvio)  && vehiculo.isHabilitadoParaUtilizar())
+										
+										//Si hay más envios a procesar, preparamos un viaje para la próxima ejecución
+										if(enviosSucDestino.size() > 0)
 										{
-											
-											//Con 70% o más de capacidad se genera un viaje
-											if((vehiculo.getTara() * 0.2 /*0.7*/) <= pesoTotalCargasEnvio)
+											if(vehiculos.size() > 0)
 											{
-												
-												System.out.println("**Se detectó un envio igual o mayor al 70% de la capacidad del vehiculo, genera Viaje**");
-												//Si bien es un único envio asociado a un viaje, tiene que ir como lista
-												List<EnvioDTO> listEnvio = new ArrayList<EnvioDTO>();
-												listEnvio.add(envioSucDestino);
-	
-												ViajeDTO ViajeDTO = new BusinessDelegate().getBusinessService().crearViaje(listEnvio, vehiculo);
-												if(ViajeDTO != null){
-													System.out.println("**Viaje creado exitosamente.**");
+												//Tomamos el primer vehiculo disponible de la sucursal origen
+												for(Vehiculo v:vehiculos){
+													if(v.isHabilitadoParaUtilizar()){
+														vehiculo = v;												
+														v.setHabilitadoParaUtilizar(false);
+														break;
+													}
+												}		
+												if(vehiculo != null){
+													//Preparamos un viaje a asignar envios
+													viaje = new Viaje();
+													viaje.setVehiculoDesignado(vehiculo);
 												}
-												
-												//Actualizamos datos del vehiculo
-												//vehiculo.setTara(pesoTotalCargasEnvio);
-												vehiculo.setHabilitadoParaUtilizar(false);//vehiculoOcupado
-												pesoTotalEnviosEnEspera = 0;
-												pesoTotalCargasEnvio =0;
-												enviosEnEspera.clear();
-												hayEnviosEnEspera = false;
 											}
 											else
 											{
-												//No genera viaje aún, sigue juntando envios intentando llenar el vehiculo
-												enviosEnEspera.add(envioSucDestino);
-												pesoTotalEnviosEnEspera = pesoTotalEnviosEnEspera + pesoTotalCargasEnvio;
-												hayEnviosEnEspera 		= true;
-												
-												System.out.println("** Se dejó en espera el nro de envio: " + envioSucDestino.getIdEnvio());
+												System.out.println("No hay vehiculos disponibles");
 											}
-											break; // No sigue recorriendo los vehiculos disponibles
 										}
+										else
+										{
+											//Pasa al siguiente listado de envios
+											break;
+										}
+									}else{
+										System.out.println("### El vehiculo no está completo aún, sigue cargando envios ###");
 									}
 								}
-							}else{
-								System.out.println("Sin vehiculos");
+								else
+								{
+									System.out.println("No hay más capadidad en el viaje actual para el envio nro: " + envioSucDestino.getIdEnvio());
+									System.out.println("Se deja el envio pendiente para el proximo viaje a generar");
+								}
 							}
 						}
 					}
-				}else{
-					System.out.println("Sin envios en deposito para la sucursal " + sucursal.getNumero());
+					else
+					{
+						System.out.println("No hay vehiculos disponibles");
+					}
 				}
+			}else{
+				System.out.println("Sin envios en deposito para la sucursal " + sucursal.getId());
 			}
-			System.out.println("-- Fin recorrido sucursales buscando envios en deposito --");
-			
-			iteraciones++;
+		}
+		System.out.println("-- Fin recorrido sucursales buscando envios en deposito --");
 		
-		} catch (RemoteException | SucursalException | EnvioException | VehiculoException e) {
-			e.printStackTrace();
-		}	
+		iteraciones++;
     }
 
     public static void main(String args[]){

@@ -168,6 +168,21 @@ public class EnvioDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Envio> obtenerEnviosPorSucursalOrigen(Sucursal sucOrigen){
+		Session session = sf.openSession();
+		List<Envio> envios = session.createQuery(
+				"select e from Envio e "
+				+ "JOIN e.sucursalOrigen s "
+				+ "JOIN e.estadoEnvio v "
+				+ "WHERE s.id = :idSucOrigen AND v.id = :idEstadoEnvio")
+				.setParameter("idSucOrigen", sucOrigen.getId())
+				.setParameter("idEstadoEnvio", 1)
+				.list();
+		session.close();
+		return envios;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Envio> obtenerEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado){
 		Session session = sf.openSession();
 		List<Envio> envios = new ArrayList<Envio>();

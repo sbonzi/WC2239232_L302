@@ -10,13 +10,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 
 import converters.EnvioConverter;
-import converters.VehiculoConverter;
 import dto.EmpleadoDTO;
 import dto.EnvioDTO;
 import dto.VehiculoDTO;
 import entities.Envio;
 import entities.EstadoViaje;
-import entities.Vehiculo;
 import entities.Viaje;
 import hbt.HibernateUtil;
 
@@ -87,6 +85,7 @@ public class ViajeDAO {
 		return viajes;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Envio> getEnviosPendientes() {
 		Session session = sf.openSession();
 		List<Envio> list = session.createQuery("SELECT e "
@@ -96,7 +95,7 @@ public class ViajeDAO {
 		return list;
 	}
 	
-	public Viaje crearViaje(List<EnvioDTO> envios,VehiculoDTO vehiculoDTO){
+	public Viaje crearViaje(Viaje viaje){
 		Session session = sf.openSession();
 		session.beginTransaction();
 		
@@ -105,13 +104,11 @@ public class ViajeDAO {
 		estadoViaje.setHabilitado(true);
 		estadoViaje.setId(1);
 
-		Viaje viaje = new Viaje();
 		viaje.setLatitud("0");
 		viaje.setLongitud("0");
 		viaje.setFechaSalida(new Date());
 		viaje.setFechaLlegada(new Date());
 		viaje.setEstadoViaje(estadoViaje);
-		viaje.setVehiculoDesignado(VehiculoConverter.vehiculoToEntity(vehiculoDTO));
 		
 		session.save(viaje);
 		
@@ -119,14 +116,14 @@ public class ViajeDAO {
 
 		session.close();
 		
-		actualizarEstadoEnvios(viaje.getId(), envios);
+		actualizarEstadoEnvios(viaje.getId(),viaje.getEnvios());
 		
 		return viaje;
 	}
 	
-	public void actualizarEstadoEnvios(int idViaje, List<EnvioDTO> envios){
+	public void actualizarEstadoEnvios(int idViaje, List<Envio> envios){
 		Session session = sf.openSession();
-		for(EnvioDTO e:envios){
+		for(Envio e:envios){
 			session.beginTransaction();
 			String hqlUpdate = "UPDATE Envio e "
 							 + "SET e.estadoEnvio.id = :idEstadoEnvio "

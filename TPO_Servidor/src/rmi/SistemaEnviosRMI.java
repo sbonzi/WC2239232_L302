@@ -327,10 +327,4 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	public EstadoEnvioDTO getEstadoEnvio(int idEstadoEnvio) throws RemoteException, EstadoEnvioException {
 		return EstadoEnvioSRV.getEstadoEnvioById(idEstadoEnvio);
 	}
-
-	@Override
-	public ViajeDTO crearViaje(List<EnvioDTO> envios, VehiculoDTO vehiculo)
-			throws EnvioException, VehiculoException, RemoteException {
-		return ViajeSRV.crearViaje(envios,vehiculo);
-	}
 }

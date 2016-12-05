@@ -33,9 +33,4 @@ public class ViajeSRV {
 		enviosDTO	= EnvioConverter.enviosToDTO(enviosPendientes);
 		return enviosDTO;
 	}
-	
-	public static ViajeDTO crearViaje(List<EnvioDTO> envios, VehiculoDTO vehiculo) {
-		Viaje viaje = dao.crearViaje(envios,vehiculo);
-		return ViajeConverter.viajeToDTO(viaje);
-	}
 }

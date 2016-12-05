@@ -10,6 +10,7 @@ import dto.SucursalDTO;
 import dto.VehiculoDTO;
 import entities.Envio;
 import entities.Mantenimiento;
+import entities.Sucursal;
 import entities.Vehiculo;
 import hbt.HibernateUtil;
 
@@ -74,6 +75,18 @@ public class VehiculoDAO {
 												+ "	FROM Vehiculo v "
 												+ " WHERE habilitadoParaUtilizar = 1 AND id_Sucursal = :idSucursal")
 				.setParameter("idSucursal", sucursal.getNumero())
+				.list();
+		session.close();
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Vehiculo> getVehiculosDisponiblesPorSucursal(Sucursal sucursal) {
+		Session session = sf.openSession();
+		List<Vehiculo> list = session.createQuery("SELECT v "
+												+ "	FROM Vehiculo v "
+												+ " WHERE habilitadoParaUtilizar = 1 AND id_Sucursal = :idSucursal")
+				.setParameter("idSucursal", sucursal.getId())
 				.list();
 		session.close();
 		return list;

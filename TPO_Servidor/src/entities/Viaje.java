@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,13 +14,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import dao.ViajeDAO;
 import util.Constantes;
 import util.GenerarArchivoXML;
 
@@ -41,7 +40,7 @@ public class Viaje implements Serializable{
 	private int id;
 	
 	@OneToMany(mappedBy="viaje",cascade = CascadeType.ALL)
-	private List<Envio> envios;
+	private List<Envio> envios = new ArrayList<Envio>();
 	
 	private String latitud;
 	private String longitud;
@@ -137,7 +136,108 @@ public class Viaje implements Serializable{
 	public void setFechaLlegada(Date fechaLlegada) {
 		this.fechaLlegada = fechaLlegada;
 	}
+	
+	/**
+	 * Calcula si el vehiculo asignado tiene capacidad para cargar más envios
+	 */
+	public boolean tengoCapacidadEnVehiculoAsignado(Envio envio){
+		boolean res = false;
+		
+		if(vehiculoDesignado.getTara() >= envio.calcularPesoTotalCargas()){
+			res = true;
+		}
+		return res;
+	}
+	
+	/**
+	 * Asigna un envio al vehiculo del viaje
+	 */
+	public boolean agregarEnvioAVehiculoAsignado(Envio envio){
+		envios.add(envio);
+		return estaCompletoElVehiculo();
+	}
+	
+	/**
+	 * Indica si el vehiculo llegó al 70% o más de su capacidad
+	 */
+	public boolean estaCompletoElVehiculo(){
+		boolean res = false;
+		float pesoActualEnvios = 0;
+		
+		for(Envio envio:this.envios){
+			pesoActualEnvios =  pesoActualEnvios + envio.calcularPesoTotalCargas();
+		}
+		
+		if((this.vehiculoDesignado.getTara() * 0.2) <= pesoActualEnvios){
+			res = true;
+		}
+		return res;
+	}
+	
+	/**
+	 * Asigna el estado del viaje
+	 */
+	public void asignarEstado(int estado){
+		this.estadoViaje.setId(estado);
+	}
+	
+	/**
+	 * Delega la tarea de persistencia al objeto que implementa el patrón DAO
+	 */
+	public boolean despachar(){
+		boolean res = false;
+		if(ViajeDAO.getInstancia().crearViaje(this) != null){
+			res = true;
+		}
+		return res;
+	}
+	
+	/**
+	 * Controla que el horario de salida y llegado planeados estén dentro de los determinados
+	 * @return boolean 
+	 * @param String tipoControlViaje Indica si se está controlando la salida o llegada de un envio
+	 */
+	public boolean estoyEnDiaYHorarioPactado(String tipoControlViaje){
+		Date fechaActual= new Date();
+		if(tipoControlViaje.equalsIgnoreCase(Constantes.tipo_control_viaje_salida)){
+			if(this.getFechaSalida().after(fechaActual)){
+				System.out.println("El viaje planificado con fecha de salida: " + this.getFechaSalida() + " está demorado");
+			}
+		}else{
+			if(this.getFechaLlegada().after(fechaActual)){
+				System.out.println("El viaje planificado con fecha de llegada: " + this.getFechaLlegada() + " está demorado");
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Envia un mensaje con una frecuencia de 5 minutos con formato XML con los datos:
+	 * - nro de vehiculo
+	 * - fecha y hora
+	 * - coordenadas de posicion del vehiculo realizando el viaje
+	 * El mensaje devuelto se utiliza para informar a los clientes el estado de su envio en cada
+	 * momento y controlar que el vehiculo no se salió de la ruta planeada
+	 * @return
+	 */
+	public void enviarMensaje(){
+    	final int nroVehiculo			= this.getVehiculoDesignado().getId();
+		final Date fecha				= new Date();
+		final String latitud			= this.getLatitud();
+		final String longitud			= this.getLongitud();
 
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+		    @Override
+		    public void run() {
+				new GenerarArchivoXML(nroVehiculo,
+									  fecha,
+									  latitud,
+									  longitud);
+		    }
+		}, 0, Constantes.tiempo_delay_envio_mje_xml);
+	}
+	
 	/**
 	 * Asigna al viaje el mejor camino para llegar a cada sucursal destino
 	 * @return List<Ruta> listado de rutas con mejor rendimiento en tiempo y gastos
@@ -215,51 +315,6 @@ public class Viaje implements Serializable{
 		return rutas;
 	}
 	*/
-	
-	/**
-	 * Controla que el horario de salida y llegado planeados estén dentro de los determinados
-	 * @return boolean 
-	 * @param String tipoControlViaje Indica si se está controlando la salida o llegada de un envio
-	 */
-	public boolean estoyEnDiaYHorarioPactado(String tipoControlViaje){
-		Date fechaActual= new Date();
-		if(tipoControlViaje.equalsIgnoreCase(Constantes.tipo_control_viaje_salida)){
-			if(this.getFechaSalida().after(fechaActual)){
-				System.out.println("El viaje planificado con fecha de salida: " + this.getFechaSalida() + " está demorado");
-			}
-		}else{
-			if(this.getFechaLlegada().after(fechaActual)){
-				System.out.println("El viaje planificado con fecha de llegada: " + this.getFechaLlegada() + " está demorado");
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Envia un mensaje con una frecuencia de 5 minutos con formato XML con los datos:
-	 * - nro de vehiculo
-	 * - fecha y hora
-	 * - coordenadas de posicion del vehiculo realizando el viaje
-	 * El mensaje devuelto se utiliza para informar a los clientes el estado de su envio en cada
-	 * momento y controlar que el vehiculo no se salió de la ruta planeada
-	 * @return
-	 */
-	public void enviarMensaje(){
-    	final int nroVehiculo			= this.getVehiculoDesignado().getId();
-		final Date fecha				= new Date();
-		final String latitud			= this.getLatitud();
-		final String longitud			= this.getLongitud();
 
-		Timer t = new Timer();
-		t.schedule(new TimerTask() {
-		    @Override
-		    public void run() {
-				new GenerarArchivoXML(nroVehiculo,
-									  fecha,
-									  latitud,
-									  longitud);
-		    }
-		}, 0, Constantes.tiempo_delay_envio_mje_xml);
-	}
 	
 }
