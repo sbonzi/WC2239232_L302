@@ -13,6 +13,7 @@
 	  <li><a class="active" href="home.jsp">Home</a></li>
 	  <li><a href="abmEnvios.jsp">ABM Envio</a></li>
 	  <li><a href="arribos.jsp">Arribos</a></li>
+	  <li><a href="vehiculosPorSucursales.jsp">Vehiculos por sucursales</a></li>
 	  <li style="float:right"><a class="active" href="login?action=out" method=GET>Exit</a></li>
 	</ul>
 	<%

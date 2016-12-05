@@ -30,11 +30,13 @@ public class GenerarViaje extends TimerTask {
 
     @Override
     public void run() {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    	List<Sucursal> sucursales = SucursalDAO.getInstancia().getSucursales();
+    	
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 		
 		System.out.println("(" + iteraciones + ")" + dtf.format(now) + " -- Inicia recorrido sucursales buscando envios en deposito --");
-		List<Sucursal> sucursales = SucursalDAO.getInstancia().getSucursales();
+		
 		for(Sucursal sucursal:sucursales)
 		{
 			
@@ -66,7 +68,12 @@ public class GenerarViaje extends TimerTask {
 					}
 				}
 				
-				System.out.println("**Envios organizados por sucursal destino para optimizar los viajes**");
+				System.out.println("### Envios en deposito para la sucursal ###");
+				for(Envio envio:envios){
+					System.out.println("	-IdEnvio: " + envio.getIdEnvio());
+				}
+				
+
 				Set<Integer> idSucursalesDestino = enviosPorSucursalDestino.keySet();
 				for(Integer idSucursalDestino:idSucursalesDestino)
 				{

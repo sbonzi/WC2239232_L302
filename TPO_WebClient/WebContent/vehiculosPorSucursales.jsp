@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import= "config.viewStateArribos"%>
 <%@ page import= "dto.SucursalDTO"%>
-<%@ page import= "dto.EnvioDTO"%>
+<%@ page import= "dto.VehiculoDTO"%>
 <%@ page import= "dto.EstadoEnvioDTO"%>
 <%@ page import= "java.util.Iterator"%>
 <%@ page import= "java.util.List"%>
@@ -9,12 +9,11 @@
 <%@ page import= "businessDelegate.BusinessDelegate"%>
 <%@ page import= "exceptions.SucursalException"%>
 <%@ page import= "exceptions.EstadoEnvioException"%>
-
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Sistema de gestión de envios | ARRIBOS</title>
+<title>Vehiculos por sucursales</title>
 	<link rel="stylesheet" type="text/css" href="css/pages.css">
 	<link rel="stylesheet" type="text/css" href="css/menu.css">
 	<link rel="stylesheet" type="text/css" href="css/grids.css">
@@ -23,11 +22,11 @@
 	<ul>
 	  <li><a href="home.jsp">Home</a></li>
 	  <li><a href="abmEnvios.jsp">ABM Envio</a></li>
-	  <li><a class="active" href="arribos.jsp">Arribos</a></li>
-	  <li><a href="vehiculosPorSucursales.jsp">Vehiculos por sucursales</a></li>
+	  <li><a href="arribos.jsp">Arribos</a></li>
+	  <li><a class="active" href="vehiculosPorSucursales.jsp">Vehiculos por sucursales</a></li>
 	  <li style="float:right"><a class="active" href="login?action=out" method=GET>Exit</a></li>
 	</ul>
-	<% 
+		<% 
 		
 		if(request.getSession() == null || request.getSession().getAttribute("usuario") == null)
 			response.sendRedirect("/TPO_WebClient/login.jsp");	
@@ -36,9 +35,9 @@
 		if (viewState == null)
 		{
 			 viewState = new viewStateArribos("", //divFiltroArribos
-				"none", //divGrillaArribos
-				"none", //divErrorArribos
-				""); //error
+											  "none", //divGrillaArribos
+											  "none", //divErrorArribos
+											  ""); //error
 					 
 		}
 		
@@ -54,36 +53,14 @@
 				catch (SucursalException e) 
 				{
 					viewState = new viewStateArribos("", //divFiltroArribos
-	 	    				"none", //divGrillaArribos
-	 	    				"", //divErrorArribos
-	 	    				"HA OCURRIDO UN ERROR AL OBTENER LAS SUCURSALES"); //error
+							 	    				 "none", //divGrillaArribos
+							 	    				 "", //divErrorArribos
+							 	    				 "HA OCURRIDO UN ERROR AL OBTENER LAS SUCURSALES"); //error
 				}
 	        }
 	        else
 	        {
 	        	request.setAttribute("sucursales", request.getSession().getAttribute("sucursales"));
-	        }
-		 
-		 if(request.getSession().getAttribute("estadosEnvios")==null)
-	        {
-	        	List<EstadoEnvioDTO> estados = new ArrayList<EstadoEnvioDTO>();
-				try 
-				{
-					estados = new BusinessDelegate().getBusinessService().getEstadosEnvios();
-					request.getSession().setAttribute("estadosEnvios", estados);
-					request.setAttribute("estadosEnvios", estados);
-				} 
-				catch (EstadoEnvioException e) 
-				{
-					viewState = new viewStateArribos("", //divFiltroArribos
-	 	    				"none", //divGrillaArribos
-	 	    				"", //divErrorArribos
-	 	    				"HA OCURRIDO UN ERROR AL OBTENER LOS ESTADOS DE LOS ENVIOS"); //error
-				}
-	        }
-	        else
-	        {
-	        	request.setAttribute("estadosEnvios", request.getSession().getAttribute("estadosEnvios"));
 	        }
 	%>
 	
@@ -92,7 +69,7 @@
    			<tr>
     			<td>
     				<form class="normal-form">
-   						<p class="boxTitle">ARRIBOS</p>
+   						<p class="boxTitle">Vehiculos por sucursal</p>
    					</form>
    				</td>
    			</tr>
@@ -103,11 +80,11 @@
 		    				<table style="width:100%">
 			    				<tr>
 				    				<td align="left">
-				    					<input name="action" type="hidden" width="400px" value="filterEnvios"/>
-				    					<p class="formLabel">SUCURSAL DESTINO</p>
+				    					<input name="action" type="hidden" width="400px" value="filterVehiculos"/>
+				    					<p class="formLabel">SUCURSAL</p>
 				    				</td>
 				    				<td align="left">
-				    					<select name="cmbSUCDESTINO">
+				    					<select name="cmbSUC">
 				    					<option value="0" selected>(please select:)</option>
 				    					<%
 											List<SucursalDTO> s = (List<SucursalDTO>)request.getAttribute("sucursales");
@@ -123,28 +100,8 @@
 										%>
 										</select>
 				   					</td>
-				   					<td align="left">
-				    					<p class="formLabel">ESTADO ENVIO</p>
-				    				</td>
-				    				<td align="left">
-				    					<select name="cmbESTADO">
-				    					<option value="0" selected>(please select:)</option>
-				    					<%
-											List<EstadoEnvioDTO> es = (List<EstadoEnvioDTO>)request.getAttribute("estadosEnvios");
-											if(es != null)
-											{
-								 				for(EstadoEnvioDTO estado: es)
-								 				{
-										%>
-											<option value="<%=estado.getId()%>"><%=estado.getDescripcion()%></option>
-										<%
-												}
-											}
-										%>
-										</select>
-				   					</td>
 				   					<td align="right">
-				   						<input type="submit" style="cursor: pointer" formaction="arribos" value="FILTRAR">
+				   						<input type="submit" style="cursor: pointer" formaction="vehiculosPorSucursales" value="FILTRAR">
 				   					</td>
 			   					</tr>
 		   					</table>
@@ -159,26 +116,34 @@
 		    				<table style="width:100%" class="grid-table">
 		    					<thead>
 							    	<tr>
-							    		<th scope="col">ID ENVIO</th>
-							    		<th scope="col">SUC. ORIGEN</th>
-							    		<th scope="col">SUC. DESTINO</th>
-							    		<th scope="col">ESTADO ENVIO</th>
+							    		<th scope="col">ID VEHICULO</th>
+							    		<th scope="col">MARCA</th>
+							    		<th scope="col">MODELO</th>
+							    		<th scope="col">KILOMETRAJE</th>
+							    		<th scope="col">PATENTE</th>
+							    		<th scope="col">TARA</th>
+							    		<th scope="col">DISPONIBLE</th>
 						    		</tr>
 					    		</thead>
 			    				<%
-								EnvioDTO aux;
-			    				List<EnvioDTO> e = (List<EnvioDTO>)request.getAttribute("envios");
+			    				VehiculoDTO aux;
+			    				List<VehiculoDTO> e = (List<VehiculoDTO>)request.getAttribute("vehiculos");
 								if(e != null)
 								{
-					 				for(Iterator<EnvioDTO> i = e.iterator(); i.hasNext();)
+					 				for(Iterator<VehiculoDTO> i = e.iterator(); i.hasNext();)
 					 				{
 					 					aux = i.next();
+					 					
+					 					String habilitado = (aux.isHabilitadoParaUtilizar() == true)?"SI":"NO";
 									%>
 									<tr>
-					 					<td><%=aux.getIdEnvio()%></td>
-					 					<td><%=aux.getSucursalOrigen().getNombre()%></td>
-					 					<td><%=aux.getSucursalDestino().getNombre()%></td>
-					 					<td><%=aux.getEstado().getDescripcion()%></td>
+					 					<td><%=aux.getNumero()%></td>
+					 					<td><%=aux.getMarca()%></td>
+					 					<td><%=aux.getModelo()%></td>
+					 					<td><%=aux.getKilometraje()%></td>
+					 					<td><%=aux.getPatente()%></td>
+					 					<td><%=aux.getTara()%></td>
+					 					<td><%=habilitado%></td>
 					 				</tr>
 				    				<% } 
 								}%>

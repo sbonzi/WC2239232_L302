@@ -30,5 +30,11 @@ public class VehiculoSRV {
 		List<VehiculoDTO> vehiculosDTO		= VehiculoConverter.vehiculosToTDO(vehiculosDisponibles);
 		return vehiculosDTO;
 	}
+	
+	public static List<VehiculoDTO> getVehiculosPorSucursal(SucursalDTO sucursal) {
+		List<Vehiculo> vehiculosDisponibles = dao.getVehiculosPorSucursal(sucursal);
+		List<VehiculoDTO> vehiculosDTO		= VehiculoConverter.vehiculosToTDO(vehiculosDisponibles);
+		return vehiculosDTO;
+	}
 
 }

@@ -67,6 +67,27 @@ public class VehiculoDAO {
 		
 		return true;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Vehiculo> getVehiculosPorSucursal(SucursalDTO sucursal) {
+		Session session = sf.openSession();
+		List<Vehiculo> list;
+		
+		if(sucursal != null){
+				list = session.createQuery("SELECT v "
+										+ "	FROM Vehiculo v "
+										+ " WHERE id_Sucursal = :idSucursal")
+										.setParameter("idSucursal", sucursal.getNumero())
+										.list();
+		}else{
+				list = session.createQuery("SELECT v "
+										+ "	FROM Vehiculo v")
+										.list();
+		}
+		
+		session.close();
+		return list;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Vehiculo> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal) {

@@ -1,6 +1,5 @@
 package srv;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +10,9 @@ import dto.CargaDTO;
 import dto.ClienteDTO;
 import dto.DestinatarioDTO;
 import dto.EnvioDTO;
-import dto.EstadoEnvioDTO;
 import dto.SucursalDTO;
 import entities.Carga;
 import entities.Envio;
-import exceptions.ClienteException;
-import exceptions.EnvioException;
 
 public class EnvioSRV {
 	private static EnvioDAO dao;

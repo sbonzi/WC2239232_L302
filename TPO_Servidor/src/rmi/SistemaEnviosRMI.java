@@ -319,6 +319,12 @@ public class SistemaEnviosRMI extends UnicastRemoteObject implements ISistemaEnv
 	}
 	
 	@Override
+	public List<VehiculoDTO> getVehiculosPorSucursal(SucursalDTO sucursal)
+			throws RemoteException, VehiculoException {
+		return VehiculoSRV.getVehiculosPorSucursal(sucursal);
+	}
+	
+	@Override
 	public List<EstadoEnvioDTO> getEstadosEnvios() throws RemoteException, EstadoEnvioException {
 		return EstadoEnvioSRV.getEstadosEnvio();
 	}

@@ -224,6 +224,12 @@ public class ABM extends UnicastRemoteObject implements IABM{
 			throws RemoteException, VehiculoException {
 		return VehiculoSRV.getVehiculosDisponiblesPorSucursal(sucursal);
 	}
+	
+	@Override
+	public List<VehiculoDTO> getVehiculosPorSucursal(SucursalDTO sucursal)
+			throws RemoteException, VehiculoException {
+		return VehiculoSRV.getVehiculosPorSucursal(sucursal);
+	}
 
 	@Override
 	public List<EstadoEnvioDTO> getEstadosEnvios() throws RemoteException, EstadoEnvioException {

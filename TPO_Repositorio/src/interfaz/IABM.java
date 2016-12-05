@@ -118,6 +118,8 @@ public interface IABM extends Remote{
 	List<EnvioDTO> getEnviosPorSucursalDestinoEstado(SucursalDTO sucDestino, int estado) throws RemoteException,EnvioException;
 	
 	//vehiculos disponibles por sucursal
+	List<VehiculoDTO> getVehiculosPorSucursal(SucursalDTO sucursal) throws RemoteException,VehiculoException;
+	
 	List<VehiculoDTO> getVehiculosDisponiblesPorSucursal(SucursalDTO sucursal) throws RemoteException,VehiculoException;
 
 	List<EstadoEnvioDTO> getEstadosEnvios() throws RemoteException,EstadoEnvioException;
