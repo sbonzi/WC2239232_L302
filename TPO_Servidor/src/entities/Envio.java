@@ -16,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
@@ -224,5 +222,17 @@ public class Envio implements Serializable{
 		return destinatario;
 	}
 	
+	/**
+	 * Calcula el peso total de las cargas asignadas al envio
+	 */
+	public float calcularPesoTotalCargas(){
+		float pesoTotalCargas = 0;
+		if(this.cargas.size() > 0){
+			for(Carga carga:this.cargas){
+				pesoTotalCargas = pesoTotalCargas +  carga.getPeso(); 
+			}
+		}
+		return pesoTotalCargas;
+	}
 	
 }
